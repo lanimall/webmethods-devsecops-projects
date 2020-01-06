@@ -1,0 +1,9 @@
+[submodule "common/sagcce/scripts"]
+	path = common/sagcce/scripts
+	url = git@github.com:lanimall/sagdevops-antcc-scripts.git
+[submodule "common/sagcce/antcc"]
+	path = common/sagcce/antcc
+	url = https://github.com/SoftwareAG/sagdevops-antcc.git
+[submodule "common/ansible/roles"]
+	path = common/ansible/roles
+	url = git@github.com:lanimall/webmethods-ansible-roles.git
