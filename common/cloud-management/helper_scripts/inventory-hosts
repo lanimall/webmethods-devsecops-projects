@@ -1,0 +1,4 @@
+
+
+${management1_ip} ${hostname_prefix}management_1
+${commandcentral1_ip} ${hostname_prefix}commandcentral_1

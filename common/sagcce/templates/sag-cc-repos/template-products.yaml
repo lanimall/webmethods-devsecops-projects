@@ -1,0 +1,16 @@
+alias: sag-cc-repos-products
+description: Default public SAG master repositories
+
+environments:
+  default:
+    repo.products.name: ${}
+    repo.products.location: ${}
+    repo.products.description: ${}
+    repo.products.credentials.key: ${}
+
+repositories:
+  product: 
+    ${repo.products.name}:           
+      location: ${repo.products.location}
+      description: ${repo.products.description}
+      credentials: ${repo.products.credentials.key}

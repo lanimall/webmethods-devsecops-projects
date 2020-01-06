@@ -1,0 +1,19 @@
+---
+
+## OS settings
+sys_open_ports: "{{ sys_open_ports_spm }}"
+limits_user: "{{ webmethods_user }}"
+
+## default provisonning values
+cce_provisioning_stack_params: {}
+cce_provisioning_stack_params_secure: {}
+cce_provisioning_stack_postinstall_reboot: true
+cce_provisioning_stack_postinstall_service_setup: true
+cce_provisioning_stack_postinstall_webmethods: true
+cce_provisioning_stack_validation_ports: []
+cce_provisioning_stack_validation_ports_timeout: 300
+cce_provisioning_stack_product_names: "notspecified"
+cce_provisioning_stack_product_instance_names: "default"
+cce_provisioning_stack_product_envs_by_name:
+  LimitNOFILE: "{{ limits_openfiles }}"
+  LimitNPROC: "{{ limits_processes }}"

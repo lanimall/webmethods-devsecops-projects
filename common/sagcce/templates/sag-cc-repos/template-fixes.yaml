@@ -1,0 +1,17 @@
+alias: sag-cc-repos-fixes
+description: Default public SAG master repositories
+version: 10.5
+
+environments:
+  default:
+    repo.fixes.name: ${}
+    repo.fixes.location: ${}
+    repo.fixes.description: ${}
+    repo.fixes.credentials.key: ${}
+
+repositories:
+  fix:                                  
+    ${repo.fixes.name}:
+      location: ${repo.fixes.location}
+      description: ${repo.fixes.description}
+      credentials: ${repo.fixes.credentials.key}

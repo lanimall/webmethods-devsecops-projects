@@ -1,0 +1,16 @@
+---
+
+- hosts: "{{ inventory_groupnames }}"
+  become: true
+  roles:
+    - role: create-service-user
+      vars:
+        username: "{{ webmethods_user }}"
+        userid: "{{ webmethods_userid }}"
+        groupname: "{{ webmethods_group }}"
+        groupid: "{{ webmethods_groupid }}"
+        authorized_sshkey_path: "{{ webmethods_internal_sshkey_pub }}"
+    - role: prepare-wminstall
+  tags:
+    - sysprep
+    - sysprep_webmethods
