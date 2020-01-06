@@ -29,4 +29,4 @@ override.tf.json
 # example: *tfplan*
 
 ## these are files transformed by terraform...
-tfexpanded_*
+tfexpanded/

@@ -39,7 +39,7 @@ if [ ! -d $BUILD_DIR/scripts ]; then
 fi
 
 if [ -f $COMMON_CLOUD_MGT_EXPANDED/sync-to-management.sh ]; then
-    cp $COMMON_CLOUD_MGT_EXPANDED/sync-to-management.sh $BUILD_DIR/scripts/
+    cp $COMMON_CLOUD_MGT_EXPANDED/sync-to-management.sh $BUILD_DIR/
 fi
 
 cp $COMMON_DIR/scripts/*.sh $BUILD_DIR/scripts/
