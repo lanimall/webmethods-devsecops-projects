@@ -13,16 +13,17 @@ cce_install_dir: "{{ webmethods_install_dir }}"
 cce_owner: "{{ webmethods_user }}"
 cce_group: "{{ webmethods_group }}"
 
-## cce_provisioning params
-cce_provisioning_path: /opt/softwareag/webmethods-devops-sagcce
+## cce_provisioning path on final target server
+cce_provisioning_code_path: /opt/softwareag/webmethods-devops-sagcce
+##NOTE: sag conent can get big with the images etc... so good idea to make sure the path is a mount point to the larger disk
+cce_provisioning_content_path: /opt/softwareag/webmethods-devops-sagcontent
+cce_provisioning_licenses_path: "{{ cce_provisioning_content_path }}/licenses"
+cce_provisioning_images_path: "{{ cce_provisioning_content_path }}/images"
+cce_provisioning_installers_path: "{{ cce_provisioning_content_path }}/installers"
 
-##make sure the path is inside /opt/softwareag so it's added to the larger disk
-cce_provisioning_path_images: /opt/softwareag/webmethods-devops-sagcce-images
-
-## local path
-cce_provisioning_src: ~/webmethods-devops-sagcce/
-cce_provisioning_src_content: /opt/softwareag_images/
-cce_provisioning_license_path: ~/devops_content/licenses/DOL_LicenseKeys_101.zip
+## cce_provisioning LOCAL paths on management server
+cce_provisioning_code_localpath: ~/webmethods-devops-sagcce/
+cce_provisioning_content_localpath: /opt/sag_content/
 
 ## versions 10.3
 cce_version: 10.3

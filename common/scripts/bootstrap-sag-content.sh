@@ -7,7 +7,7 @@ BUCKET_NAME=sagdemo-main
 BUCKET_PREFIX=sagdemo
 
 ##depending on the size, ideally that path should be a mount point to a larger disk
-LOCAL_DIR=/opt/sag_images/
+LOCAL_DIR=/opt/sag_content/
 BUCKET_URI="s3://$BUCKET_NAME/$BUCKET_PREFIX/sag_content/"
 
 if [ -f $HOME/setenv.sh ]; then

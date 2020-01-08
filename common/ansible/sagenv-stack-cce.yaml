@@ -63,7 +63,9 @@
             name: configure-cce
           vars:
             config_item: licenses
-            cce_configure_params: []
+            cce_configure_params:
+              - name: "CC_SAG_LICENSE_DIR"
+                value: "{{ cce_provisioning_licenses_path }}"
             cce_configure_params_secure: []
           ignore_errors: yes
           tags:
@@ -75,7 +77,7 @@
             config_item: repo_images
             cce_configure_params:
               - name: "CC_SAG_IMAGE_DIR"
-                value: "{{ cce_provisioning_path_images }}"
+                value: "{{ cce_provisioning_images_path }}"
               - name: "CC_SAG_IMAGE_ACTION"
                 value: "register"
             cce_configure_params_secure: []
