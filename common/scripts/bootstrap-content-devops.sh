@@ -2,19 +2,23 @@
 
 set -e
 
-BUCKET_NAME=owcs-infrastructure
+##TODO: this should come from the terraform data...
+BUCKET_NAME=sagdemo-main
+BUCKET_PREFIX=sagdemo
+
 LOCAL_DIR=$HOME/devops_content/
-BUCKET_URI="s3://$BUCKET_NAME/sag/devops/"
-export PATH=$PATH:~/.virtualenvs/awscli/bin/
+BUCKET_URI="s3://$BUCKET_NAME/$BUCKET_PREFIX/devops_content/"
+
+if [ -f $HOME/setenv.sh ]; then
+    . $HOME/setenv.sh
+fi
 
 ##add SSH folder to automation_user home
 if [ ! -d $LOCAL_DIR ]; then
-    mkdir $LOCAL_DIR
+    mkdir -p $LOCAL_DIR
 fi
 
 # Synchronize the keys from the bucket.
 aws s3 sync --delete $BUCKET_URI $LOCAL_DIR
 
-# put the key in the right place for use
-cp devops_content/keys/sshkey-owcpsagenv-internal.pem ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+echo "Content should now be in $LOCAL_DIR"

@@ -22,6 +22,26 @@ resource "aws_key_pair" "bastion" {
   public_key = "${file(var.bastion_publickey_path)}"
 }
 
+// create eip for bastion
+resource "aws_eip" "bastion" {
+  count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  vpc = true
+
+  //  Use our common tags and add a specific name.
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${local.name_prefix}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
+      "az", "${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}"
+    )
+  )}"
+}
+
+resource "aws_eip_association" "bastion" {
+  instance_id   = "${aws_instance.bastion-linux.id}"
+  allocation_id = "${aws_eip.bastion.id}"
+}
+
 //  Security group which allows SSH/RDP access to a host from anywhere (used for bastion generally)
 resource "aws_security_group" "bastion" {
   name        = "bastion"
@@ -82,7 +102,6 @@ resource "aws_instance" "bastion-linux" {
   count         = "${length(split(",", lookup(var.azs, var.region)))}"
 
   subnet_id           = "${aws_subnet.COMMON_DMZ.*.id[count.index]}"
-
   ami                 = "${local.base_ami_linux}"
   instance_type       = "${var.instancesize_bastion-linux}"
   user_data           = "${data.template_file.setup-bastion.*.rendered[count.index]}"
@@ -97,7 +116,8 @@ resource "aws_instance" "bastion-linux" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-Bastion"
+      "Name", "${local.name_prefix}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
+      "az", "${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}"
     )
   )}"
 }

@@ -7,11 +7,6 @@ provider "aws" {
 ################ Global configs
 ################################################
 
-//Create the private node general userdata script.
-data "template_file" "setup-private-node" {
-  template = "${file("./helper_scripts/setup-private-node.sh")}"
-}
-
 locals {
   default_name_prefix = "${var.project_name}"
   name_prefix = "${lower(join("",list(

@@ -8,6 +8,15 @@ variable "resources_name_prefix" {
   default = "sagdemo"
 }
 
+variable solution_enable {
+  description = "create or delete a solution stack"
+  default = {
+    "storagedb" = "false"
+    "storagefile" = "true"
+    "common" = "true"
+   }
+}
+
 variable "project_provisioning_type" {
   description = "type of Provisioning"
   default = "terraform"

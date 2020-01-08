@@ -3,7 +3,9 @@
 set -e
 
 BUILD_DIR="./build"
+
 COMMON_DIR="./common"
+COMMON_INTERNAL_NODE_SSH_KEY="$COMMON_DIR/cloud-base/helper_scripts/sshkey_id_rsa_internalnode"
 COMMON_ANSIBLE="$COMMON_DIR/ansible/"
 COMMON_SAGCCE="$COMMON_DIR/sagcce/"
 
@@ -24,13 +26,21 @@ fi
 rsync -arvz --exclude static_* --delete $COMMON_ANSIBLE $BUILD_DIR/webmethods-devops-ansible/
 rsync -arvz --exclude static_* --delete $COMMON_SAGCCE $BUILD_DIR/webmethods-devops-sagcce/
 
-## + copy the expanded inventory files
-if [ -f $COMMON_CLOUD_BASE_EXPANDED/inventory-ansible.cfg ]; then
-    cp $COMMON_CLOUD_BASE_EXPANDED/inventory-ansible.cfg $BUILD_DIR/webmethods-devops-ansible/inventory/inventory-ansible-base.cfg
+### + copy SSH key
+if [ -f $COMMON_INTERNAL_NODE_SSH_KEY ]; then
+    if [ ! -d $BUILD_DIR/.ssh ]; then
+        mkdir -p $BUILD_DIR/.ssh
+    fi
+    cp $COMMON_INTERNAL_NODE_SSH_KEY $BUILD_DIR/.ssh/
 fi
 
-if [ -f $COMMON_CLOUD_MGT_EXPANDED/inventory-ansible.cfg ]; then
-    cp $COMMON_CLOUD_MGT_EXPANDED/inventory-ansible.cfg $BUILD_DIR/webmethods-devops-ansible/inventory/inventory-ansible-management.cfg
+## + copy the expanded inventory files
+if [ -f $COMMON_CLOUD_BASE_EXPANDED/inventory-ansible ]; then
+    cp $COMMON_CLOUD_BASE_EXPANDED/inventory-ansible $BUILD_DIR/webmethods-devops-ansible/inventory/inventory-ansible-base
+fi
+
+if [ -f $COMMON_CLOUD_MGT_EXPANDED/inventory-ansible ]; then
+    cp $COMMON_CLOUD_MGT_EXPANDED/inventory-ansible $BUILD_DIR/webmethods-devops-ansible/inventory/inventory-ansible-management
 fi
 
 ### copy various helper scripts

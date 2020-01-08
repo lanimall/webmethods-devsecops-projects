@@ -23,8 +23,6 @@ cce_provisioning_path_images: /opt/softwareag/webmethods-devops-sagcce-images
 cce_provisioning_src: ~/webmethods-devops-sagcce/
 cce_provisioning_src_content: /opt/softwareag_images/
 cce_provisioning_license_path: ~/devops_content/licenses/DOL_LicenseKeys_101.zip
-cce_provisioning_secrets_path: ~/devops_content/vars/auto_provisioning_cce_secrets
-cce_provisioning_internal_sshkey: ~/devops_content/keys/sshkey-owcpsagenv-internal.pem
 
 ## versions 10.3
 cce_version: 10.3
@@ -74,14 +72,14 @@ cce_provisioning_um_jndi_cf_name: "local_um"
 
 ## DB details
 db_type: "oracle"
-db_host: "owcs-oracle-sag-patch-db.c4nzvvpme2zq.us-east-1.rds.amazonaws.com"       
+db_host: ""       
 db_port: "1521"
-db_sid: "OWCS"
+db_sid: ""
 db_tablespace_data: "WEBMDATA"
 db_tablespace_index: "WEBMINDX"
 db_version: "latest"
-db_admin_username: "dev_dol"
-db_admin_password: "S0NYsiZtrqtczk6onIIG"
+db_admin_username: ""
+db_admin_password: ""
 
 ## this is the env id to add to the DB names
 db_name_env_id: "test"

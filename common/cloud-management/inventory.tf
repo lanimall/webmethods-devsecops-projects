@@ -1,6 +1,6 @@
 
 data "template_file" "inventory-ansible" {
-  template = "${file("${path.cwd}/helper_scripts/inventory-ansible.cfg")}"
+  template = "${file("${path.cwd}/helper_scripts/inventory-ansible")}"
 
   vars {
     management1_dns = "${aws_instance.devops-management.0.private_dns}"
@@ -13,7 +13,7 @@ data "template_file" "inventory-ansible" {
 
 resource "local_file" "inventory-ansible" {
   content     = "${data.template_file.inventory-ansible.rendered}"
-  filename = "${path.cwd}/tfexpanded/inventory-ansible.cfg"
+  filename = "${path.cwd}/tfexpanded/inventory-ansible"
 }
 
 data "template_file" "inventory-hosts" {

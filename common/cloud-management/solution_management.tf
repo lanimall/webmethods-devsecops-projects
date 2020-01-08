@@ -17,6 +17,14 @@ variable "instancesize_devops-management" {
   default = "t3.small"
 }
 
+//Create the private node general userdata script.
+data "template_file" "setup-devops-management" {
+  template = "${file("./helper_scripts/setup-private-node.sh")}"
+  vars {
+    availability_zone = "${data.aws_subnet.COMMON_MGT.0.availability_zone}"
+  }
+}
+
 //  Launch configuration for the bastion
 resource "aws_instance" "devops-management" {
   ## only create in primary
@@ -26,13 +34,16 @@ resource "aws_instance" "devops-management" {
   ami                 = "${local.base_ami_linux}"
   instance_type       = "${var.instancesize_devops-management}"
   subnet_id           = "${data.aws_subnet.COMMON_MGT.*.id[count.index]}"
-  user_data           = "${data.template_file.setup-private-node.rendered}"
+  user_data           = "${data.template_file.setup-devops-management.*.rendered[count.index]}"
   key_name            = "${local.awskeypair_internal_node}"
   iam_instance_profile = ""
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
 
   vpc_security_group_ids = [
-    "${aws_security_group.devops-management.id}"
+    "${local.common_secgroups}",
+    "${list(
+      aws_security_group.devops-management.id
+    )}"
   ]
 
   //  Use our common tags and add a specific name.

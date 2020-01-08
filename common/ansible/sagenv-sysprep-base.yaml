@@ -14,7 +14,7 @@
     - sysprep
     - setup_ansible
 
-- hosts: "management,{{ inventory_groupnames }}"
+- hosts: "{{ inventory_groupnames }}"
   become: true
   roles:
     - role: manage-packages

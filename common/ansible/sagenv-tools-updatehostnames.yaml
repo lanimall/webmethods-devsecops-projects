@@ -3,7 +3,7 @@
 - hosts: all_linux:!commandcentral
   become: true
   vars:
-    hostnameprefix: "owcpsagenv"
+    hostnameprefix: "sagdemo"
   tasks:
     - hostname: name={{ hostnameprefix }}-{{ "%03d" | format(ansible_default_ipv4.address.split(".")[2]|int) }}-{{ "%03d" | format(ansible_default_ipv4.address.split(".")[3]|int) }}
 
@@ -11,4 +11,4 @@
 - hosts: commandcentral
   become: true
   tasks:
-    - hostname: name=dolimage20191120
+    - hostname: name=image20191120
