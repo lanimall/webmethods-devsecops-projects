@@ -29,6 +29,25 @@
     </target>
 
 	<!-- modification fabien of antcc/sagrepo.xml -->
+    <target name="register-licenses" depends="waitcc,sagenvInit" description="Register product licenses">
+        <property file="${env.properties}" />
+		<property name="licenses.dir" value="licenses" />
+
+        <iterate target="_register-license-files">
+			<fileset dir="${licenses.dir}" includes="**/*.zip" />
+		</iterate>
+    </target>
+    
+    <target name="_register-license-files">
+		<property name="licenses.path" value="${dir}/${file}"/>
+		<sequential>
+            <echo>Registering license package ${licenses.path}</echo>
+			<antcall target="licenses">
+				<param name="licenses.zip.file" value="${licenses.path}" />
+			</antcall>
+ 	    </sequential>
+	</target>
+
 	<target name="register-images" depends="waitcc,sagenvInit" description="Register product and fix images on the server">
 		<property file="${env.properties}" />
 		<property name="images.dir" value="images" />
