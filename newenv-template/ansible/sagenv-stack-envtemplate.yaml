@@ -1,0 +1,18 @@
+---
+
+################################################################
+## sag provisioning
+################################################################
+
+- import_playbook: sagenv-common-webmethods.yaml
+  vars:
+    cce_provisioning_stack_name: 
+    cce_provisioning_stack_inventory_pattern: 
+    cce_provisioning_stack_params:
+    cce_provisioning_stack_params_secure:
+    cce_provisioning_stack_product_names: 
+    cce_provisioning_stack_product_envs_by_name:
+    cce_provisioning_stack_validation_ports:
+  tags:
+    - install
+    - install-component
