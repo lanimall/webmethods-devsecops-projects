@@ -1,10 +1,3 @@
-//  Security group which allows SSH/RDP access to a host from specific internal servers
-variable "main_security_group_common_internal_id" {}
-
-data "aws_security_group" "common-internal" {
-  id = "${var.main_security_group_common_internal_id}"
-}
-
 ###### Management Server ###### 
 ### Security group for the management server: allow any egress within the VPC
 ######
@@ -19,7 +12,7 @@ resource "aws_security_group" "devops-management" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [
-      "${var.main_bastion_private_ip}/32"
+      "${var.base_main_bastion_private_ip}/32"
     ]
   }
 

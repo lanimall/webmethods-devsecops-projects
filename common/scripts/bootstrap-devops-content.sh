@@ -13,6 +13,12 @@ if [ -f $HOME/setenv.sh ]; then
     . $HOME/setenv.sh
 fi
 
+##make the ssh key a default one
+if [ -f $HOME/.ssh/sshkey_id_rsa_internalnode ] && [ ! -f $HOME/.ssh/id_rsa ] ; then
+    echo "Linking the custom ssh key to the default $HOME/.ssh/id_rsa"
+    ln -s $HOME/.ssh/sshkey_id_rsa_internalnode $HOME/.ssh/id_rsa
+fi
+
 ##add SSH folder to automation_user home
 if [ ! -d $LOCAL_DIR ]; then
     mkdir -p $LOCAL_DIR

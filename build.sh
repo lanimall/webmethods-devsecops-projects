@@ -28,10 +28,10 @@ rsync -arvz --exclude static_* --delete $COMMON_SAGCCE $BUILD_DIR/webmethods-dev
 
 ### + copy SSH key
 if [ -f $COMMON_INTERNAL_NODE_SSH_KEY ]; then
-    if [ ! -d $BUILD_DIR/.ssh ]; then
-        mkdir -p $BUILD_DIR/.ssh
+    if [ ! -d $BUILD_DIR/sshkeyinternal ]; then
+        mkdir -p $BUILD_DIR/sshkeyinternal
     fi
-    cp $COMMON_INTERNAL_NODE_SSH_KEY $BUILD_DIR/.ssh/
+    cp $COMMON_INTERNAL_NODE_SSH_KEY $BUILD_DIR/sshkeyinternal/id_rsa_internal
 fi
 
 ## + copy the expanded inventory files
@@ -47,9 +47,13 @@ fi
 if [ ! -d $BUILD_DIR/scripts ]; then
     mkdir -p $BUILD_DIR/scripts
 fi
+rsync -arvz --delete $COMMON_DIR/scripts/ $BUILD_DIR/scripts/
 
-if [ -f $COMMON_CLOUD_MGT_EXPANDED/sync-to-management.sh ]; then
-    cp $COMMON_CLOUD_MGT_EXPANDED/sync-to-management.sh $BUILD_DIR/
+### copy the sync to management items
+if [ -f $COMMON_CLOUD_MGT_EXPANDED/setenv-mgt.sh ]; then
+    cp $COMMON_CLOUD_MGT_EXPANDED/setenv-mgt.sh $BUILD_DIR/
 fi
 
-cp $COMMON_DIR/scripts/*.sh $BUILD_DIR/scripts/
+if [ -f ./sync-to-management.sh ]; then
+    cp ./sync-to-management.sh $BUILD_DIR/
+fi

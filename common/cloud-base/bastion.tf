@@ -17,6 +17,11 @@ variable "instancesize_bastion-linux" {
   default = "t3.small"
 }
 
+variable "instancecount_bastion" {
+  description = "number of cbastion nodes"
+  default = "1"
+}
+
 resource "aws_key_pair" "bastion" {
   key_name   = "${local.awskeypair_bastion_node}"
   public_key = "${file(var.bastion_publickey_path)}"
@@ -24,7 +29,9 @@ resource "aws_key_pair" "bastion" {
 
 // create eip for bastion
 resource "aws_eip" "bastion" {
-  count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  count = "${var.instancecount_bastion}"
+
   vpc = true
 
   //  Use our common tags and add a specific name.
@@ -90,7 +97,8 @@ resource "aws_security_group" "bastion" {
 
 //Create the bastion userdata script.
 data "template_file" "setup-bastion" {
-  count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  count = "${var.instancecount_bastion}"
   template      = "${file("./helper_scripts/setup-bastion.sh")}"
   vars {
     availability_zone = "${element(split(",", lookup(var.azs, var.region)), count.index)}"
@@ -99,7 +107,8 @@ data "template_file" "setup-bastion" {
 
 //  Launch configuration for the bastion
 resource "aws_instance" "bastion-linux" {
-  count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
+  count = "${var.instancecount_bastion}"
 
   subnet_id           = "${aws_subnet.COMMON_DMZ.*.id[count.index]}"
   ami                 = "${local.base_ami_linux}"

@@ -46,6 +46,7 @@
             config_item: tuning
             cce_configure_params: []
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -56,6 +57,7 @@
             config_item: creds
             cce_configure_params: []
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -68,6 +70,7 @@
               - name: "CC_SAG_LICENSE_DIR"
                 value: "{{ cce_provisioning_licenses_path }}"
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -82,6 +85,7 @@
               - name: "CC_SAG_IMAGE_ACTION"
                 value: "register"
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -92,6 +96,7 @@
             config_item: repo_products
             cce_configure_params: []
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -102,6 +107,7 @@
             config_item: repo_fixes
             cce_configure_params: []
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
@@ -112,6 +118,7 @@
             config_item: update
             cce_configure_params: []
             cce_configure_params_secure: []
+            configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure

@@ -1,6 +1,5 @@
 ---
 
-
 ## OS settings
 sys_open_ports: "{{ sys_open_ports_spm }} + {{ sys_open_ports_cee }}" 
 
@@ -22,7 +21,7 @@ cce_provisioning_images_path: "{{ cce_provisioning_content_path }}/images"
 cce_provisioning_installers_path: "{{ cce_provisioning_content_path }}/installers"
 
 ## cce_provisioning LOCAL paths on management server
-cce_provisioning_code_localpath: ~/webmethods-devops-sagcce/
+cce_provisioning_code_localpath: ~/webmethods-provisioning/webmethods-devops-sagcce/
 cce_provisioning_content_localpath: /opt/sag_content/
 
 ## versions 10.3
@@ -31,99 +30,3 @@ cce_version_fix: fix10
 cce_platform: lnxamd64
 cce_product_repo_name: webMethods-10.3
 cce_fix_repo_name: Empower
-
-###################### Provisioning vars
-
-## Products / Fixes Repository
-cce_provisioning_products_repo_sdc: "webMethods-10.3"
-cce_provisioning_fixes_repo_sdc: "Empower"
-
-##local repo images for products
-cce_provisioning_products_repo_um: "10.3-UM-UM103LinuxImage"
-cce_provisioning_products_repo_apigw: "10.3-APIGW-APIGW103LinuxImage"
-cce_provisioning_products_repo_mft: "10.3-AT-ActiveTransfer103LinuxImage"
-#10.3-ABE-ABE103LinuxImage --> throws Repository 10.3-ABE-ABE103LinuxImage in the context of layer buildtools does NOT contain the following product dependencies: [CLI.prop.iu]
-#cce_provisioning_products_repo_abe: "10.3-ABE-ABE103LinuxImage"
-cce_provisioning_products_repo_abe: "{{ cce_provisioning_products_repo_sdc }}"
-cce_provisioning_products_repo_bpms: "10.3-IS-IS103LinuxImage"
-cce_provisioning_products_repo_is: "10.3-IS-IS103LinuxImage"
-cce_provisioning_products_repo_mws: "10.3-MWS-MWS103LinuxImage"
-cce_provisioning_products_repo_optimize: "10.3-Optimize-Optimize103LinuxImage"
-cce_provisioning_products_repo_dbc: "10.3-IS-IS103LinuxImage"
-
-##local fix images for products
-cce_provisioning_fixes_repo_bpms: "10.3-BPMS-DOLBPMSFixesImage"
-cce_provisioning_fixes_repo_is: "10.3-BPMS-DOLBPMSFixesImage"
-cce_provisioning_fixes_repo_mws: "10.3-BPMS-DOLBPMSFixesImage"
-cce_provisioning_fixes_repo_mft: "10.3-AT-DOLATFixesImage"
-cce_provisioning_fixes_repo_apigw: "10.3-APIGW-DOLAPIGWFixesImage"
-cce_provisioning_fixes_repo_um: "{{ cce_provisioning_fixes_repo_sdc }}"
-cce_provisioning_fixes_repo_abe: "{{ cce_provisioning_fixes_repo_sdc }}"
-cce_provisioning_fixes_repo_dbc: "10.3-BPMS-DOLBPMSFixesImage"
-
-## Product instance default admin passwords
-cce_provisioning_mft_admin_password: "SomeStrongPwd123!"
-cce_provisioning_gw_admin_password: "SomeStrongPwd123!"
-cce_provisioning_bpms_admin_password: "SomeStrongPwd123!"
-cce_provisioning_integration_admin_password: "SomeStrongPwd123!"
-cce_provisioning_mws_admin_password: "SomeStrongPwd123!"
-
-## some urls (temp...will be generated automatically)
-cce_provisioning_um_jndi_cf_name: "local_um"
-
-## DB details
-db_type: "oracle"
-db_host: ""       
-db_port: "1521"
-db_sid: ""
-db_tablespace_data: "WEBMDATA"
-db_tablespace_index: "WEBMINDX"
-db_version: "latest"
-db_admin_username: ""
-db_admin_password: ""
-
-## this is the env id to add to the DB names
-db_name_env_id: "test"
-#db_name_env_id: ""
-
-## cleaning the DBs
-# DROP  USER  webmmwsdbtestuser CASCADE;
-# DROP  USER  webmisdbtestuser CASCADE;
-# DROP  USER  webmbpmsdbtestuser CASCADE;
-# DROP  USER  webmoptidbtestuser CASCADE;
-# DROP  USER  webmatdbtestuser CASCADE;
-
-## DB MWS
-db_name_mws: "webmmwsdb{{ db_name_env_id }}"
-db_username_mws: "{{ db_name_mws }}user"
-db_password_mws: "test2812099"
-db_components_mws: "[STR]"
-db_products_mws: "[MWS]"
-
-## DB IS
-db_name_is: "webmisdb{{ db_name_env_id }}"
-db_username_is: "{{ db_name_is }}user"
-db_password_is: "test1292938!"
-db_components_is: "[STR]"
-db_products_is: "[IS]"
-
-## DB BPMS
-db_name_bpms: "webmbpmsdb{{ db_name_env_id }}"
-db_username_bpms: "{{ db_name_bpms }}user"
-db_password_bpms: "test45434936!"
-db_components_bpms: "[STR]"
-db_products_bpms: "[IS,BPM]"
-
-## DB OPTIMIZE
-db_name_optimize: "webmoptidb{{ db_name_env_id }}"
-db_username_optimize: "{{ db_name_optimize }}user"
-db_password_optimize: "test8287395!"
-db_components_optimize: "[STR]"
-db_products_optimize: "[OPTI]"
-
-## DB Managed File Transfer (MFT)
-db_name_mft: "webmatdb{{ db_name_env_id }}"
-db_username_mft: "{{ db_name_mft }}user"
-db_password_mft: "test348976!"
-db_components_mft: "[STR,ACT,ARC]"
-db_products_mft: "[]"

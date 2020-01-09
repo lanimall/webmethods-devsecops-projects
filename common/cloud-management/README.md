@@ -10,7 +10,7 @@ Based on that, we'll need to provide some info to our current (and future) terra
 In order to automatically set the right variables needed by our environment, simply execute:
 
 ```
-. ../cloud-base/tfexpanded/setenv-main.sh
+. ../cloud-base/tfexpanded/setenv-base.sh
 ```
 
 Then, if not done already, add the ssh key to the local agent for easy remote connecting:

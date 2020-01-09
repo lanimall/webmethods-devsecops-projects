@@ -19,5 +19,9 @@ python3.4 -m venv ~/.virtualenvs/awscli
 ##save the env in user home
 echo "export PATH=$PATH:~/.virtualenvs/awscli/bin/" >> $HOME/setenv.sh
 
+if [ -f $HOME/setenv.sh ]; then
+    . $HOME/setenv.sh
+fi
+
 #### AWS CLI
 pip3 install awscli --force-reinstall --upgrade

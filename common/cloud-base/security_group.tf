@@ -58,8 +58,8 @@ resource "aws_security_group" "common-internal" {
   )}"
 }
 
-resource "aws_security_group" "main-public" {
-  name        = "${local.name_prefix}-main-public"
+resource "aws_security_group" "main-public-alb" {
+  name        = "${local.name_prefix}-main-public-alb"
   description = "Incoming public web traffic"
   vpc_id      = "${aws_vpc.main.id}"
 
@@ -88,7 +88,7 @@ resource "aws_security_group" "main-public" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main-public",
+      "Name", "${local.name_prefix}-main-public-alb",
       "az", lookup(var.azs, var.region)
     )
   )}"

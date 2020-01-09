@@ -30,14 +30,15 @@ resource "local_file" "inventory-hosts" {
   filename = "${path.cwd}/tfexpanded/inventory-hosts"
 }
 
-data "template_file" "sync-to-management" {
-  template = "${file("${path.cwd}/helper_scripts/sync-to-management.sh")}"
+data "template_file" "setenv-mgt" {
+  template = "${file("${path.cwd}/helper_scripts/setenv-mgt.sh")}"
   vars {
     management1_ip = "${aws_instance.devops-management.0.private_ip}"
+    management1_user = "${local.base_ami_linux_user}"
   }
 }
 
-resource "local_file" "sync-to-management" {
-  content  = "${data.template_file.sync-to-management.rendered}"
-  filename = "${path.cwd}/tfexpanded/sync-to-management.sh"
+resource "local_file" "setenv-mgt" {
+  content  = "${data.template_file.setenv-mgt.rendered}"
+  filename = "${path.cwd}/tfexpanded/setenv-mgt.sh"
 }

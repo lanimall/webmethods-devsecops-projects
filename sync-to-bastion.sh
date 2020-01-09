@@ -1,13 +1,34 @@
 #!/usr/bin/env bash
 
-SSH_KEY="./common/cloud-base/helper_scripts/sshkey_id_rsa_bastion"
-SSH_USER="centos"
+BASTION_SSH_KEY="./common/cloud-base/helper_scripts/sshkey_id_rsa_bastion"
 
-##that's the EIP...
-SSH_HOST="18.221.246.64"
+if [ -f ./common/cloud-base/tfexpanded/setenv-base.sh ]; then
+    . ./common/cloud-base/tfexpanded/setenv-base.sh
+fi
+
+if [ "x$BASTION_SSH_KEY" = "x" ]; then
+    echo "error: variable BASTION_SSH_KEY is required...exiting!"
+    exit 2;
+fi
+
+if [ ! -f $BASTION_SSH_KEY ]; then
+    echo "error: file $BASTION_SSH_KEY does not exist...exiting!"
+    exit 2;
+fi
+
+if [ "x$BASTION_SSH_HOST" = "x" ]; then
+    echo "error: variable BASTION_SSH_HOST is required...exiting!"
+    exit 2;
+fi
+
+if [ "x$BASTION_SSH_USER" = "x" ]; then
+    echo "error: variable BASTION_SSH_USER is required...exiting!"
+    exit 2;
+fi
 
 ##rebuild project
 /bin/sh build.sh
 
 ##sync built project
-rsync -arvz -e "ssh -i $SSH_KEY" --delete ./build/ $SSH_USER@$SSH_HOST:~/webmethods-provisioning/
+echo "Sending files to $BASTION_SSH_USER@$BASTION_SSH_HOST..."
+rsync -arvz -e "ssh -i $BASTION_SSH_KEY" --delete ./build/ $BASTION_SSH_USER@$BASTION_SSH_HOST:~/webmethods-provisioning/

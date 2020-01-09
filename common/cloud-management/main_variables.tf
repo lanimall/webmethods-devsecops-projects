@@ -8,6 +8,14 @@ variable "resources_name_prefix" {
   default = "sagdemo"
 }
 
+variable solution_enable {
+  description = "create or delete a solution stack"
+  default = {
+    "commandcentral"  = "true"
+    "management" = "true"
+   }
+}
+
 variable "project_provisioning_type" {
   description = "type of Provisioning"
   default = "terraform"
@@ -26,66 +34,6 @@ variable "project_owners" {
 variable "project_organization" {
   description = "Project identifying organization"
   default = "Software AG Government Solutions"
-}
-
-variable "resources_internal_dns" {
-  description = "Internal DNS zone"
-  default = "sagdemo.cloud.local"
-}
-
-variable "cloud_profile" {
-  description = "cloud profile to use"
-  default = "demogithub"
-}
-
-### Region to use
-variable "region" {
-  description = "region to launch servers."
-  default = "us-east-2"
-}
-
-### VPC to use
-variable "main_vpc_id" {
-  description = "The ID of the target VPC"
-}
-
-variable "main_bastion_private_ip" {
-  description = "ip of the bastion to use in the security group"
-}
-
-### VPC DNS
-variable "vpc_dns_zonename" {
-  description = "The hosted zone name for the VPC"
-  default = "sag.cloud"
-}
-
-variable "internalnode_key_name" {
-  description = "nodes to nodes ssh key name"
-}
-
-variable "subnet_shortname_dmz" {
-  description = "name of the DMZ subnet"
-  default = "COMMON_DMZ"
-}
-
-variable "subnet_shortname_management" {
-  description = "name of the Management subnet"
-  default = "COMMON_MGT"
-}
-
-variable "subnet_shortname_web" {
-  description = "name of the WEB subnet"
-  default = "COMMON_WEB"
-}
-
-variable "subnet_shortname_apps" {
-  description = "name of the APPS subnet"
-  default = "COMMON_APPS"
-}
-
-variable "subnet_shortname_data" {
-  description = "name of the DATA subnet"
-  default = "COMMON_DATA"
 }
 
 variable "timeouts" {

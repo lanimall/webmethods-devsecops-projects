@@ -1,6 +1,6 @@
 provider "aws" {
-  region = "${var.region}"
-  profile = "${var.cloud_profile}"
+  region = "${var.base_region}"
+  profile = "${var.base_cloud_profile}"
 }
 
 ################################################
@@ -20,14 +20,14 @@ locals {
     ))
   )}"
 
-  awskeypair_internal_node = "${var.internalnode_key_name}"
+  awskeypair_internal_node = "${var.base_internalnode_key_name}"
 
   ## if we want to stick to the same AMI for sure
-  base_ami_linux = "${var.linux_region_ami["${var.region}"]}"
+  base_ami_linux = "${var.linux_region_ami["${var.base_region}"]}"
   base_ami_linux_user = "${var.linux_ami_user}"
   
   ## if we want to stick to the same AMI for sure
-  base_ami_windows = "${var.windows_region_ami["${var.region}"]}"
+  base_ami_windows = "${var.windows_region_ami["${var.base_region}"]}"
   base_ami_windows_user = "${var.windows_ami_user}"
 }
 

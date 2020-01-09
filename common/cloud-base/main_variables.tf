@@ -56,10 +56,10 @@ variable "region" {
 ### Availability zones to use per region
 variable "azs" {
   default = {
-    "us-east-1" = "us-east-1a"
-    "us-east-2" = "us-east-2a"
-    "us-west-1" = "us-west-1a"
-    "us-west-2" = "us-west-2a"
+    "us-east-1" = "us-east-1a,us-east-1b"
+    "us-east-2" = "us-east-2a,us-east-2b"
+    "us-west-1" = "us-west-1a,us-west-1b"
+    "us-west-2" = "us-west-2a,us-west-2b"
   }
 }
 
