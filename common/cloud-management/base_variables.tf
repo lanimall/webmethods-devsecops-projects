@@ -17,6 +17,10 @@ variable "base_resources_internal_dns_zoneid" {
   description = "Internal DNS zone"
 }
 
+variable "base_resources_external_dns_zoneid" {
+  description = "External DNS zone"
+}
+
 variable "base_main_public_alb_id" {
   type = "string"
 }

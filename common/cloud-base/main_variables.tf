@@ -1,6 +1,6 @@
 variable "project_name" {
   description = "Project Name"
-  default = "Software AG Government Solutions Demo Cloud"
+  default = "Software AG Government Solutions DevSecOps Cloud Demo"
 }
 
 variable "resources_name_prefix" {
@@ -37,9 +37,14 @@ variable "project_organization" {
   default = "Software AG Government Solutions"
 }
 
-variable "resources_internal_dns" {
+variable "resources_external_dns_apex" {
+  description = "External DNS zone"
+  default = "devsecops.clouddemos.saggov.com"
+}
+
+variable "resources_internal_dns_apex" {
   description = "Internal DNS zone"
-  default = "sagdemo.cloud.local"
+  default = "devsecops.clouddemos.local"
 }
 
 variable "cloud_profile" {

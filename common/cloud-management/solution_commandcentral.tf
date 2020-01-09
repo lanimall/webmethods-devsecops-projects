@@ -64,8 +64,8 @@ resource "aws_instance" "commandcentral" {
 resource "aws_route53_record" "webmethods_commandcentral-a-record" {
     count = "${lookup(var.solution_enable, "commandcentral") == "true" ? var.instancecount_commandcentral : 0}"
     
-    zone_id = "${data.aws_route53_zone.internal.zone_id}"
-    name = "commandcentral.${data.aws_route53_zone.internal.name}"
+    zone_id = "${data.aws_route53_zone.main-internal.zone_id}"
+    name = "commandcentral.${data.aws_route53_zone.main-internal.name}"
     type = "A"
     ttl  = 300
     records = [
@@ -133,9 +133,10 @@ resource "aws_alb_listener_rule" "commandcentral" {
     type = "forward"
   }
 
+  ##removing the "." at the end of the dns alias
   condition {
     host_header {
-      values = ["commandcentral.sagdemo.com"]
+      values = ["commandcentral.${local.dns_main_external_apex}"]
     }
   }
 }

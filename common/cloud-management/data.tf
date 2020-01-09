@@ -18,8 +18,25 @@ data "aws_security_group" "common-internal" {
 
 ###################### Reference to the internal DNS.
 
-data "aws_route53_zone" "internal" {
+output "dns-main-external-apex" {
+  value = "${local.dns_main_external_apex}"
+}
+
+output "dns-main-internal-apex" {
+  value = "${local.dns_main_internal_apex}"
+}
+
+data "aws_route53_zone" "main-external" {
+  zone_id      = "${var.base_resources_external_dns_zoneid}"
+}
+
+data "aws_route53_zone" "main-internal" {
   zone_id      = "${var.base_resources_internal_dns_zoneid}"
+}
+
+locals {
+  dns_main_external_apex   = "${substr(data.aws_route53_zone.main-external.name, 0, length(data.aws_route53_zone.main-external.name) - 1)}"
+  dns_main_internal_apex   = "${substr(data.aws_route53_zone.main-internal.name, 0, length(data.aws_route53_zone.main-internal.name) - 1)}"
 }
 
 ###################### Reference to the public load balancer listener.

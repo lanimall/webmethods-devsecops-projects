@@ -7,14 +7,26 @@ output "main-public-alb" {
 }
 
 resource "aws_acm_certificate" "cert" {
-  private_key      = "${file("${path.cwd}/helper_scripts/ssl-sagdemo-main-testcert.key")}"
-  certificate_body = "${file("${path.cwd}/helper_scripts/ssl-sagdemo-main-testcert.crt")}"
-  certificate_chain = "${file("${path.cwd}/helper_scripts/ssl-sagdemo-main-ca.crt")}"
+  private_key      = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos.key")}"
+  certificate_body = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos.crt")}"
+  certificate_chain = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos-ca.crt")}"
 }
 
 ###### DMZ ###### 
 
 ####### Main public app traffic
+
+resource "aws_route53_record" "main-alb-wildcard" {
+  zone_id = "${aws_route53_zone.main-external.zone_id}"
+  name    = "*.${aws_route53_zone.main-external.name}"
+  type    = "A"
+
+  alias {
+    name                   = "${aws_lb.main-public-alb.dns_name}"
+    zone_id                = "${aws_lb.main-public-alb.zone_id}"
+    evaluate_target_health = true
+  }
+}
 
 resource "aws_lb" "main-public-alb" {
   name               = "${local.name_prefix}-main-public-alb"

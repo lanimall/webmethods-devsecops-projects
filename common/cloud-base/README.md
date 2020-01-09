@@ -20,23 +20,33 @@ ssh-add ./helper_scripts/sshkey_id_rsa_bastion
 
 ### Generate the certificate signing request:
 
-(Make sure to replace the COUNTRYCODE, STATE, CITY, ORG, ORG UNIT, and domain with what you want)
+If doing it in 1 liner using the -subj attribute:
+- Make sure to replace the COUNTRYCODE, STATE, CITY, ORG, ORG UNIT, and domain with what you want.
+- Make sure that if any of your info contains "/" characters, escape it as follows "\/"
 
 ```
-openssl genrsa -out ./helper_scripts/ssl-sagdemo-main-testcert.key 2048
-openssl req -new -key ./helper_scripts/ssl-sagdemo-main-testcert.key -out ./helper_scripts/ssl-sagdemo-main-testcert.csr -subj "/emailAddress=/C=COUNTRYCODE/ST=STATE/L=CITY/O=ORG/OU=ORG UNIT/CN=*.sagdemo.com"
+export SSL_CERT_COUNTRYCODE=<your info>
+export SSL_CERT_STATE=<your info>
+export SSL_CERT_CITY=<your info>
+export SSL_CERT_ORG=<your info>
+export SSL_CERT_ORGUNIT=<your info>
+export SSL_CERT_EMAIL=<your info>
+export SSL_CERT_CN=*.<your external demo domain>
+
+openssl genrsa -out ./helper_scripts/ssl-devsecops-clouddemos.key 2048
+openssl req -new -key ./helper_scripts/ssl-devsecops-clouddemos.key -out ./helper_scripts/ssl-devsecops-clouddemos.csr -subj "/emailAddress=$SSL_CERT_EMAIL/C=$SSL_CERT_COUNTRYCODE/ST=$SSL_CERT_STATE/L=$SSL_CERT_CITY/O=$SSL_CERT_ORG/OU=$SSL_CERT_ORGUNIT/CN=$SSL_CERT_CN"
 ```
 
-Check the CSR:
+Make sure that the CSR was geenrally properly...especailly the "Subject" info...
 ```
-openssl req -text -noout -verify -in ./helper_scripts/ssl-sagdemo-main-testcert.csr
+openssl req -text -noout -verify -in ./helper_scripts/ssl-devsecops-clouddemos.csr
 ```
 
 ### Generate the CA and self signed certificate for the CA:
 
 ```
-openssl genrsa -out ./helper_scripts/ssl-sagdemo-main-ca.key 2048
-openssl req -new -x509 -key ./helper_scripts/ssl-sagdemo-main-ca.key -out ./helper_scripts/ssl-sagdemo-main-ca.crt
+openssl genrsa -out ./helper_scripts/ssl-devsecops-clouddemos-ca.key 2048
+openssl req -new -x509 -key ./helper_scripts/ssl-devsecops-clouddemos-ca.key -out ./helper_scripts/ssl-devsecops-clouddemos-ca.crt -subj "/emailAddress=$SSL_CERT_EMAIL/C=$SSL_CERT_COUNTRYCODE/ST=$SSL_CERT_STATE/L=$SSL_CERT_CITY/O=$SSL_CERT_ORG/OU=$SSL_CERT_ORGUNIT/CN=$SSL_CERT_CN"
 ```
 
 You could use the following subject to create the CRT in one line (replacing the COUNTRYCODE, STATE, CITY, ORG, ORG UNIT, and domain with what you want)
@@ -46,21 +56,11 @@ You could use the following subject to create the CRT in one line (replacing the
 
 Finally, sign the CSR and create the CRT:
 
-openssl x509 -req -in ./helper_scripts/ssl-sagdemo-main-testcert.csr -CA ./helper_scripts/ssl-sagdemo-main-ca.crt -CAkey ./helper_scripts/ssl-sagdemo-main-ca.key -CAcreateserial -out ./helper_scripts/ssl-sagdemo-main-testcert.crt
+openssl x509 -req -in ./helper_scripts/ssl-devsecops-clouddemos.csr -CA ./helper_scripts/ssl-devsecops-clouddemos-ca.crt -CAkey ./helper_scripts/ssl-devsecops-clouddemos-ca.key -CAcreateserial -out ./helper_scripts/ssl-devsecops-clouddemos.crt
 
 Checking the cert:
 
-openssl x509 -in ./helper_scripts/ssl-sagdemo-main-testcert.crt -noout -text
-
-Creating bundle with CA:
-
-cat ./helper_scripts/ssl-sagdemo-main-testcert.crt ./helper_scripts/ssl-sagdemo-main-ca.crt > ./helper_scripts/ssl-sagdemo-main-testcert.bundle.crt
-
-
-Finally, transform to PEM:
-```
-openssl x509 -in ./helper_scripts/ssl-sagdemo-main-testcert.bundle.crt -out ./helper_scripts/ssl-sagdemo-main-testcert.bundle.pem -outform PEM
-```
+openssl x509 -in ./helper_scripts/ssl-devsecops-clouddemos.crt -noout -text
 
 
 ## Create base environment
