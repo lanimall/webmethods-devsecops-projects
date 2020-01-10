@@ -1,13 +1,18 @@
 [all_linux:children]
 apigateway
 apiportal
+integration
 
 [all_webmethods:children]
 apigateway
 apiportal
+integration
 
 [apigateway]
 apigateway1 ansible_host=${hostname_apigateway1} dns_internal=${dns_apigateway1}
 
 [apiportal]
 apiportal1 ansible_host=${hostname_apiportal1} dns_internal=${dns_apiportal1}
+
+[integration]
+integration1 ansible_host=${hostname_integration1} dns_internal=${dns_integration1}

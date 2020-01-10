@@ -53,9 +53,9 @@ Check progress:
 tail -f ~/nohup-sagenv-stack-project-apimgt-simple.out
 ```
 
-## Some extra helpful commands
+### Some extra helpful commands
 
-### Running only specific tasks in playbook
+#### Running only specific tasks in playbook
 
 Just api gateway:
 
@@ -69,10 +69,45 @@ Just api portal:
 ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apiportal
 ```
 
-### Skipping specific tasks
+#### Skipping specific tasks
 
 For example, running the playbook but only for the pre and post install tasks (ie. server settings and service installs etc...)
 
 ```bash
 ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway --skip-tags cce_provisioning.install
+```
+
+## Accessing the UIs
+
+The UI URLs will depend on the cloud provisoning prefixes and domain name you chose...
+In my case:
+
+```bash
+export resources_name_prefix=sagdemoproj1
+export resources_external_dns_apex=devsecops.clouddemos.saggov.com
+```
+
+Api gateway:
+
+```bash
+open https://$resources_name_prefix-apigateway-ui.$resources_external_dns_apex
+```
+
+Api gateway runtime:
+
+```bash
+open https://$resources_name_prefix-apigateway-runtime.$resources_external_dns_apex
+```
+
+Api portal:
+
+```bash
+open https://$resources_name_prefix-apiportal.$resources_external_dns_apex
+```
+
+NOTE: These urls are not added to any public DNS at this time... so you'll need to make sure you add them in your local machine's host file to be able to access them.
+
+```bash
+export AWS_MAIN_ALB=0.0.0.0
+echo $AWS_MAIN_ALB $resources_name_prefix-apigateway-ui.$resources_external_dns_apex $resources_name_prefix-apigateway-runtime.$resources_external_dns_apex $resources_name_prefix-apiportal.$resources_external_dns_apex
 ```

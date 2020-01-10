@@ -8,6 +8,9 @@ data "template_file" "inventory-ansible" {
       
     dns_apiportal1 = "${aws_route53_record.apiportal-a-record.0.name}"
     hostname_apiportal1 = "${aws_instance.apiportal.0.private_dns}"
+
+    dns_integration1 = "${aws_route53_record.integration-a-record.0.name}"
+    hostname_integration1 = "${aws_instance.integration.0.private_dns}"
   }
 }
 
