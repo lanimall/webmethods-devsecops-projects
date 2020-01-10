@@ -1,0 +1,100 @@
+alias: sag-apigateway-standalone
+description: API Gateway provisioning for standalone configuration
+
+environments:
+  default:
+    release.major:                     10                                                   
+    os.platform:                       lnxamd64   
+    repo.product:                      ${}
+    repo.fix:                          ${}
+    nodes:                             ${}
+  
+    agw.fixes:                         ${}
+    agw.key.license.alias:             ${}
+    agw.is.instance.type:              ${}            
+    agw.instance.name:                 ${}                             
+    agw.primary.port:                  5555                             
+    agw.diagnostic.port:               9999                             
+    agw.jmx.port:                      5559                             
+    agw.memory.init:                   2048                             
+    agw.memory.max:                    4096                     
+    agw.install.service:               true
+    agw.administrator.password:        ${}
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:   
+      - agw-server
+      - agw-configs
+
+templates:
+  agw-server:
+    licenses:
+      "IntegrationServer/config/APIGatewayLicenseKey.xml": "${agw.key.license.alias}"
+    fixes: ${agw.fixes}
+    products:
+      YAI:
+      ${agw.is.instance.type}:
+        ${agw.instance.name}: 
+          primary.port:    ${agw.primary.port}
+          diagnostic.port: ${agw.diagnostic.port}
+          jmx.port:        ${agw.jmx.port}
+          license.file:    IntegrationServer/config/APIGatewayLicenseKey.xml
+          install.service: ${agw.install.service}
+          package.list:    WmAPIGateway
+          configuration:
+            OSGI-IS_${agw.instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${agw.memory.init}
+                  MaxSize:  ${agw.memory.max}
+              COMMON-JVM-OPTIONS:                             
+                COMMON-JVM-OPTIONS:                          
+                    option: 
+                      - "-Xbootclasspath/a:\"%JAVA_BOOT_CLASSPATH%\""
+                      - "-server"
+                      - "-verbose:gc"
+                      - "-XX:+PrintGC"
+                      - "-XX:+PrintGCDetails"
+                      - "-XX:+PrintGCTimeStamps"
+                      - "-XX:+PrintTenuringDistribution"
+                      - "-XX:+PrintGCCause"
+                      - "-XX:+PrintAdaptiveSizePolicy"
+                      - "-XX:+UseGCLogFileRotation"
+                      - "-XX:NumberOfGCLogFiles=5"
+                      - "-XX:GCLogFileSize=10M"
+                      - "-Xloggc:%OSGI_INSTALL_AREA%/logs/gc_agw.log"
+
+  agw-configs:
+    products:
+      ${agw.is.instance.type}:
+        ${agw.instance.name}: 
+          configuration:
+            integrationServer-${agw.instance.name}:
+              COMMON-LOCAL-USERS:
+                COMMON-LOCAL-USERS-Administrator:
+                  '@id': Administrator
+                  Password: ${agw.administrator.password}
+                  Enabled: 'true'
+                  ExtendedProperties:
+                    Property:
+                    - '@name': AllowDigestAuthentication
+                      $: 'false'
+
+provision:
+  default:
+    runtime: ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

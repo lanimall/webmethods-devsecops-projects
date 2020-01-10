@@ -1,0 +1,27 @@
+---
+
+################################################################
+## sag provisioning
+################################################################
+
+- import_playbook: sagenv-common-webmethods.yaml
+  vars:
+    cce_provisioning_target_hostgroups: apigateway
+    cce_provisioning_template: project-apimgt-simple/apigateway/template.yaml
+    cce_provisioning_properties: project-apimgt-simple-apigateway
+    cce_provisioning_template_params:
+      - name: "repo.product"
+        value: "{{ cce_provisioning_products_repo_apigateway }}"
+      - name: "repo.fix"
+        value: "{{ cce_provisioning_fixes_repo_apigateway }}"
+      - name: "fixes.apply"
+        value: "ALL"
+      - name: "agw.key.license.alias"
+        value: "*_YAIAA_10.*_*_*"
+    cce_provisioning_template_params_secure:
+      - name: "agw.administrator.password"
+        value: "{{ cce_provisioning_agw_administrator_password }}"
+    cce_provisioning_installed_product_names: apigateway
+  tags:
+    - install
+    - install-apigateway

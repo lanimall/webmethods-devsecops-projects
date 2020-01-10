@@ -133,7 +133,6 @@ resource "aws_alb_listener_rule" "commandcentral" {
     type = "forward"
   }
 
-  ##removing the "." at the end of the dns alias
   condition {
     host_header {
       values = ["commandcentral.${local.dns_main_external_apex}"]

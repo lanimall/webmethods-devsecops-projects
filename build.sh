@@ -2,7 +2,12 @@
 
 set -e
 
-BUILD_DIR="./build"
+THIS=`basename $0`
+THIS_NOEXT="${THIS%.*}"
+THISDIR=`dirname $0`; THISDIR=`cd $THISDIR;pwd`
+BASEDIR="$THISDIR"
+
+BUILD_DIR="$BASEDIR/build"
 
 COMMON_DIR="./common"
 COMMON_INTERNAL_NODE_SSH_KEY="$COMMON_DIR/cloud-base/helper_scripts/sshkey_id_rsa_internalnode"
@@ -57,3 +62,6 @@ fi
 if [ -f ./sync-to-management.sh ]; then
     cp ./sync-to-management.sh $BUILD_DIR/
 fi
+
+### build the sub projects
+/bin/bash $BASEDIR/projects/project-apimgt-simple/build.sh

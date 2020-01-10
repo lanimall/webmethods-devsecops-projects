@@ -1,0 +1,76 @@
+alias: sag-integrationserver
+description: Software AG Integration Server with Deployer
+
+environments:
+  default:  
+    release.major:                     10                                                   
+    os.platform:                       lnxamd64   
+    repo.product:                      ${}
+    repo.fix:                          ${}
+    nodes:                             ${}
+
+    is.fixes:                         ${}
+    is.key.license.alias:             ${}            
+    is.instance.name:                 ${}                             
+    is.primary.port:                  5555                             
+    is.diagnostic.port:               9999                             
+    is.jmx.port:                      5559                             
+    is.memory.init:                   1024                             
+    is.memory.max:                    2048                             
+    is.install.service:               true
+    is.administrator.password:        ${}
+    is.instance.packages:             ${}
+
+layers:
+  runtime:
+    productRepo: ${repo.product}            # install products from
+    fixRepo:     ${repo.fix}                # install fixes from
+    templates:   
+      - is-server
+
+templates:
+  is-server:
+    licenses:
+      "IntegrationServer/config/licenseKey.xml": "${is.key.license.alias}"
+    fixes: ${is.fixes}
+    products:
+      integrationServer:
+        ${is.instance.name}:
+          primary.port:       ${is.primary.port}
+          diagnostic.port:    ${is.diagnostic.port}
+          jmx.port:           ${is.jmx.port}
+          license.file:       IntegrationServer/config/licenseKey.xml
+          install.service:    ${is.install.service}
+          package.list:       ${is.instance.packages}
+          configuration:
+            OSGI-IS_${is.instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${is.memory.init}
+                  MaxSize:  ${is.memory.max}
+            integrationServer-${is.instance.name}:
+              COMMON-LOCAL-USERS:
+                COMMON-LOCAL-USERS-Administrator:
+                  '@id': Administrator
+                  Password: ${is.administrator.password}
+                  Enabled: 'true'
+                  ExtendedProperties:
+                    Property:
+                    - '@name': AllowDigestAuthentication
+                      $: 'false'
+
+provision:
+  default:
+    runtime:  ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

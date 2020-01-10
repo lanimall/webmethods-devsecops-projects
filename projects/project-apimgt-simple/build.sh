@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+## getting filename without path and extension
+THIS=`basename $0`
+THIS_NOEXT="${THIS%.*}"
+THISDIR=`dirname $0`; THISDIR=`cd $THISDIR;pwd`
+BASEDIR="$THISDIR/../.."
+
+BUILD_DIR="$BASEDIR/build"
+CLOUDOPS_EXPANDED="$THISDIR/cloudops/tfexpanded"
+BUILD_INVENTORY_FILE="project-apimgt-simple"
+
+##Assemble solutions
+rsync -arvz $THISDIR/ansible/ $BUILD_DIR/webmethods-devops-ansible/
+rsync -arvz $THISDIR/sagcce/ $BUILD_DIR/webmethods-devops-sagcce/
+
+## + copy the expanded inventory files
+if [ -f $CLOUDOPS_EXPANDED/inventory-ansible ]; then
+    cp $CLOUDOPS_EXPANDED/inventory-ansible $BUILD_DIR/webmethods-devops-ansible/inventory/$BUILD_INVENTORY_FILE
+fi

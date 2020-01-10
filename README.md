@@ -11,6 +11,25 @@ If you have just run the terraform base project you should be set and run:
 ./sync-to-bastion.sh
 ```
 
+Move all the required code to the server
+```
+./sync-to-bastion.sh
+```
+
+Connect to the bastion
+```
+ssh <bastion ip>
+```
+
+On the bastion, copy all the artifacts to the management server:
+```
+./sync-to-management.sh
+```
+
+Connect to the management server:
+```
+ssh <mgt server ip>
+```
 
 ### Add keys to the management servers:
 
