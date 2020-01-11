@@ -10,7 +10,7 @@ BASEDIR="$THISDIR/../.."
 
 BUILD_DIR="$BASEDIR/build"
 CLOUDOPS_EXPANDED="$THISDIR/cloudops/tfexpanded"
-BUILD_INVENTORY_FILE="project-apimgt-simple"
+PROJECT_NAME="project-apimgt-simple"
 
 ##Assemble solutions
 rsync -arvz $THISDIR/ansible/ $BUILD_DIR/webmethods-devops-ansible/
@@ -18,5 +18,5 @@ rsync -arvz $THISDIR/sagcce/ $BUILD_DIR/webmethods-devops-sagcce/
 
 ## + copy the expanded inventory files
 if [ -f $CLOUDOPS_EXPANDED/inventory-ansible ]; then
-    cp $CLOUDOPS_EXPANDED/inventory-ansible $BUILD_DIR/webmethods-devops-ansible/inventory/$BUILD_INVENTORY_FILE
+    cp $CLOUDOPS_EXPANDED/inventory-ansible $BUILD_DIR/webmethods-devops-ansible/inventory/$PROJECT_NAME
 fi
