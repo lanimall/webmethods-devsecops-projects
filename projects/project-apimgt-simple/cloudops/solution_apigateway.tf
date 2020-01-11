@@ -63,6 +63,7 @@ resource "aws_instance" "apigateway" {
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
+    local.common_instance_tags,
     map(
       "Name", "${local.name_prefix}-apigateway-${data.aws_subnet.COMMON_WEB.*.availability_zone[count.index]}",
       "az", "${data.aws_subnet.COMMON_WEB.*.availability_zone[count.index]}"

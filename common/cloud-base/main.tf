@@ -50,6 +50,28 @@ locals {
     "Project_Owners" = "${var.project_owners}",
     "Project_Organization" = "${var.project_organization}"
   },
+  common_instance_tags = {
+    "Scheduler_Stop" = "DAILY",
+    "Scheduler_Stop_Time" = "0100"
+  },
+  common_rds_tags = {
+    "Scheduler_Stop" = "DAILY",
+    "Scheduler_Stop_Time" = "0130"
+  },
+  instance_tags_schedule_stop = {
+    "Scheduler_Stop" = "DAILY",
+    "Scheduler_Stop_Time" = "0100"
+  },
+  instance_tags_schedule_start = {
+    "Scheduler_Start" = "DAILY_NO_WEEKEND",
+    "Scheduler_Start_Time" = "1100"
+  },
+  instance_tags_retention = {
+    "Retention" = "notset",
+    "Retention_Reason" = "notset",
+    "Retention_Requestor" = "notset",
+    "Retention_EndDate" = "notset"
+  },
   common_secgroups = [
     "${aws_security_group.common-internal.id}"
   ],

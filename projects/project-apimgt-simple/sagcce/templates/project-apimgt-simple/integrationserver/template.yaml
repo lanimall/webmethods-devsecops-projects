@@ -19,7 +19,6 @@ environments:
     is.memory.max:                    2048                             
     is.install.service:               true
     is.administrator.password:        ${}
-    is.instance.packages:             ${}
 
 layers:
   runtime:
@@ -41,7 +40,6 @@ templates:
           jmx.port:           ${is.jmx.port}
           license.file:       IntegrationServer/config/licenseKey.xml
           install.service:    ${is.install.service}
-          package.list:       ${is.instance.packages}
           configuration:
             OSGI-IS_${is.instance.name}:
               COMMON-MEMORY:

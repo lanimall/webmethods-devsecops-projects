@@ -56,4 +56,4 @@
         value: "{{ cce_provisioning_is_administrator_password }}"
   tags:
     - install
-    - install-is
+    - install-integrationserver

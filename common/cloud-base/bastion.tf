@@ -124,6 +124,7 @@ resource "aws_instance" "bastion-linux" {
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
+    local.common_instance_tags,
     map(
       "Name", "${local.name_prefix}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
       "az", "${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}"

@@ -49,6 +49,7 @@ resource "aws_instance" "commandcentral" {
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
+    local.common_instance_tags,
     local.linux_tags,
     map(
       "Name", "${local.name_prefix}-commandcentral-${data.aws_subnet.COMMON_MGT.*.availability_zone[count.index]}",

@@ -57,16 +57,40 @@ tail -f ~/nohup-sagenv-stack-project-apimgt-simple.out
 
 #### Running only specific tasks in playbook
 
-Just api gateway:
+##### Just api gateway
 
 ```bash
 ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway
 ```
 
-Just api portal:
+With nohup:
+
+```bash
+nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway &> ~/nohup-sagenv-stack-project-apimgt-simple-apigateway.out &
+```
+
+##### Just api portal
 
 ```bash
 ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apiportal
+```
+
+With nohup:
+
+```bash
+nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apiportal &> ~/nohup-sagenv-stack-project-apimgt-simple-apiportal.out &
+```
+
+##### Just integration server
+
+```bash
+ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-integrationserver
+```
+
+With nohup:
+
+```bash
+nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-integrationserver &> ~/nohup-sagenv-stack-project-apimgt-simple-integrationserver.out &
 ```
 
 #### Skipping specific tasks

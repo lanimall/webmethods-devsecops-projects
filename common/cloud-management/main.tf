@@ -41,6 +41,14 @@ locals {
     "Project_Owners" = "${var.project_owners}",
     "Project_Organization" = "${var.project_organization}"
   },
+  common_instance_tags = {
+    "Scheduler_Stop" = "DAILY",
+    "Scheduler_Stop_Time" = "0100"
+  },
+  common_rds_tags = {
+    "Scheduler_Stop" = "DAILY",
+    "Scheduler_Stop_Time" = "0130"
+  },
   common_secgroups = [
     "${data.aws_security_group.common-internal.id}"
   ],

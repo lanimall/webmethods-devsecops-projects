@@ -64,6 +64,7 @@ resource "aws_instance" "integration" {
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
+    local.common_instance_tags,
     map(
       "Name", "${local.name_prefix}-integrationserver-${data.aws_subnet.COMMON_APPS.*.availability_zone[count.index]}",
       "az", "${data.aws_subnet.COMMON_APPS.*.availability_zone[count.index]}"
