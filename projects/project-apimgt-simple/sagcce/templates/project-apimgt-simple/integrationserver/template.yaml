@@ -1,5 +1,5 @@
 alias: sag-integrationserver
-description: Software AG Integration Server with Deployer
+description: Software AG Integration Server with built-in DB
 
 environments:
   default:  
@@ -59,7 +59,7 @@ templates:
 
 provision:
   default:
-    runtime:  ${nodes}
+    runtime: ${nodes}
 
 nodes:
   default:

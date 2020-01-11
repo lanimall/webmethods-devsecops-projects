@@ -1,5 +1,5 @@
-alias: sag-integrationserver
-description: Software AG Integration Server with Deployer
+alias: sag-integrationserver-extdb
+description: Software AG Integration Server with External DB
 
 environments:
   default:  
@@ -75,7 +75,7 @@ templates:
 
 provision:
   default:
-    runtime:  ${nodes}
+    runtime: ${nodes}
 
 nodes:
   default:
