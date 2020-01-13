@@ -10,7 +10,7 @@ BASEDIR="$THISDIR/../.."
 
 BUILD_DIR="$BASEDIR/build"
 CLOUDOPS_EXPANDED="$THISDIR/cloudops/tfexpanded"
-PROJECT_NAME="project-apimgt-simple"
+PROJECT_NAME="$THISDIR"
 
 ##Assemble solutions
 rsync -arvz $THISDIR/ansible/ $BUILD_DIR/webmethods-devops-ansible/

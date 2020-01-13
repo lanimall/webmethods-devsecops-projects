@@ -28,5 +28,3 @@ cce_provisioning_content_localpath: /opt/sag_content/
 cce_version: 10.3
 cce_version_fix: fix10
 cce_platform: lnxamd64
-cce_product_repo_name: webMethods-10.3
-cce_fix_repo_name: Empower

@@ -7,8 +7,8 @@
 - import_playbook: sagenv-common-webmethods.yaml
   vars:
     cce_provisioning_target_hostgroups: apigateway
-    cce_provisioning_template: project-apimgt-simple/apigateway/template.yaml
-    cce_provisioning_properties: project-apimgt-simple-apigateway
+    cce_provisioning_template: recipe1-apimgt-simple/apigateway/template.yaml
+    cce_provisioning_properties: recipe1-apimgt-simple-apigateway
     cce_provisioning_installed_product_names: apigateway
     cce_provisioning_validation_ports:
       - 5555
@@ -53,8 +53,8 @@
 - import_playbook: sagenv-common-webmethods.yaml
   vars:
     cce_provisioning_target_hostgroups: integration
-    cce_provisioning_template: project-apimgt-simple/integrationserver/template.yaml
-    cce_provisioning_properties: project-apimgt-simple-integration
+    cce_provisioning_template: recipe1-apimgt-simple/integrationserver/template.yaml
+    cce_provisioning_properties: recipe1-apimgt-simple-integration
     cce_provisioning_installed_product_names: integrationserver
     cce_provisioning_validation_ports:
       - 5555

@@ -38,19 +38,19 @@ Now, we can provision the various products and configs by simply running.
 NOTE: We load extra variables to define general values (ie. repos to use, etc...)
 
 ```bash
-ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml"
+ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml"
 ```
 
 Or using nohup (more reliable if you lose your connection etc...)
 
 ```bash
-nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" &> ~/nohup-sagenv-stack-project-apimgt-simple.out &
+nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" &> ~/nohup-sagenv-stack-recipe1-apimgt-simple.out &
 ```
 
 Check progress:
 
 ```bash
-tail -f ~/nohup-sagenv-stack-project-apimgt-simple.out
+tail -f ~/nohup-sagenv-stack-recipe1-apimgt-simple.out
 ```
 
 ### Some extra helpful commands
@@ -60,37 +60,37 @@ tail -f ~/nohup-sagenv-stack-project-apimgt-simple.out
 ##### Just api gateway
 
 ```bash
-ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway
+ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway
 ```
 
 With nohup:
 
 ```bash
-nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway &> ~/nohup-sagenv-stack-project-apimgt-simple-apigateway.out &
+nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apigateway.out &
 ```
 
 ##### Just api portal
 
 ```bash
-ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apiportal
+ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal
 ```
 
 With nohup:
 
 ```bash
-nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apiportal &> ~/nohup-sagenv-stack-project-apimgt-simple-apiportal.out &
+nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apiportal.out &
 ```
 
 ##### Just integration server
 
 ```bash
-ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-integrationserver
+ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver
 ```
 
 With nohup:
 
 ```bash
-nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-integrationserver &> ~/nohup-sagenv-stack-project-apimgt-simple-integrationserver.out &
+nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-integrationserver.out &
 ```
 
 #### Skipping specific tasks
@@ -98,7 +98,7 @@ nohup ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --ex
 For example, running the playbook but only for the pre and post install tasks (ie. server settings and service installs etc...)
 
 ```bash
-ansible-playbook -i inventory sagenv-stack-project-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-project-apimgt-simple.yaml" --tags install-apigateway --skip-tags cce_provisioning.install
+ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway --skip-tags cce_provisioning.install
 ```
 
 ## Accessing the UIs

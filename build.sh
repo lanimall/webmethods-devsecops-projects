@@ -64,4 +64,4 @@ if [ -f ./sync-to-management.sh ]; then
 fi
 
 ### build the sub projects
-/bin/bash $BASEDIR/projects/project-apimgt-simple/build.sh
+/bin/bash $BASEDIR/recipes/recipe1-apimgt-simple/build.sh
