@@ -1,6 +1,0 @@
----
-# The variables file used by the playbooks in the all_linux group.
-mandatory_packages:
-  - vim
-  - firewalld
-  - telnet ##temp
