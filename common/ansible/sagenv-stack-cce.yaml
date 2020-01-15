@@ -93,18 +93,22 @@
         - import_role: 
             name: configure-cce
           vars:
-            config_item: repo_products
-            cce_configure_params: []
+            config_item: sagrepo_products
+            cce_configure_params:
+              - name: "repo_products_version_major"
+                value: "{{ webmethods_install_version_major }}"
+              - name: "repo_products_version_minor"
+                value: "{{ webmethods_install_version_minor }}"
             cce_configure_params_secure: []
             configure_cce_force: true
           ignore_errors: yes
           tags:
             - configure
             - configure-repo-products
-        - import_role: 
+        - import_role:
             name: configure-cce
           vars:
-            config_item: repo_fixes
+            config_item: sagrepo_fixes
             cce_configure_params: []
             cce_configure_params_secure: []
             configure_cce_force: true

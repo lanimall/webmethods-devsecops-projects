@@ -29,6 +29,41 @@ resource "aws_s3_bucket" "main" {
   )}"
 }
 
+resource "aws_iam_policy" "sagcontent-s3-readwrite" {
+  name        = "${local.name_prefix}-sagcontent-s3-readwrite"
+  path        = "/"
+  description = "s3 read write policy"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement":
+    [
+        {
+        "Effect": "Allow",
+        "Action":
+            [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+            ],
+        "Resource": "${aws_s3_bucket.main.arn}"
+        },
+        {
+        "Effect": "Allow",
+        "Action":
+            [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListMultipartUploadParts",
+                "s3:AbortMultipartUpload"
+            ],
+        "Resource": "${aws_s3_bucket.main.arn}/*"
+        }
+    ]
+}
+  EOF
+}
+
 resource "aws_s3_bucket_object" "sag-content-images-fixes" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"

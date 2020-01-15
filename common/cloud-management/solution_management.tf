@@ -12,9 +12,43 @@ output "devops-management-private_ip" {
   value = "${aws_instance.devops-management.*.private_ip}"
 }
 
+variable "policy_sagcontent_s3_readwrite_arn" {
+  description = "the s3 policy arn"
+}
+
 variable "instancesize_devops-management" {
   description = "instance type for api gateway"
   default = "t3.small"
+}
+
+resource "aws_iam_role" "devops-management" {
+  name = "${local.name_prefix}-devops-management-role"
+
+  assume_role_policy = <<EOF
+{
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Effect": "Allow",
+          "Sid": ""
+        }
+      ]
+}
+  EOF
+}
+
+resource "aws_iam_instance_profile" "devops-management" {
+  name = "${local.name_prefix}-devops-management-profile"
+  role = "${aws_iam_role.devops-management.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "devops-management-s3policy" {
+  role       = "${aws_iam_role.devops-management.name}"
+  policy_arn = "${var.policy_sagcontent_s3_readwrite_arn}"
 }
 
 //Create the private node general userdata script.
@@ -36,7 +70,7 @@ resource "aws_instance" "devops-management" {
   subnet_id           = "${data.aws_subnet.COMMON_MGT.*.id[count.index]}"
   user_data           = "${data.template_file.setup-devops-management.*.rendered[count.index]}"
   key_name            = "${local.awskeypair_internal_node}"
-  iam_instance_profile = ""
+  iam_instance_profile = "${aws_iam_instance_profile.devops-management.name}"
   associate_public_ip_address = "false"
 
   vpc_security_group_ids = [

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MGT_SSH_KEY="./sshkeyinternal/id_rsa_internal"
+MGT_SSH_KEY="$HOME/.ssh/id_rsa"
 
 if [ -f setenv-mgt.sh ]; then
     . setenv-mgt.sh

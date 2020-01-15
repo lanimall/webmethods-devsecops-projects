@@ -7,10 +7,16 @@ provider "aws" {
 ################ Global configs
 ################################################
 
-## key creation
+## key creation for internal nodes
 resource "aws_key_pair" "internalnode" {
   key_name   = "${local.awskeypair_internal_node}"
-  public_key = "${file(var.internalnode_key_path)}"
+  public_key = "${file(local.awskeypair_internal_keypath)}"
+}
+
+## key creation for bastion nodes
+resource "aws_key_pair" "bastion" {
+  key_name   = "${local.awskeypair_bastion_node}"
+  public_key = "${file(local.awskeypair_bastion_keypath)}"
 }
 
 locals {
@@ -29,7 +35,13 @@ locals {
   )}"
 
   awskeypair_bastion_node = "${local.name_prefix_noworkspace}-${var.bastion_key_name}"
+  awskeypair_bastion_keypath = "${var.local_secrets_dir}/${var.bastion_publickey_path}"
   awskeypair_internal_node = "${local.name_prefix_noworkspace}-${var.internalnode_key_name}"
+  awskeypair_internal_keypath = "${var.local_secrets_dir}/${var.internalnode_publickey_path}"
+
+  lb_ssl_cert_key = "${var.local_secrets_dir}/${var.lb_ssl_cert_key}"
+  lb_ssl_cert_pub = "${var.local_secrets_dir}/${var.lb_ssl_cert_pub}"
+  lb_ssl_cert_ca = "${var.local_secrets_dir}/${var.lb_ssl_cert_ca}"
 
   ## if we want to stick to the same AMI for sure
   base_ami_linux = "${var.linux_region_ami["${var.region}"]}"
@@ -83,58 +95,5 @@ locals {
   linux_tags = {
     "OSFamily" = "Linux",
     "OS" = "${var.linux_os_description}"
-  }
-}
-
-### useful to keep using the latest...but dangerous since instances will get re-created if AMI changes
-data "aws_ami" "centos" {
-  owners      = ["aws-marketplace"]
-  most_recent = true
-
-    filter {
-        name   = "name"
-        values = ["CentOS Linux 7*"]
-    }
-
-    filter {
-        name   = "architecture"
-        values = ["x86_64"]
-    }
-
-    filter {
-        name   = "root-device-type"
-        values = ["ebs"]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-    }
-}
-
-### useful to keep using the latest...but dangerous since instances will get re-created if AMI changes
-# Lookup the correct AMI based on the region specified
-data "aws_ami" "amazon_windows_2012R2" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["Windows_Server-2012-R2_RTM-English-64Bit-Base-*"]
-  }
-}
-
-data "aws_ami" "amazon_windows_2016" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  #filter {
-  #  name   = "name"
-  #  values = ["Windows_Server-2016-English-Full-Base-*"]
-  #}
-
-  filter {
-    name   = "name"
-    values = ["Windows_Server-2016-English-Full-Base-2019.09.11"]
   }
 }

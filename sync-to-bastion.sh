@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASTION_SSH_KEY="./common/cloud-base/helper_scripts/sshkey_id_rsa_bastion"
+BASTION_SSH_KEY="$HOME/.mydevsecrets/webmethods-devsecops-recipes/common/cloud-base/sshkey_id_rsa_bastion"
 
 if [ -f ./common/cloud-base/tfexpanded/setenv-base.sh ]; then
     . ./common/cloud-base/tfexpanded/setenv-base.sh

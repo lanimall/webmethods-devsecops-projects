@@ -22,11 +22,6 @@ variable "instancecount_bastion" {
   default = "1"
 }
 
-resource "aws_key_pair" "bastion" {
-  key_name   = "${local.awskeypair_bastion_node}"
-  public_key = "${file(var.bastion_publickey_path)}"
-}
-
 // create eip for bastion
 resource "aws_eip" "bastion" {
   #count         = "${length(split(",", lookup(var.azs, var.region)))}"

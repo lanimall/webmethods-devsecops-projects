@@ -6,11 +6,11 @@ set -e
 THIS=`basename $0`
 THIS_NOEXT="${THIS%.*}"
 THISDIR=`dirname $0`; THISDIR=`cd $THISDIR;pwd`
+THISDIRNAME=`basename $THISDIR`
 BASEDIR="$THISDIR/../.."
-
 BUILD_DIR="$BASEDIR/build"
 CLOUDOPS_EXPANDED="$THISDIR/cloudops/tfexpanded"
-PROJECT_NAME="$THISDIR"
+PROJECT_NAME="$THISDIRNAME"
 
 ##Assemble solutions
 rsync -arvz $THISDIR/ansible/ $BUILD_DIR/webmethods-devops-ansible/

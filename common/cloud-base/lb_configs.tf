@@ -7,9 +7,9 @@ output "main-public-alb" {
 }
 
 resource "aws_acm_certificate" "cert" {
-  private_key      = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos.key")}"
-  certificate_body = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos.crt")}"
-  certificate_chain = "${file("${path.cwd}/helper_scripts/ssl-devsecops-clouddemos-ca.crt")}"
+  private_key      = "${file(local.lb_ssl_cert_key)}"
+  certificate_body = "${file(local.lb_ssl_cert_pub)}"
+  certificate_chain = "${file(local.lb_ssl_cert_ca)}"
 }
 
 ###### DMZ ###### 

@@ -43,6 +43,7 @@ data "template_file" "setenv-base" {
     subnet_shortname_management = "${var.subnet_shortname_management}"
     bastion_public_ip = "${aws_instance.bastion-linux.0.public_ip}"
     bastion_user = "${local.base_ami_linux_user}"
+    policy_sagcontent_s3_readwrite_arn = "${aws_iam_policy.sagcontent-s3-readwrite.arn}"
   }
 }
 

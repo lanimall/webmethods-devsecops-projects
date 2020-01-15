@@ -186,6 +186,11 @@ variable "windows_os_description" {
   default = "Amazon Windows 2016 Base" 
 }
 
+variable "local_secrets_dir" {
+  description = "local dir where the certs are saved"
+  default = "~/.mydevsecrets/webmethods-devsecops-recipes/common/cloud-base"
+}
+
 variable "bastion_key_name" {
   description = "secure bastion ssh key name"
   default = "bastion"
@@ -193,7 +198,7 @@ variable "bastion_key_name" {
 
 variable "bastion_publickey_path" {
   description = "My secure bastion ssh public key"
-  default = "./helper_scripts/sshkey_id_rsa_bastion.pub"
+  default = "sshkey_id_rsa_bastion.pub"
 }
 
 variable "internalnode_key_name" {
@@ -201,7 +206,22 @@ variable "internalnode_key_name" {
   default = "internalnode"
 }
 
-variable "internalnode_key_path" {
+variable "internalnode_publickey_path" {
   description = "My secure internal ssh public key"
-  default = "./helper_scripts/sshkey_id_rsa_internalnode.pub"
+  default = "sshkey_id_rsa_internalnode.pub"
+}
+
+variable "lb_ssl_cert_key" {
+  description = "Main Load Balancer SSL Cert Private Key file"
+  default = "ssl-devsecops-clouddemos.key"
+}
+
+variable "lb_ssl_cert_pub" {
+  description = "Main Load Balancer SSL Cert Public Key file"
+  default = "ssl-devsecops-clouddemos.crt"
+}
+
+variable "lb_ssl_cert_ca" {
+  description = "Main Load Balancer SSL Cert CA Cert file"
+  default = "ssl-devsecops-clouddemos-ca.crt"
 }
