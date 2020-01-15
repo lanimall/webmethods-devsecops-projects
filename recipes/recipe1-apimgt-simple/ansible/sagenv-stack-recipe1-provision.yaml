@@ -1,0 +1,27 @@
+---
+
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run provision stack {{ template }}
+      shell: ansible-playbook ./playbooks/sagenv-stack-recipe1/{{ item }}.yaml
+      async: 4800
+      poll: 0
+      with_items:
+        - "apigateway"
+        - "apiportal"
+        - "integration"
+      register: run_plays
+
+    - name: Check status of the parallel playbook executions
+      async_status:
+        jid: "{{ run_plays.results[item.index].ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      with_items:
+        - "apigateway"
+        - "apiportal"
+        - "integration"
+      retries: 200
+      delay: 24     

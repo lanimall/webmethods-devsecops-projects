@@ -1,5 +1,5 @@
-alias: sag-spm-bootstrap-ssh
-description: SSH-enabled remote installation using CC bootstrap installer
+alias: sag-apiportal
+description: API Portal provisioning
 
 environments:
   default:
