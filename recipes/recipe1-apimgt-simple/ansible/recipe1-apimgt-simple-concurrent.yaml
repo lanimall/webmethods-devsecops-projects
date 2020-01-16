@@ -1,0 +1,14 @@
+---
+
+- import_playbook: sagenv-tools-playbooks-run-concurrent.yaml
+  vars:
+    playbooks_extravars_filepath: "vars/recipe1-apimgt-simple.yaml"
+    playbooks_extravars: ""
+    playbooks_tags: ""
+    playbooks_skip_tags: ""
+    playbooks_dir: "./playbooks"
+    playbooks_dirproject_name: "recipe1-apimgt-simple"
+    playbooks_names:
+      - "apigateway"
+      - "apiportal"
+      - "integration"

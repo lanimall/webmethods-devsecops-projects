@@ -1,0 +1,19 @@
+---
+
+################################################################
+## API Gateway provisioning
+################################################################
+
+- import_playbook: playbooks/sagenv-stack-recipe1/apigateway.yaml
+
+################################################################
+## API Portal provisioning
+################################################################
+
+- import_playbook: playbooks/sagenv-stack-recipe1/apiportal.yaml
+
+################################################################
+## Integration Server provisioning
+################################################################
+
+- import_playbook: playbooks/sagenv-stack-recipe1/integration.yaml

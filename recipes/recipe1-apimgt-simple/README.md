@@ -56,6 +56,10 @@ Check progress:
 tail -f ~/nohup-sagenv-stack-recipe1-apimgt-simple.out
 ```
 
+```bash
+ansible-playbook -i inventory sagenv-stack-recipe1-provision-concurrent.yaml --extra-vars '{"extravars_filepath":"vars/recipe1-apimgt-simple.yaml"}'
+```
+
 ## Accessing the UIs
 
 The UI URLs will depend on the cloud provisoning prefixes and domain name you chose...

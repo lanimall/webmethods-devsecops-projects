@@ -56,7 +56,8 @@ templates:
                     Property:
                     - '@name': AllowDigestAuthentication
                       $: 'false'
-
+                    - '@name': Groups
+                      $: Administrators,Everybody,Replicators
 provision:
   default:
     runtime: ${nodes}

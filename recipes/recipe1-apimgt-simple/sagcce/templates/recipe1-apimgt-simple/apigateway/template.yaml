@@ -82,6 +82,9 @@ templates:
                     Property:
                     - '@name': AllowDigestAuthentication
                       $: 'false'
+                    - '@name': Groups
+                      $: API-Gateway-Administrators,Administrators,Everybody,Replicators
+
 
 provision:
   default:

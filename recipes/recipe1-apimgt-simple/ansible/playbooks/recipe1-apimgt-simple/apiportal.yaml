@@ -1,0 +1,18 @@
+---
+
+################################################################
+## API Portal provisioning
+################################################################
+
+- import_playbook: ../../sagenv-common-webmethods.yaml
+  vars:
+    cce_provisioning_target_hostgroups: apiportal
+    cce_provisioning_template: recipe1-apimgt-simple/apiportal/template.yaml
+    cce_provisioning_properties: recipe1-apimgt-simple-apiportal
+    cce_provisioning_installed_product_names: spm
+    cce_provisioning_validation_ports:
+      - 8092
+      - 8093
+  tags:
+    - install
+    - install-apiportal

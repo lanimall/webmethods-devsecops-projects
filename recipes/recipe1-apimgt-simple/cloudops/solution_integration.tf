@@ -71,3 +71,63 @@ resource "aws_instance" "integration" {
     )
   )}"
 }
+
+resource "aws_lb_target_group_attachment" "is-runtime" {
+  count = "${lookup(var.solution_enable, "integration") == "true" ? var.instancecount_apigateway : 0}"
+  
+  target_group_arn = "${aws_lb_target_group.is-runtime.arn}"
+  target_id        = "${element(aws_instance.integration.*.id, count.index)}"
+}
+
+#create a target group for the http reverse proxy instances
+resource "aws_lb_target_group" "is-runtime" {
+  count = "${lookup(var.solution_enable, "integration") == "true" ? 1 : 0}"
+  
+  name     = "is-runtime-tg"
+  port     = 5555
+  protocol = "HTTP"
+  vpc_id = "${data.aws_vpc.main.id}"
+  slow_start = 100
+  deregistration_delay = 300
+
+  stickiness {
+    enabled = true
+    type = "lb_cookie"
+    cookie_duration = 86400
+  }
+
+  health_check {
+    path = "/invoke/wm.server/ping"
+    protocol = "HTTP"
+    healthy_threshold = 6
+    unhealthy_threshold = 2
+    timeout = 2
+    interval = 5
+    matcher = "200"
+  }
+
+  //  Use our common tags and add a specific name.
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${local.name_prefix}-is-runtime-tg"
+    )
+  )}"
+}
+
+resource "aws_alb_listener_rule" "is-runtime" {
+  count = "${lookup(var.solution_enable, "integration") == "true" ? 1 : 0}"
+  
+  listener_arn = "${data.aws_lb_listener.main-public-alb-https.arn}"
+  
+  action {
+    target_group_arn = "${aws_lb_target_group.is-runtime.arn}"
+    type = "forward"
+  }
+  
+  condition {
+    host_header {
+      values = ["${local.name_prefix}-apiintegration1.${local.dns_main_external_apex}"]
+    }
+  }
+}
