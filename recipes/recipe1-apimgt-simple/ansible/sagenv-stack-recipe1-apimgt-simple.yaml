@@ -44,7 +44,7 @@
       - 8093
   tags:
     - install
-    - install-apiportal-spm
+    - install-apiportal
 
 ################################################################
 ## Integration Server provisioning
