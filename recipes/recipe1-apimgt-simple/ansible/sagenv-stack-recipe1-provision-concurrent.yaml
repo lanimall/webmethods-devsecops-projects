@@ -24,4 +24,4 @@
         - "apiportal"
         - "integration"
       retries: 200
-      delay: 24     
+      delay: 24
