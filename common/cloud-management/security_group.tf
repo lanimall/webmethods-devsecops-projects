@@ -2,7 +2,7 @@
 ### Security group for the management server: allow any egress within the VPC
 ######
 resource "aws_security_group" "devops-management" {
-  name        = "${local.name_prefix}-devops-management"
+  name        = "${local.name_prefix_unique_short}-devops-management"
   description = "Management server"
   vpc_id      = "${data.aws_vpc.main.id}"
 
@@ -40,7 +40,7 @@ resource "aws_security_group" "devops-management" {
 
 ###### COMMAND CENTRAL ###### 
 resource "aws_security_group" "webmethods-commandcentral" {
-  name        = "${local.name_prefix}-wm-commandcentral"
+  name        = "${local.name_prefix_unique_short}-wm-commandcentral"
   description = "Command Central"
   vpc_id      = "${data.aws_vpc.main.id}"
 

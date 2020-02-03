@@ -83,7 +83,7 @@ resource "aws_lb_target_group_attachment" "is-runtime" {
 resource "aws_lb_target_group" "is-runtime" {
   count = "${lookup(var.solution_enable, "integration") == "true" ? 1 : 0}"
   
-  name     = "is-runtime-tg"
+  name     = "${local.name_prefix_unique_short}-is-runtime-tg"
   port     = 5555
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.main.id}"

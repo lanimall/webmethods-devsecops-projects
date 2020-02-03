@@ -3,8 +3,8 @@
 set -e
 
 ##TODO: this should come from the terraform data...
-BUCKET_NAME=sagdemo-main
-BUCKET_PREFIX=sagdemo
+BUCKET_NAME=ac216fa6-main
+BUCKET_PREFIX=sagdemo-master
 
 LOCAL_DIR=$HOME/devops_content/
 BUCKET_URI="s3://$BUCKET_NAME/$BUCKET_PREFIX/devops_content/"

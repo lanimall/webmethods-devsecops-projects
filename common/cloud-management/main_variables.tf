@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
-  default = "sagdemo"
+  default = "mgtlayer"
 }
 
 variable solution_enable {

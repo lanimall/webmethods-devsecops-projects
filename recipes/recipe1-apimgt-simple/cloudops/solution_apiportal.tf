@@ -85,7 +85,7 @@ resource "aws_lb_target_group_attachment" "apiportal" {
 resource "aws_lb_target_group" "apiportal" {
   count = "${lookup(var.solution_enable, "apiportal") == "true" ? 1 : 0}"
   
-  name     = "apiportal-tg"
+  name     = "${local.name_prefix_unique_short}-apiportal-tg"
   port     = 18101
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.main.id}"

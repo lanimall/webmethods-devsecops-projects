@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
-  default = "proj1"
+  default = "recipe1"
 }
 
 variable solution_enable {

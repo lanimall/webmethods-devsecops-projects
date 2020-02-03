@@ -13,8 +13,16 @@ variable "base_main_vpc_id" {
   description = "The ID of the target VPC"
 }
 
-variable "base_name_prefix" {
-  description = "The base name prefix"
+variable "base_name_prefix_unique_short" {
+  description = "The unique base name prefix"
+}
+
+variable "base_name_prefix_short" {
+  description = "The base name prefix short format"
+}
+
+variable "base_name_prefix_long" {
+  description = "The base name prefix long format"
 }
 
 variable "base_resources_internal_dns_zoneid" {

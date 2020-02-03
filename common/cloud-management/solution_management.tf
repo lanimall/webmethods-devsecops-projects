@@ -22,7 +22,7 @@ variable "instancesize_devops-management" {
 }
 
 resource "aws_iam_role" "devops-management" {
-  name = "${local.name_prefix}-devops-management-role"
+  name = "${local.name_prefix_unique_short}-devops-management-role"
 
   assume_role_policy = <<EOF
 {
@@ -42,7 +42,7 @@ resource "aws_iam_role" "devops-management" {
 }
 
 resource "aws_iam_instance_profile" "devops-management" {
-  name = "${local.name_prefix}-devops-management-profile"
+  name = "${local.name_prefix_unique_short}-devops-management-profile"
   role = "${aws_iam_role.devops-management.name}"
 }
 

@@ -84,7 +84,7 @@ resource "aws_lb_target_group_attachment" "apigateway-ui" {
 resource "aws_lb_target_group" "apigateway-ui" {
   count = "${lookup(var.solution_enable, "apigateway") == "true" ? 1 : 0}"
   
-  name     = "apigateway-ui-tg"
+  name     = "${local.name_prefix_unique_short}-apigateway-ui-tg"
   port     = 9072
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.main.id}"
@@ -144,7 +144,7 @@ resource "aws_lb_target_group_attachment" "apigateway-runtime" {
 resource "aws_lb_target_group" "apigateway-runtime" {
   count = "${lookup(var.solution_enable, "apigateway") == "true" ? 1 : 0}"
   
-  name     = "apigateway-runtime-tg"
+  name     = "${local.name_prefix_unique_short}-apigateway-runtime-tg"
   port     = 5555
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.main.id}"

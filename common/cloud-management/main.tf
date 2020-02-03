@@ -7,16 +7,26 @@ provider "aws" {
 ################ Global configs
 ################################################
 
+resource "random_id" "main" {
+  keepers {
+    vpc_id = "${data.aws_vpc.main.id}"
+    tf_state = "${terraform.workspace}"
+  }
+  byte_length = 4
+}
+
 locals {
+  name_prefix_unique_short = "${random_id.main.hex}"
+  
   name_prefix = "${lower(join("-",list(
-    replace(var.base_name_prefix_unique_short,"_","-"),
+    replace(var.base_name_prefix_short,"_","-"),
     replace(var.resources_name_prefix,"_","-"),
     replace((terraform.workspace != "default" ? terraform.workspace : "master"),"_","-")
     ))
   )}"
   
   name_prefix_noworkspace = "${lower(join("-",list(
-    replace(var.base_name_prefix_unique_short,"_","-"),
+    replace(var.base_name_prefix_short,"_","-"),
     replace(var.resources_name_prefix,"_","-")
     ))
   )}"

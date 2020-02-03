@@ -4,10 +4,6 @@ variable "base_cloud_profile" {
   description = "cloud profile to use"
 }
 
-variable "base_cloud_profile" {
-  description = "cloud profile to use"
-}
-
 ### Region to use
 variable "base_region" {
   description = "region to launch servers."

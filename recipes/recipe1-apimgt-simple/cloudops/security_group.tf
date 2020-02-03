@@ -4,7 +4,7 @@
 
 ###### API GATEWAY ###### 
 resource "aws_security_group" "apigateway" {
-  name        = "${local.name_prefix}-apigateway-sg"
+  name        = "${local.name_prefix_unique_short}-apigateway-sg"
   description = "Software AG API Gateway Server"
   vpc_id        = "${data.aws_vpc.main.id}"
 
@@ -75,7 +75,7 @@ resource "aws_security_group" "apigateway" {
 
 ###### API GATEWAY INTERNAL DATASTORE ###### 
 resource "aws_security_group" "apigw-internaldatastore" {
-  name        = "${local.name_prefix}-apigw-internaldatastore-sg"
+  name        = "${local.name_prefix_unique_short}-apigw-internaldatastore-sg"
   description = "Software AG API Gateway Internal Data Store"
   vpc_id        = "${data.aws_vpc.main.id}"
 
@@ -134,7 +134,7 @@ resource "aws_security_group" "apigw-internaldatastore" {
 
 ###### API PORTAL ###### 
 resource "aws_security_group" "apiportal" {
-  name        = "${local.name_prefix}-apiportal-sg"
+  name        = "${local.name_prefix_unique_short}-apiportal-sg"
   description = "Software AG API Portal Server"
   vpc_id        = "${data.aws_vpc.main.id}"
 
@@ -180,7 +180,7 @@ resource "aws_security_group" "apiportal" {
 
 ###### INTEGRATION SERVER ###### 
 resource "aws_security_group" "webmethods-integrationserver" {
-  name        = "${local.name_prefix}-wm-integrationserver"
+  name        = "${local.name_prefix_unique_short}-wm-integrationserver"
   description = "Integration Server"
   vpc_id        = "${data.aws_vpc.main.id}"
 

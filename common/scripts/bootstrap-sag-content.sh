@@ -3,8 +3,8 @@
 set -e
 
 ##TODO: this should come from the terraform data...
-BUCKET_NAME=sagdemo-main
-BUCKET_PREFIX=sagdemo
+BUCKET_NAME=ac216fa6-main
+BUCKET_PREFIX=sagdemo-master
 
 ##depending on the size, ideally that path should be a mount point to a larger disk
 LOCAL_DIR=/opt/sag_content/
