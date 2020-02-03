@@ -29,7 +29,7 @@ resource "aws_route53_record" "main-alb-wildcard" {
 }
 
 resource "aws_lb" "main-public-alb" {
-  name               = "${local.name_prefix}-main-public-alb"
+  name               = "${local.name_prefix_unique_short}-main-public-alb"
   load_balancer_type = "application"
   internal           = false
   subnets            = ["${aws_subnet.COMMON_DMZ.*.id}"]
@@ -53,7 +53,7 @@ resource "aws_lb" "main-public-alb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main-public-alb"
+      "Name", "${local.name_prefix_long}-main-public-alb"
     )
   )}"
 }

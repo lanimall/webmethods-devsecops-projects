@@ -18,6 +18,8 @@ locals {
   db-engine-major-version = "13.00"
   db-engine-full-version = "13.00.5366.0.v1"
   db-engine-family = "sqlserver-se-13.0"
+  db-identifier-prefix = "${local.name_prefix_unique_short}-${local.db-name}"
+  db-identifier-prefix-long = "${local.name_prefix_long}-${local.db-name}"
 }
 
 resource "random_id" "maindb-optiongroup" {
@@ -36,7 +38,7 @@ resource "random_id" "maindb-optiongroup" {
 resource "aws_security_group" "maindb" {
   count       = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  name        = "${local.name_prefix}-maindb"
+  name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
   description = "Security group that allows access to db from specific subnets"
   vpc_id      = "${aws_vpc.main.id}"
 
@@ -55,7 +57,7 @@ resource "aws_security_group" "maindb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-maindb"
+      "Name", "${local.db-identifier-prefix-long}-${random_id.maindb-optiongroup.hex}"
     )
   )}"
 }
@@ -63,8 +65,8 @@ resource "aws_security_group" "maindb" {
 resource "aws_db_option_group" "maindb" {
   count         = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  name          = "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
-  option_group_description = "Option group for ${local.name_prefix}-${local.db-name}"
+  name          = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
+  option_group_description = "Option group for ${local.name_prefix_unique_short}-${local.db-name}"
   
   engine_name            = "${local.db-engine-name}"
   major_engine_version   = "${local.db-engine-major-version}"
@@ -82,7 +84,7 @@ resource "aws_db_option_group" "maindb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
+      "Name", "${local.db-identifier-prefix-long}-${random_id.maindb-optiongroup.hex}"
     )
   )}"
 
@@ -94,8 +96,8 @@ resource "aws_db_option_group" "maindb" {
 resource "aws_db_subnet_group" "maindb" {
   count         = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  name  = "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
-  description = "Database subnet group for ${local.name_prefix}-${local.db-name}"
+  name  = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
+  description = "Database subnet group for ${local.name_prefix_unique_short}-${local.db-name}"
   subnet_ids  = [
     "${aws_subnet.COMMON_DATA.*.id}",
     "${aws_subnet.COMMON_APPS.id}"
@@ -105,7 +107,7 @@ resource "aws_db_subnet_group" "maindb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
+      "Name", "${local.db-identifier-prefix-long}"
     )
   )}"
 
@@ -117,14 +119,14 @@ resource "aws_db_subnet_group" "maindb" {
 resource "aws_db_parameter_group" "maindb" {
   count         = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  name  = "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
-  description = "Database param group for ${local.name_prefix}-${local.db-name}"
+  name  = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
+  description = "Database param group for ${local.name_prefix_unique_short}-${local.db-name}"
   family      = "${local.db-engine-family}"
 
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${local.db-name}-${random_id.maindb-optiongroup.hex}"
+      "Name", "${local.db-identifier-prefix-long}-${random_id.maindb-optiongroup.hex}"
     )
   )}"
 
@@ -136,7 +138,7 @@ resource "aws_db_parameter_group" "maindb" {
 resource "aws_kms_key" "maindb" {
   count         = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  description             = "KMS key for RDS encryption of instance ${local.name_prefix}-${local.db-name}"
+  description             = "KMS key for RDS encryption of instance ${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
   deletion_window_in_days = 10
 
   tags = "${merge(
@@ -147,7 +149,7 @@ resource "aws_kms_key" "maindb" {
 resource "aws_db_instance" "maindb" {
   count         = "${lookup(var.solution_enable, "storagedb") == "true" ? 1 : 0}"
   
-  identifier = "${local.name_prefix}-${local.db-name}"
+  identifier    = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup.hex}"
   
   ## sql server 2016
   engine_version         = "${local.db-engine-full-version}"
@@ -170,7 +172,7 @@ resource "aws_db_instance" "maindb" {
   iam_database_authentication_enabled = false
   
   #### only needed if creating from a snapshot
-  ##snapshot_identifier = "${local.name_prefix}-maindb"
+  ##snapshot_identifier = "${local.name_prefix_unique_short}-maindb"
 
   vpc_security_group_ids = [
     "${aws_security_group.maindb.id}"
@@ -193,7 +195,7 @@ resource "aws_db_instance" "maindb" {
   maintenance_window          = "Sat:03:00-Sat:06:00"
   skip_final_snapshot         = false
   copy_tags_to_snapshot       = true
-  final_snapshot_identifier   = "${local.name_prefix}-${local.db-name}-predestroy-final-snapshot"
+  final_snapshot_identifier   = "${local.name_prefix_unique_short}-${local.db-name}-predestroy-final-snapshot"
 
   performance_insights_enabled          = false
 
@@ -212,7 +214,7 @@ resource "aws_db_instance" "maindb" {
     local.instance_tags_schedule_start,
     local.instance_tags_retention,
     map(
-      "Name", "${local.name_prefix}-${local.db-name}"
+      "Name", "${local.db-identifier-prefix-long}-${random_id.maindb-optiongroup.hex}"
     )
   )}"
 

@@ -8,18 +8,19 @@ provider "aws" {
 ################################################
 
 locals {
-  default_name_prefix = "${var.project_name}"
-  name_prefix = "${lower(join("",list(
-    replace(var.resources_name_prefix != "" ? var.resources_name_prefix : local.default_name_prefix,"_","-"),
-    replace((terraform.workspace != "default" ? terraform.workspace : ""),"_","-")
+  name_prefix = "${lower(join("-",list(
+    replace(var.base_name_prefix_unique_short,"_","-"),
+    replace(var.resources_name_prefix,"_","-"),
+    replace((terraform.workspace != "default" ? terraform.workspace : "master"),"_","-")
     ))
   )}"
   
-  name_prefix_noworkspace = "${lower(join("",list(
-    replace(var.resources_name_prefix != "" ? var.resources_name_prefix : local.default_name_prefix,"_","-")
+  name_prefix_noworkspace = "${lower(join("-",list(
+    replace(var.base_name_prefix_unique_short,"_","-"),
+    replace(var.resources_name_prefix,"_","-")
     ))
   )}"
-
+  
   awskeypair_internal_node = "${var.base_internalnode_key_name}"
 
   ## if we want to stick to the same AMI for sure

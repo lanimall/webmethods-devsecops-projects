@@ -10,7 +10,7 @@ Based on that, we'll need to provide some info to our current (and future) terra
 
 In order to automatically set the right variables needed by our environment, simply execute:
 
-```
+```bash
 . ../../../common/cloud-base/tfexpanded/setenv-base.sh
 ```
 
@@ -21,3 +21,7 @@ Now, you can create the environment:
 ```bash
 terraform init && terraform apply
 ```
+
+## Continue with ansible portion
+
+Now, the servers and related cloud artifacts are created, continue with the [Main Instructions](../README.md)

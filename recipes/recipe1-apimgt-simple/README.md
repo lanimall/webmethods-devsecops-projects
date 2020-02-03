@@ -15,50 +15,13 @@ open https://commandcentral.$resources_external_dns_apex/
 
 Where resources_external_dns_apex is the value defined in the base terraform project.
 
-## Prepping steps
+## Cloud Provisoning steps
 
-First, make sure you have moved all the new code to the management server.
+Refer to [Terraform Instructions](./cloudops/README.md)
 
-Then, connect to the management server (through bastion)
+## Product Provisioning steps
 
-```bash
-ssh <bastion ip>
-ssh <mgt server ip>
-```
-
-Finally, run the sysprep playbook to initialize the newly-created servers.
-
-```bash
-cd ~/webmethods-provisioning/webmethods-devops-ansible
-ansible-playbook -i inventory sagenv-sysprep-all.yaml
-```
-
-Note: This playbook should be run only when a new server is recreated...or if some settings must be changed.
-
-## Provisioning the components
-
-Now, we can provision the various products and configs by simply running.
-NOTE: We load extra variables to define general values (ie. repos to use, etc...)
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml"
-```
-
-Or using nohup (more reliable if you lose your connection etc...)
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" &> ~/nohup-sagenv-stack-recipe1-apimgt-simple.out &
-```
-
-Check progress:
-
-```bash
-tail -f ~/nohup-sagenv-stack-recipe1-apimgt-simple.out
-```
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-provision-concurrent.yaml --extra-vars '{"extravars_filepath":"vars/recipe1-apimgt-simple.yaml"}'
-```
+Refer to [Ansible Instructions](./ansible/README.md)
 
 ## Accessing the UIs
 
@@ -88,57 +51,17 @@ Api portal:
 open https://$resources_name_prefix-apiportal.$resources_external_dns_apex
 ```
 
+Api Integration Server:
+
+```bash
+open https://$resources_name_prefix-apiintegration1.$resources_external_dns_apex
+```
+
 NOTE: These urls are not added to any public DNS at this time... so you'll need to make sure you add them in your local machine's host file to be able to access them.
 
+A command that should work on linux-based systems:
+
 ```bash
-export AWS_MAIN_ALB=0.0.0.0
+export AWS_MAIN_ALB=$(dig +short sagdemo-main-public-alb-386813943.us-east-2.elb.amazonaws.com | head -n 1)
 echo $AWS_MAIN_ALB $resources_name_prefix-apigateway-ui.$resources_external_dns_apex $resources_name_prefix-apigateway-runtime.$resources_external_dns_apex $resources_name_prefix-apiportal.$resources_external_dns_apex
-```
-
-## Some extra helpful commands
-
-### Running only specific tasks in playbook
-
-##### Just api gateway
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apigateway.out &
-```
-
-##### Just api portal
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apiportal.out &
-```
-
-##### Just integration server
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-integrationserver.out &
-```
-
-#### Skipping specific tasks
-
-For example, running the playbook but only for the pre and post install tasks (ie. server settings and service installs etc...)
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway --skip-tags cce_provisioning.install
 ```

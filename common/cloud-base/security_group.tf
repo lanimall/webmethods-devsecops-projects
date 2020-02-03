@@ -4,7 +4,7 @@ output "aws_security_group_common-internal" {
 
 //  Security group which allows SSH/RDP access to a host from specific internal servers
 resource "aws_security_group" "common-internal" {
-  name        = "${local.name_prefix}-common-internal"
+  name        = "${local.name_prefix_unique_short}-common-internal"
   description = "Security group for common internal rules (ssh, rdp)"
   vpc_id      = "${aws_vpc.main.id}"
 
@@ -52,14 +52,14 @@ resource "aws_security_group" "common-internal" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-Common Internal",
+      "Name", "${local.name_prefix_long}-Common Internal",
       "az", "all"
     )
   )}"
 }
 
 resource "aws_security_group" "main-public-alb" {
-  name        = "${local.name_prefix}-main-public-alb"
+  name        = "${local.name_prefix_unique_short}-main-public-alb"
   description = "Incoming public web traffic"
   vpc_id      = "${aws_vpc.main.id}"
 
@@ -88,7 +88,7 @@ resource "aws_security_group" "main-public-alb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main-public-alb",
+      "Name", "${local.name_prefix_long}-main-public-alb",
       "az", lookup(var.azs, var.region)
     )
   )}"

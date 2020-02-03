@@ -19,24 +19,27 @@ resource "aws_key_pair" "bastion" {
   public_key = "${file(local.awskeypair_bastion_keypath)}"
 }
 
+resource "random_id" "main" {
+  keepers {
+    vpc_id = "${aws_vpc.main.id}"
+    tf_state = "${terraform.workspace}"
+  }
+  byte_length = 4
+}
+
 locals {
   vpc_cidr= "${var.vpc_cidr_prefix}.${var.vpc_cidr_suffix}"
-  
-  default_name_prefix = "${var.project_name}"
-  name_prefix = "${lower(join("",list(
-    replace(var.resources_name_prefix != "" ? var.resources_name_prefix : local.default_name_prefix,"_","-"),
-    replace((terraform.workspace != "default" ? terraform.workspace : ""),"_","-")
+  name_prefix_unique_short = "${random_id.main.hex}"
+  name_prefix_long = "${lower(join("-",list(
+    replace(var.resources_name_prefix,"_","-"),
+    replace((terraform.workspace != "default" ? terraform.workspace : "master"),"_","-")
     ))
   )}"
-  
-  name_prefix_noworkspace = "${lower(join("",list(
-    replace(var.resources_name_prefix != "" ? var.resources_name_prefix : local.default_name_prefix,"_","-")
-    ))
-  )}"
+  name_prefix_short = "${lower(replace(var.resources_name_prefix,"_","-"))}"
 
-  awskeypair_bastion_node = "${local.name_prefix_noworkspace}-${var.bastion_key_name}"
+  awskeypair_bastion_node = "${local.name_prefix_unique_short}-${var.bastion_key_name}"
   awskeypair_bastion_keypath = "${var.local_secrets_dir}/${var.bastion_publickey_path}"
-  awskeypair_internal_node = "${local.name_prefix_noworkspace}-${var.internalnode_key_name}"
+  awskeypair_internal_node = "${local.name_prefix_unique_short}-${var.internalnode_key_name}"
   awskeypair_internal_keypath = "${var.local_secrets_dir}/${var.internalnode_publickey_path}"
 
   lb_ssl_cert_key = "${var.local_secrets_dir}/${var.lb_ssl_cert_key}"

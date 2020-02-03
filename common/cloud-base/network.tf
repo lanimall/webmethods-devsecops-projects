@@ -9,7 +9,7 @@ resource "aws_vpc" "main" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main"
+      "Name", "${local.name_prefix_long}-main"
     )
   )}"
 }
@@ -25,7 +25,7 @@ resource "aws_internet_gateway" "main" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main"
+      "Name", "${local.name_prefix_long}-main"
     )
   )}"
 }
@@ -41,7 +41,7 @@ resource "aws_route_table" "public" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-public"
+      "Name", "${local.name_prefix_long}-public"
     )
   )}"
 }
@@ -70,7 +70,7 @@ resource "aws_route_table" "private" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-private-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-private-AZ${count.index+1}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
   )}"
@@ -93,7 +93,7 @@ resource "aws_eip" "NATGW" {
   vpc = true
 
   tags = {
-    Name = "${local.name_prefix}-natgw-az${count.index+1}"
+    Name = "${local.name_prefix_long}-natgw-az${count.index+1}"
   }
 }
 
@@ -107,7 +107,7 @@ resource "aws_nat_gateway" "NATGW" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-natgw-az${count.index+1}",
+      "Name", "${local.name_prefix_long}-natgw-az${count.index+1}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
   )}"
@@ -143,7 +143,7 @@ resource "aws_subnet" "COMMON_DMZ" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${var.subnet_shortname_dmz}-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-${var.subnet_shortname_dmz}-AZ${count.index+1}",
       "ShortName", "${var.subnet_shortname_dmz}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
@@ -167,7 +167,7 @@ resource "aws_subnet" "COMMON_DATA" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${var.subnet_shortname_data}-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-${var.subnet_shortname_data}-AZ${count.index+1}",
       "ShortName", "${var.subnet_shortname_data}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
@@ -195,7 +195,7 @@ resource "aws_subnet" "COMMON_MGT" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${var.subnet_shortname_management}-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-${var.subnet_shortname_management}-AZ${count.index+1}",
       "ShortName", "${var.subnet_shortname_management}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
@@ -220,7 +220,7 @@ resource "aws_subnet" "COMMON_WEB" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${var.subnet_shortname_web}-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-${var.subnet_shortname_web}-AZ${count.index+1}",
       "ShortName", "${var.subnet_shortname_web}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )
@@ -243,7 +243,7 @@ resource "aws_subnet" "COMMON_APPS" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-${var.subnet_shortname_apps}-AZ${count.index+1}",
+      "Name", "${local.name_prefix_long}-${var.subnet_shortname_apps}-AZ${count.index+1}",
       "ShortName", "${var.subnet_shortname_apps}",
       "az", element(split(",", lookup(var.azs, var.region)),count.index)
     )

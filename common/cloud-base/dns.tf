@@ -1,4 +1,17 @@
 
+output "dns-main-external-apex" {
+  value = "${local.dns_main_external_apex}"
+}
+
+output "dns-main-internal-apex" {
+  value = "${local.dns_main_internal_apex}"
+}
+
+locals {
+  dns_main_external_apex   = "${substr(aws_route53_zone.main-external.name, 0, length(aws_route53_zone.main-external.name) - 1)}"
+  dns_main_internal_apex   = "${substr(aws_route53_zone.main-internal.name, 0, length(aws_route53_zone.main-internal.name) - 1)}"
+}
+
 resource "aws_route53_zone" "main-external" {
   name = "${var.resources_external_dns_apex}"
   comment = "Main Public DNS for demo project [${var.project_name}] - Managed by Terraform"
@@ -7,7 +20,7 @@ resource "aws_route53_zone" "main-external" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-Main External Public DNS"
+      "Name", "${local.name_prefix_long}-Main External Public DNS"
     )
   )}"
 }
@@ -24,7 +37,7 @@ resource "aws_route53_zone" "main-internal" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-Main Internal DNS"
+      "Name", "${local.name_prefix_long}-Main Internal DNS"
     )
   )}"
 }

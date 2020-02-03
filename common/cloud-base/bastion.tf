@@ -33,7 +33,7 @@ resource "aws_eip" "bastion" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
+      "Name", "${local.name_prefix_long}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
       "az", "${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}"
     )
   )}"
@@ -85,7 +85,7 @@ resource "aws_security_group" "bastion" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-bastion"
+      "Name", "${local.name_prefix_long}-bastion"
     )
   )}"
 }
@@ -121,7 +121,7 @@ resource "aws_instance" "bastion-linux" {
     local.common_tags,
     local.common_instance_tags,
     map(
-      "Name", "${local.name_prefix}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
+      "Name", "${local.name_prefix_long}-bastion-${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}",
       "az", "${aws_subnet.COMMON_DMZ.*.availability_zone[count.index]}"
     )
   )}"

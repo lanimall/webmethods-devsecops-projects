@@ -13,6 +13,10 @@ variable "base_main_vpc_id" {
   description = "The ID of the target VPC"
 }
 
+variable "base_name_prefix" {
+  description = "The base name prefix"
+}
+
 variable "base_resources_internal_dns_zoneid" {
   description = "Internal DNS zone"
 }

@@ -14,8 +14,8 @@ resource "aws_s3_bucket_public_access_block" "main" {
 resource "aws_s3_bucket" "main" {
   count = "${lookup(var.solution_enable, "storagefile") == "true" ? 1 : 0}"
 
-  bucket = "${local.name_prefix}-main"
-
+  bucket = "${local.name_prefix_unique_short}-main"
+  force_destroy = true
   versioning {
     enabled = true
   }
@@ -24,15 +24,19 @@ resource "aws_s3_bucket" "main" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${local.name_prefix}-main"
+      "Name", "${local.name_prefix_long}-main"
     )
   )}"
 }
 
 resource "aws_iam_policy" "sagcontent-s3-readwrite" {
-  name        = "${local.name_prefix}-sagcontent-s3-readwrite"
+  name        = "${local.name_prefix_unique_short}-sagcontent-s3-readwrite"
   path        = "/"
   description = "s3 read write policy"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   policy = <<EOF
 {
@@ -67,34 +71,34 @@ resource "aws_iam_policy" "sagcontent-s3-readwrite" {
 resource "aws_s3_bucket_object" "sag-content-images-fixes" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"
-    key    = "${local.name_prefix}/sag_content/images/fixes/.ignore"
+    key    = "${local.name_prefix_long}/sag_content/images/fixes/.ignore"
     source = "${file("${path.cwd}/helper_scripts/empty")}"
 }
 
 resource "aws_s3_bucket_object" "sag-content-images-products" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"
-    key    = "${local.name_prefix}/sag_content/images/products/.ignore"
+    key    = "${local.name_prefix_long}/sag_content/images/products/.ignore"
     source = "${file("${path.cwd}/helper_scripts/empty")}"
 }
 
 resource "aws_s3_bucket_object" "sag-content-installers" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"
-    key    = "${local.name_prefix}/sag_content/installers/.ignore"
+    key    = "${local.name_prefix_long}/sag_content/installers/.ignore"
     source = "${file("${path.cwd}/helper_scripts/empty")}"
 }
 
 resource "aws_s3_bucket_object" "sag-content-licenses" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"
-    key    = "${local.name_prefix}/sag_content/licenses/.ignore"
+    key    = "${local.name_prefix_long}/sag_content/licenses/.ignore"
     source = "${file("${path.cwd}/helper_scripts/empty")}"
 }
 
 resource "aws_s3_bucket_object" "devops-content" {
     bucket = "${aws_s3_bucket.main.id}"
     acl    = "private"
-    key    = "${local.name_prefix}/devops_content/.ignore"
+    key    = "${local.name_prefix_long}/devops_content/.ignore"
     source = "${file("${path.cwd}/helper_scripts/empty")}"
 }
