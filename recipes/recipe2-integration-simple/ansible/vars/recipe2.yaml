@@ -1,0 +1,14 @@
+---
+
+## Products / Fixes Repository
+cce_provisioning_products_repo_sdc: "webMethods-10.5"
+cce_provisioning_fixes_repo_sdc: "Empower"
+cce_provisioning_products_repo_universalmessaging: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_universalmessaging: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_integrationserver: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_integrationserver: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_terracotta: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_terracotta: "{{ cce_provisioning_fixes_repo_sdc }}"
+
+## Provisoning Specifics
+cce_provisioning_is_administrator_password: "SomeStrongPwd123!"

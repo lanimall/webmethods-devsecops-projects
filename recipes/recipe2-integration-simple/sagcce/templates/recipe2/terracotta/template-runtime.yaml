@@ -1,0 +1,102 @@
+alias: recipe2-terracotta-runtime
+description: Terracotta Big Memory server
+
+environments:
+  default:
+    release.major:        10   
+    os.platform:          lnxamd64   
+    repo.product:         ${}
+    repo.fix:             ${}
+    nodes:                ${}
+
+    # TC Server Instance Configuration
+    tc.key.license.alias: ${}
+    tc.instance.name:    tcserver     ## not used...using host for name too
+    tc.tsa.port:         9510
+    tc.jmx.port:         9520
+    tc.grp.port:         9530
+    tc.mgt.port:         9540
+    tc.memory.init:      1024               # minimil memory configuration
+    tc.memory.max:       2048               # minimal memory configuration
+    tc.storage.size:     20g
+    tc.offheap.size:     1g
+    tc.fixes:            ${}       
+    tc.data.dir:         ../data
+    tc.backup.dir:       ../backup
+    tc.logs.dir:         ../logs
+    tc.index.dir:        ../index
+
+layers:
+  default:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+  runtime:
+    templates: tc-runtime
+
+templates:
+  tc-runtime:
+    licenses:
+      "Terracotta/terracotta-license.key": "${tc.key.license.alias}"
+    fixes: ${tc.fixes}
+    products:
+      TES:
+        default:
+          configuration:
+            TES-default:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${tc.memory.init}
+                  MaxSize:  ${tc.memory.max}
+              TC-SERVER-NAME:
+                TC-SERVER-NAME:
+                  serverName: ${node.alias}
+              TC-CONFIG:
+                TC-CONFIG: |
+                  <?xml version="1.0" encoding="UTF-8" ?>
+                  <tc:tc-config
+                    xmlns:tc="http://www.terracotta.org/config"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-9.xsd">
+                    <servers>
+                      <server name="${node.alias}" host="${node.host}">
+                        <data>${tc.data.dir}</data>
+                        <logs>${tc.logs.dir}</logs>
+                        <index>${tc.index.dir}</index>
+                        <data-backup>${tc.backup.dir}</data-backup>
+                        <tsa-port>${tc.tsa.port}</tsa-port>
+                        <jmx-port>${tc.jmx.port}</jmx-port>
+                        <tsa-group-port>${tc.grp.port}</tsa-group-port>
+                        <management-port>${tc.mgt.port}</management-port>
+                        <dataStorage size="${tc.storage.size}">
+                           <offheap size="${tc.offheap.size}"/>
+                           <hybrid/>
+                        </dataStorage>
+                      </server>
+                      <update-check>
+                          <enabled>false</enabled>
+                          <period-days>10</period-days>
+                      </update-check>
+                      <garbage-collection>
+                          <enabled>false</enabled>
+                          <verbose>false</verbose>
+                          <interval>3600</interval>
+                      </garbage-collection>
+                      <restartable enabled="true"/>
+                      <client-reconnect-window>120</client-reconnect-window>
+                    </servers>
+                  </tc:tc-config>
+
+provision:
+  default:
+    runtime: ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

@@ -6,7 +6,7 @@
 
 - import_playbook: ../../sagenv-common-webmethods.yaml
   vars:
-    cce_provisioning_target_hostgroups: apigateway
+    cce_provisioning_target_hostgroups: recipe1_apigateway
     cce_provisioning_template: recipe1-apimgt-simple/apigateway/template.yaml
     cce_provisioning_properties: recipe1-apimgt-simple-apigateway
     cce_provisioning_installed_product_names: apigateway

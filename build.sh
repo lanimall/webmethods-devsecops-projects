@@ -65,3 +65,4 @@ fi
 
 ### build the sub projects
 /bin/bash $BASEDIR/recipes/recipe1-apimgt-simple/build.sh
+/bin/bash $BASEDIR/recipes/recipe2-integration-simple/build.sh

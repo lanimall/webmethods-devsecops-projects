@@ -1,0 +1,19 @@
+---
+
+################################################################
+## Terracotta
+################################################################
+
+- import_playbook: playbooks/recipe2/terracotta.yaml
+
+################################################################
+## Universal Messaging
+################################################################
+
+- import_playbook: playbooks/recipe2/universalmessaging.yaml
+
+################################################################
+## Integration Server provisioning
+################################################################
+
+- import_playbook: playbooks/recipe2/integration.yaml

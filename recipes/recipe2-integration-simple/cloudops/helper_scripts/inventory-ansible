@@ -1,0 +1,27 @@
+[all_linux:children]
+recipe2_terracotta
+recipe2_universalmessaging
+recipe2_integration
+
+[all_webmethods:children]
+recipe2_terracotta
+recipe2_universalmessaging
+recipe2_integration
+
+[terracotta:children]
+recipe2_terracotta
+
+[universalmessaging:children]
+recipe2_universalmessaging
+
+[integration:children]
+recipe2_integration
+
+[recipe2_terracotta]
+recipe2_terracotta1 ansible_host=${hostname_terracotta1} dns_internal=${dns_terracotta1}
+
+[recipe2_universalmessaging]
+recipe2_universalmessaging1 ansible_host=${hostname_universalmessaging1} dns_internal=${dns_universalmessaging1}
+
+[recipe2_integration]
+recipe2_integration1 ansible_host=${hostname_integration1} dns_internal=${dns_integration1}

@@ -1,0 +1,74 @@
+alias: recipe2-universalmessaging-runtime
+description: Universal Messaging realm server
+
+environments:
+  default:
+    release.major:        10   
+    os.platform:          lnxamd64   
+    repo.product:         ${}
+    repo.fix:             ${}
+    nodes:                ${}
+    um.key.license.alias: ${}                # REQUIRED: license key
+    um.fixes:             ${}
+
+    um.instance.name:    umserver           # instance name
+    um.instance.port:    9000               # primary port
+    um.jmx.port:         9988               # jmx port
+    um.memory.init:      1024               # memory configuration
+    um.memory.max:       2048               # memory configuration
+    um.memory.direct:    1G                 # memory configuration
+
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:
+      - um-server
+
+templates:
+  um-server:
+    licenses:
+      "UniversalMessaging/server/templates/licence.xml": "${um.key.license.alias}"
+    fixes: ${um.fixes}
+    products:
+      NUMRealmServer:
+        ${um.instance.name}:                                       # instance name is different from realm
+          instance.port: ${um.instance.port}                       # instance port
+          instance.ip:   ${node.host}                              # bind to node's host name
+          node.alias:    ${um.instance.name}
+          license.file:  UniversalMessaging/server/templates/licence.xml
+          runtimeComponentId: Universal-Messaging-${um.instance.name} # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${um.instance.name}: 
+              COMMON-MEMORY: 
+                COMMON-MEMORY:                                     
+                  InitSize: ${um.memory.init}
+                  MaxSize:  ${um.memory.max}
+                  ExtendedProperties:                              
+                    Property: 
+                      - 
+                       "@name": "-XX:MaxDirectMemorySize"
+                       $: ${um.memory.direct}
+              COMMON-JAVASYSPROPS: 
+                COMMON-JAVASYSPROPS:  
+                   REALM: ${um.instance.name}                             # IMPORTANT: this can only be set before first startup
+                   com.sun.management.jmxremote.port: ${um.jmx.port}
+                   com.sun.management.jmxremote.authenticate: false
+                   com.sun.management.jmxremote.ssl: false
+                   CORE_SPIN: false
+
+provision:
+  default:
+    runtime: ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

@@ -1,0 +1,35 @@
+alias: recipe2-universalmessaging-content
+description: Universal Messaging realm cluster
+
+environments:
+  default:
+    um.instance.name:    umserver           # instance name
+    
+    ##UM content
+    um.jndi.cf.name1:      ${}
+    um.jndi.cf.name1.url:       ${}
+
+layers:
+  runtime:
+    templates:
+      - um-content
+
+templates:
+  um-content:
+    descripton: Creating UM content
+    products:
+      NUMRealmServer:
+        ${um.instance.name}:                                              # instance name is different from realm
+          runtimeComponentId: Universal-Messaging-${um.instance.name}        # hint for CC to skip instance creation if it exists
+          configuration:
+            Universal-Messaging-${um.instance.name}: 
+              UM-JNDI-CF:                                                 ## JNDI connection factories for JMS
+                UM-JNDI-CF-${um.jndi.cf.name1}:
+                  name: ${um.jndi.cf.name1}
+                  type: ConnectionFactory
+                  url: ${um.jndi.cf.name1.url}
+                  durableType: Shared
+
+provision:
+  default:
+    runtime:  ${nodes}

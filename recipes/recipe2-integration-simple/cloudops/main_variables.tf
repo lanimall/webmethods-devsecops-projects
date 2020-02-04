@@ -1,18 +1,20 @@
 variable "project_name" {
   description = "Project Name"
-  default = "Software AG Government Solutions Demo Cloud"
+  default = "Recipe2 - Software AG Integration simple"
 }
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
-  default = "recipe1"
+  default = "recipe2"
 }
 
 variable solution_enable {
   description = "create or delete a solution stack"
   default = {
-    "solution1"  = "true"
-    "solution2"  = "true"
+    "management"  = "true"
+    "caching"  = "true"
+    "integration" = "true"
+    "messaging" = "true"
    }
 }
 
