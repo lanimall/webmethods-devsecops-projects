@@ -20,7 +20,7 @@ resource "aws_route53_record" "integration-a-record" {
     count = "${lookup(var.solution_enable, "integration") == "true" ? var.instancecount_integration : 0}"
 
     zone_id = "${data.aws_route53_zone.main-internal.zone_id}"
-    name = "${local.name_prefix}-integration${count.index+1}.${data.aws_route53_zone.main-internal.name}"
+    name = "${local.name_prefix_unique_short}-integration${count.index+1}.${data.aws_route53_zone.main-internal.name}"
     type = "A"
     ttl  = 300
     records = [
@@ -73,7 +73,7 @@ resource "aws_instance" "integration" {
 }
 
 resource "aws_lb_target_group_attachment" "is-runtime" {
-  count = "${lookup(var.solution_enable, "integration") == "true" ? var.instancecount_apigateway : 0}"
+  count = "${lookup(var.solution_enable, "integration") == "true" ? var.instancecount_integration : 0}"
   
   target_group_arn = "${aws_lb_target_group.is-runtime.arn}"
   target_id        = "${element(aws_instance.integration.*.id, count.index)}"
@@ -116,7 +116,7 @@ resource "aws_lb_target_group" "is-runtime" {
 }
 
 resource "aws_alb_listener_rule" "is-runtime" {
-  count = "${lookup(var.solution_enable, "integration") == "true" ? 1 : 0}"
+  count = "${lookup(var.solution_enable, "integration") == "true" ? var.instancecount_integration : 0}"
   
   listener_arn = "${data.aws_lb_listener.main-public-alb-https.arn}"
   
@@ -127,7 +127,7 @@ resource "aws_alb_listener_rule" "is-runtime" {
   
   condition {
     host_header {
-      values = ["${local.name_prefix}-apiintegration1.${local.dns_main_external_apex}"]
+      values = ["${local.name_prefix_unique_short}-integration${count.index+1}.${local.dns_main_external_apex}"]
     }
   }
 }

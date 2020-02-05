@@ -21,7 +21,7 @@ resource "aws_route53_record" "apiportal-a-record" {
     count = "${lookup(var.solution_enable, "apiportal") == "true" ? var.instancecount_apiportal : 0}"
     
     zone_id = "${data.aws_route53_zone.main-internal.zone_id}"
-    name = "apiportal.${data.aws_route53_zone.main-internal.name}"
+    name = "${local.name_prefix_unique_short}-apiportal${count.index+1}.${data.aws_route53_zone.main-internal.name}"
     type = "A"
     ttl  = 300
     records = [
@@ -118,7 +118,7 @@ resource "aws_lb_target_group" "apiportal" {
 }
 
 resource "aws_alb_listener_rule" "apiportal" {
-  count = "${lookup(var.solution_enable, "apiportal") == "true" ? 1 : 0}"
+  count = "${lookup(var.solution_enable, "apiportal") == "true" ? var.instancecount_apiportal : 0}"
   
   listener_arn = "${data.aws_lb_listener.main-public-alb-https.arn}"
   
@@ -129,7 +129,7 @@ resource "aws_alb_listener_rule" "apiportal" {
 
   condition {
     host_header {
-      values = ["${local.name_prefix}-apiportal.${local.dns_main_external_apex}"]
+      values = ["${local.name_prefix_unique_short}-apiportal${count.index+1}.${local.dns_main_external_apex}"]
     }
   }
 }

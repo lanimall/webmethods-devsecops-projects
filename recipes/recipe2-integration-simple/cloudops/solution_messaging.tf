@@ -20,7 +20,7 @@ resource "aws_route53_record" "universalmessaging-a-record" {
     count = "${lookup(var.solution_enable, "messaging") == "true" ? var.instancecount_universalmessaging : 0}"
 
     zone_id = "${data.aws_route53_zone.main-internal.zone_id}"
-    name = "${local.name_prefix}-universalmessaging${count.index+1}.${data.aws_route53_zone.main-internal.name}"
+    name = "${local.name_prefix_unique_short}-universalmessaging${count.index+1}.${data.aws_route53_zone.main-internal.name}"
     type = "A"
     ttl  = 300
     records = [
