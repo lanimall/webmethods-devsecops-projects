@@ -6,9 +6,6 @@ data "template_file" "inventory-ansible" {
     dns_integration1 = "${aws_route53_record.integration-a-record.0.name}"
     hostname_integration1 = "${aws_instance.integration.0.private_dns}"
 
-    dns_mws1 = "${aws_route53_record.mws-a-record.0.name}"
-    hostname_mws1 = "${aws_instance.mws.0.private_dns}"
-
     dns_terracotta1 = "${aws_route53_record.terracotta-a-record.0.name}"
     hostname_terracotta1 = "${aws_instance.terracotta.0.private_dns}"
 
@@ -19,5 +16,5 @@ data "template_file" "inventory-ansible" {
 
 resource "local_file" "inventory-ansible" {
   content     = "${data.template_file.inventory-ansible.rendered}"
-  filename = "${path.cwd}/tfexpanded/${local.name_prefix}-inventory-ansible"
+  filename = "${path.cwd}/tfexpanded/inventory-ansible"
 }

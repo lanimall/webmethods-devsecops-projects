@@ -1,4 +1,4 @@
-alias: sag-integrationserver
+alias: recipe1-integrationserver
 description: Software AG Integration Server with built-in DB
 
 environments:

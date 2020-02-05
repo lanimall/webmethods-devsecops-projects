@@ -1,4 +1,4 @@
-alias: sag-integrationserver-extdb
+alias: recipe1-integrationserver-extdb
 description: Software AG Integration Server with External DB
 
 environments:

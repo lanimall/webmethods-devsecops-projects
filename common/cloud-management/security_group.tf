@@ -46,7 +46,7 @@ resource "aws_security_group" "webmethods-commandcentral" {
 
   ingress {
     from_port   = 8090
-    to_port     = 8091
+    to_port     = 8093
     protocol    = "tcp"
     cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
   }

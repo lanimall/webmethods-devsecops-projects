@@ -1,4 +1,4 @@
-alias: sag-apigateway-standalone
+alias: recipe1-apigateway-standalone
 description: API Gateway provisioning for standalone configuration
 
 environments:
