@@ -1,25 +1,21 @@
 output "aws_security_group_common-internal" {
-  value = "${aws_security_group.common-internal.id}"
+  value = aws_security_group.common-internal.id
 }
 
 //  Security group which allows SSH/RDP access to a host from specific internal servers
 resource "aws_security_group" "common-internal" {
   name        = "${local.name_prefix_unique_short}-common-internal"
   description = "Security group for common internal rules (ssh, rdp)"
-  vpc_id      = "${aws_vpc.main.id}"
+  vpc_id      = aws_vpc.main.id
 
-  depends_on = [
-    "aws_instance.bastion-linux"
-  ]
+  depends_on = [aws_instance.bastion-linux]
 
   //  SSH
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [
-      "${aws_subnet.COMMON_MGT.*.cidr_block}"
-    ]
+    cidr_blocks = aws_subnet.COMMON_MGT.*.cidr_block
   }
 
   //RDP
@@ -27,9 +23,7 @@ resource "aws_security_group" "common-internal" {
     from_port   = 3389
     to_port     = 3389
     protocol    = "tcp"
-    cidr_blocks = [
-      "${aws_subnet.COMMON_MGT.*.cidr_block}"
-    ]
+    cidr_blocks = aws_subnet.COMMON_MGT.*.cidr_block
   }
 
   //  HTTP
@@ -49,19 +43,19 @@ resource "aws_security_group" "common-internal" {
   }
 
   //  Use our common tags and add a specific name.
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
-    map(
-      "Name", "${local.name_prefix_long}-Common Internal",
-      "az", "all"
-    )
-  )}"
+    {
+      "Name" = "${local.name_prefix_long}-Common Internal"
+      "az"   = "all"
+    },
+  )
 }
 
 resource "aws_security_group" "main-public-alb" {
   name        = "${local.name_prefix_unique_short}-main-public-alb"
   description = "Incoming public web traffic"
-  vpc_id      = "${aws_vpc.main.id}"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
     from_port   = 80
@@ -81,15 +75,16 @@ resource "aws_security_group" "main-public-alb" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${aws_vpc.main.cidr_block}"]
+    cidr_blocks = [aws_vpc.main.cidr_block]
   }
 
   //  Use our common tags and add a specific name.
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
-    map(
-      "Name", "${local.name_prefix_long}-main-public-alb",
-      "az", lookup(var.azs, var.region)
-    )
-  )}"
+    {
+      "Name" = "${local.name_prefix_long}-main-public-alb"
+      "az"   = var.azs[var.region]
+    },
+  )
 }
+

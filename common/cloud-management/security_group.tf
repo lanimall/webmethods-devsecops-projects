@@ -4,24 +4,24 @@
 resource "aws_security_group" "devops-management" {
   name        = "${local.name_prefix_unique_short}-devops-management"
   description = "Management server"
-  vpc_id      = "${data.aws_vpc.main.id}"
+  vpc_id      = data.aws_vpc.main.id
 
   //  SSH
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
     cidr_blocks = [
-      "${var.base_main_bastion_private_ip}/32"
+      "${var.base_main_bastion_private_ip}/32",
     ]
   }
 
   // Allow all TCP egress because we need to monitor ports from ansible etc...
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   lifecycle {
@@ -29,26 +29,26 @@ resource "aws_security_group" "devops-management" {
   }
 
   //  Use our common tags and add a specific name.
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
-    map(
-      "Name", "${local.name_prefix}-devops-management",
-      "az", "all"
-    )
-  )}"
+    {
+      "Name" = "${local.name_prefix}-devops-management"
+      "az"   = "all"
+    },
+  )
 }
 
 ###### COMMAND CENTRAL ###### 
 resource "aws_security_group" "webmethods-commandcentral" {
   name        = "${local.name_prefix_unique_short}-wm-commandcentral"
   description = "Command Central"
-  vpc_id      = "${data.aws_vpc.main.id}"
+  vpc_id      = data.aws_vpc.main.id
 
   ingress {
     from_port   = 8090
     to_port     = 8093
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   ## SPM communication outbound
@@ -56,7 +56,7 @@ resource "aws_security_group" "webmethods-commandcentral" {
     from_port   = 8092
     to_port     = 8093
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   ## SSH comm outbound for wM component bootstrapping
@@ -64,7 +64,7 @@ resource "aws_security_group" "webmethods-commandcentral" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   ## need to ideally figure out what port it needs to access...but seems like it needs to access many of the installed products
@@ -72,15 +72,16 @@ resource "aws_security_group" "webmethods-commandcentral" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${data.aws_vpc.main.cidr_block}"]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
- 
+
   //  Use our common tags and add a specific name.
-  tags = "${merge(
+  tags = merge(
     local.common_tags,
-    map(
-      "Name", "${local.name_prefix}-webMethods Command Central",
-      "az", "all"
-    )
-  )}"
+    {
+      "Name" = "${local.name_prefix}-webMethods Command Central"
+      "az"   = "all"
+    },
+  )
 }
+

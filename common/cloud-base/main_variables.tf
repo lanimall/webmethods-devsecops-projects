@@ -1,61 +1,61 @@
 variable "project_name" {
   description = "Project Name"
-  default = "Software AG Government Solutions DevSecOps Cloud Demo"
+  default     = "Software AG Government Solutions DevSecOps Cloud Demo"
 }
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
-  default = "sagdemo"
+  default     = "sagdemo"
 }
 
-variable solution_enable {
+variable "solution_enable" {
   description = "create or delete a solution stack"
   default = {
-    "storagedb" = "false"
+    "storagedb"   = "false"
     "storagefile" = "true"
-    "common" = "true"
-   }
+    "common"      = "true"
+  }
 }
 
 variable "project_provisioning_type" {
   description = "type of Provisioning"
-  default = "terraform"
+  default     = "terraform"
 }
 
 variable "project_provisioning_git" {
   description = "project provisoning git url"
-  default = "https://github.com/lanimall/webMethods-devops-terraform.git"
+  default     = "https://github.com/lanimall/webMethods-devops-terraform.git"
 }
 
 variable "project_owners" {
   description = "Project identifying owners"
-  default = "Fabien Sanglier"
+  default     = "Fabien Sanglier"
 }
 
 variable "project_organization" {
   description = "Project identifying organization"
-  default = "Software AG Government Solutions"
+  default     = "Software AG Government Solutions"
 }
 
 variable "resources_external_dns_apex" {
   description = "External DNS zone"
-  default = "devsecops.clouddemos.saggov.com"
+  default     = "devsecops.clouddemos.saggov.com"
 }
 
 variable "resources_internal_dns_apex" {
   description = "Internal DNS zone"
-  default = "devsecops.clouddemos.local"
+  default     = "devsecops.clouddemos.local"
 }
 
 variable "cloud_profile" {
   description = "cloud profile to use"
-  default = "demogithub"
+  default     = "demogithub"
 }
 
 ### Region to use
 variable "region" {
   description = "region to launch servers."
-  default = "us-east-2"
+  default     = "us-east-2"
 }
 
 ### Availability zones to use per region
@@ -71,26 +71,26 @@ variable "azs" {
 ### VPC default prefix to use
 variable "vpc_cidr_prefix" {
   description = "The CIDR block main prefix"
-  default = "20.0"
+  default     = "20.0"
 }
 
 ### VPC default suffix to use
 variable "vpc_cidr_suffix" {
   description = "The CIDR block for the VPC"
-  default = "0.0/16"
+  default     = "0.0/16"
 }
 
 ### Distinct non-overalpping subnets spaces for different sizes of subnets
 ### calculated with ipcalc
 ### each /18 = 16382 hosts
-variable subnet_allocation_map_suffixes {
+variable "subnet_allocation_map_suffixes" {
   description = "Map of CIDR blocks to carve into subnets based on size"
   default = {
     "xsmall" = "0.0/18"
     "small"  = "64.0/18"
     "medium" = "128.0/18"
     "large"  = "192.0/18"
-   }
+  }
 }
 
 ### subnets sizes
@@ -101,36 +101,36 @@ variable subnet_allocation_map_suffixes {
 variable "newbit_size" {
   description = "Map the friendly name to our subnet bit mask"
   default = {
-    "xsmall" = "7" 
-    "small"  = "6" 
-    "medium" = "5" 
+    "xsmall" = "7"
+    "small"  = "6"
+    "medium" = "5"
     "large"  = "4"
   }
 }
 
 variable "subnet_shortname_dmz" {
   description = "name of the DMZ subnet"
-  default = "COMMON_DMZ"
+  default     = "COMMON_DMZ"
 }
 
 variable "subnet_shortname_management" {
   description = "name of the Management subnet"
-  default = "COMMON_MGT"
+  default     = "COMMON_MGT"
 }
 
 variable "subnet_shortname_web" {
   description = "name of the WEB subnet"
-  default = "COMMON_WEB"
+  default     = "COMMON_WEB"
 }
 
 variable "subnet_shortname_apps" {
   description = "name of the APPS subnet"
-  default = "COMMON_APPS"
+  default     = "COMMON_APPS"
 }
 
 variable "subnet_shortname_data" {
   description = "name of the DATA subnet"
-  default = "COMMON_DATA"
+  default     = "COMMON_DATA"
 }
 
 variable "timeouts" {
@@ -144,84 +144,85 @@ variable "timeouts" {
 
 ## CentOS Linux 7 x86_64 HVM EBS 1905 // owner aws-marketplace
 variable "linux_region_ami" {
-  type = "map"
+  type = map(string)
   default = {
-      us-east-1      = "ami-02eac2c0129f6376b"
-      us-east-2      = "ami-0f2b4fc905b0bd1f1"
-      us-west-1      = "ami-074e2d6769f445be5"
-      us-west-2      = "ami-01ed306a12b7d1c96"
-      ca-central-1   = "ami-033e6106180a626d0"
+    us-east-1    = "ami-02eac2c0129f6376b"
+    us-east-2    = "ami-0f2b4fc905b0bd1f1"
+    us-west-1    = "ami-074e2d6769f445be5"
+    us-west-2    = "ami-01ed306a12b7d1c96"
+    ca-central-1 = "ami-033e6106180a626d0"
   }
 }
 
 variable "linux_ami_user" {
-  type = "string"
-  default = "centos" 
+  type    = string
+  default = "centos"
 }
 
 variable "linux_os_description" {
-  type = "string"
-  default = "CentOS Linux 7 x86_64 HVM EBS" 
+  type    = string
+  default = "CentOS Linux 7 x86_64 HVM EBS"
 }
 
 ## Windows_Server-2016-English-Full-Base-2019.10.09 -- owner: amazon (801119661308)
 variable "windows_region_ami" {
-  type = "map"
+  type = map(string)
   default = {
-      us-east-1      = "ami-027a14492d667b8f5"
-      us-east-2      = "ami-0b8b049f0ac9d6ded"
-      us-west-1      = "ami-00cb62f0977a10d07"
-      us-west-2      = "ami-0df99cdd65bce4245"
-      ca-central-1   = "ami-0c7609710809ad56e"
+    us-east-1    = "ami-027a14492d667b8f5"
+    us-east-2    = "ami-0b8b049f0ac9d6ded"
+    us-west-1    = "ami-00cb62f0977a10d07"
+    us-west-2    = "ami-0df99cdd65bce4245"
+    ca-central-1 = "ami-0c7609710809ad56e"
   }
 }
 
 variable "windows_ami_user" {
-  type = "string"
-  default = "Administrator" 
+  type    = string
+  default = "Administrator"
 }
 
 variable "windows_os_description" {
-  type = "string"
-  default = "Amazon Windows 2016 Base" 
+  type    = string
+  default = "Amazon Windows 2016 Base"
 }
 
 variable "local_secrets_dir" {
   description = "local dir where the certs are saved"
-  default = "~/.mydevsecrets/webmethods-devsecops-recipes/common/cloud-base"
+  default     = "~/.mydevsecrets/webmethods-devsecops-recipes/common/cloud-base"
 }
 
 variable "bastion_key_name" {
   description = "secure bastion ssh key name"
-  default = "bastion"
+  default     = "bastion"
 }
 
 variable "bastion_publickey_path" {
   description = "My secure bastion ssh public key"
-  default = "sshkey_id_rsa_bastion.pub"
+  default     = "sshkey_id_rsa_bastion.pub"
 }
 
 variable "internalnode_key_name" {
   description = "secure bastion ssh key name"
-  default = "internalnode"
+  default     = "internalnode"
 }
 
 variable "internalnode_publickey_path" {
   description = "My secure internal ssh public key"
-  default = "sshkey_id_rsa_internalnode.pub"
+  default     = "sshkey_id_rsa_internalnode.pub"
 }
 
 variable "lb_ssl_cert_key" {
   description = "Main Load Balancer SSL Cert Private Key file"
-  default = "ssl-devsecops-clouddemos.key"
+  default     = "ssl-devsecops-clouddemos.key"
 }
 
 variable "lb_ssl_cert_pub" {
   description = "Main Load Balancer SSL Cert Public Key file"
-  default = "ssl-devsecops-clouddemos.crt"
+  default     = "ssl-devsecops-clouddemos.crt"
 }
 
 variable "lb_ssl_cert_ca" {
   description = "Main Load Balancer SSL Cert CA Cert file"
-  default = "ssl-devsecops-clouddemos-ca.crt"
+  default     = "ssl-devsecops-clouddemos-ca.crt"
 }
+
