@@ -3,7 +3,7 @@
 ################################################
 
 output "bastion-linux-public_ip" {
-  value = aws_instance.bastion-linux.*.public_ip
+  value = aws_eip.bastion.*.public_ip
 }
 
 output "bastion-linux-private_dns" {

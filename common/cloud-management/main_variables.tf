@@ -1,6 +1,13 @@
 variable "project_name" {
   description = "Project Name"
-  default     = "Software AG Government Solutions Demo Cloud"
+}
+
+variable "project_owners" {
+  description = "Project identifying owners"
+}
+
+variable "project_organization" {
+  description = "Project identifying organization"
 }
 
 variable "resources_name_prefix" {
@@ -24,16 +31,6 @@ variable "project_provisioning_type" {
 variable "project_provisioning_git" {
   description = "project provisoning git url"
   default     = "https://github.com/lanimall/webMethods-devops-terraform.git"
-}
-
-variable "project_owners" {
-  description = "Project identifying owners"
-  default     = "Fabien Sanglier"
-}
-
-variable "project_organization" {
-  description = "Project identifying organization"
-  default     = "Software AG Government Solutions"
 }
 
 variable "timeouts" {

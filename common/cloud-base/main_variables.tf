@@ -1,11 +1,17 @@
 variable "project_name" {
   description = "Project Name"
-  default     = "Software AG Government Solutions DevSecOps Cloud Demo"
 }
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
-  default     = "sagdemo"
+}
+
+variable "project_owners" {
+  description = "Project identifying owners"
+}
+
+variable "project_organization" {
+  description = "Project identifying organization"
 }
 
 variable "solution_enable" {
@@ -27,29 +33,16 @@ variable "project_provisioning_git" {
   default     = "https://github.com/lanimall/webMethods-devops-terraform.git"
 }
 
-variable "project_owners" {
-  description = "Project identifying owners"
-  default     = "Fabien Sanglier"
-}
-
-variable "project_organization" {
-  description = "Project identifying organization"
-  default     = "Software AG Government Solutions"
-}
-
 variable "resources_external_dns_apex" {
   description = "External DNS zone"
-  default     = "devsecops.clouddemos.saggov.com"
 }
 
 variable "resources_internal_dns_apex" {
   description = "Internal DNS zone"
-  default     = "devsecops.clouddemos.local"
 }
 
 variable "cloud_profile" {
   description = "cloud profile to use"
-  default     = "demogithub"
 }
 
 ### Region to use
@@ -186,11 +179,6 @@ variable "windows_os_description" {
   default = "Amazon Windows 2016 Base"
 }
 
-variable "local_secrets_dir" {
-  description = "local dir where the certs are saved"
-  default     = "~/.mydevsecrets/webmethods-devsecops-recipes/common/cloud-base"
-}
-
 variable "bastion_key_name" {
   description = "secure bastion ssh key name"
   default     = "bastion"
@@ -198,7 +186,6 @@ variable "bastion_key_name" {
 
 variable "bastion_publickey_path" {
   description = "My secure bastion ssh public key"
-  default     = "sshkey_id_rsa_bastion.pub"
 }
 
 variable "internalnode_key_name" {
@@ -208,21 +195,16 @@ variable "internalnode_key_name" {
 
 variable "internalnode_publickey_path" {
   description = "My secure internal ssh public key"
-  default     = "sshkey_id_rsa_internalnode.pub"
 }
 
 variable "lb_ssl_cert_key" {
   description = "Main Load Balancer SSL Cert Private Key file"
-  default     = "ssl-devsecops-clouddemos.key"
 }
 
 variable "lb_ssl_cert_pub" {
   description = "Main Load Balancer SSL Cert Public Key file"
-  default     = "ssl-devsecops-clouddemos.crt"
 }
 
 variable "lb_ssl_cert_ca" {
   description = "Main Load Balancer SSL Cert CA Cert file"
-  default     = "ssl-devsecops-clouddemos-ca.crt"
 }
-

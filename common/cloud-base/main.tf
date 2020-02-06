@@ -55,13 +55,13 @@ locals {
   name_prefix_short = lower(replace(var.resources_name_prefix, "_", "-"))
 
   awskeypair_bastion_node     = "${local.name_prefix_unique_short}-${var.bastion_key_name}"
-  awskeypair_bastion_keypath  = "${var.local_secrets_dir}/${var.bastion_publickey_path}"
+  awskeypair_bastion_keypath  = "${var.bastion_publickey_path}"
   awskeypair_internal_node    = "${local.name_prefix_unique_short}-${var.internalnode_key_name}"
-  awskeypair_internal_keypath = "${var.local_secrets_dir}/${var.internalnode_publickey_path}"
+  awskeypair_internal_keypath = "${var.internalnode_publickey_path}"
 
-  lb_ssl_cert_key = "${var.local_secrets_dir}/${var.lb_ssl_cert_key}"
-  lb_ssl_cert_pub = "${var.local_secrets_dir}/${var.lb_ssl_cert_pub}"
-  lb_ssl_cert_ca  = "${var.local_secrets_dir}/${var.lb_ssl_cert_ca}"
+  lb_ssl_cert_key = "${var.lb_ssl_cert_key}"
+  lb_ssl_cert_pub = "${var.lb_ssl_cert_pub}"
+  lb_ssl_cert_ca  = "${var.lb_ssl_cert_ca}"
 
   ## if we want to stick to the same AMI for sure
   base_ami_linux      = var.linux_region_ami[var.region]

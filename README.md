@@ -1,53 +1,28 @@
-# webmethods-devsecops-projects
-various infrastructure-as-code project samples that demonstrate full auto-provisioning of different webmethods environments
+# webmethods-devsecops-recipes
+
+Various infrastructure-as-code project samples that demonstrate full auto-provisioning of different webmethods environments
 
 ## Prep tasks
 
-Check out this [README](./common/README.md) for all the one-time setup tasks.
+There are a couple of one-time tasks to perform in order to access the servers and setup a command central with the right artifacts.
 
-At the end, you should have a running Command Central that's accessible and configured.
+Check out this [README](./README-Preps.md) for all the one-time setup tasks.
+
+At the end, you should have a running Command Central that's accessible and configured at URL (where $resources_external_dns_apex is the value you entered during the cloud creation of the environment)
+
+```bash
+open https://commandcentral.$resources_external_dns_apex/
+```
 
 ## Provision recipes
 
+Recipe1: 1 Api Gateway, 1 Integration Server
+Go to [Setup](./recipes/recipe1-apimgt-simple/README.md)
 
-### CICD stack (ABE, deployer)
+Recipe2: 1 Integration Server (embedded DB), Universal MEssaging, Terracotta
+Go to [Setup](./recipes/recipe2-integration-simple/README.md)
 
-Use --tags install if you don't want to re-sysprep CCE...
+Recipe3: 1 Integration Server (with backend DB), MWS (with backend DB), Universal Messaging, Terracotta
+Go to [Setup](./recipes/recipe3-integration-with-db/README.md)
 
-```
-ansible-playbook -i inventory sagenv-stack-cicd.yaml --tags install
-```
-
-or with nohup:
-```
-nohup ansible-playbook -i inventory sagenv-stack-cicd.yaml --tags install &> ~/nohup-sagenv-stack-cicd.out &
-```
-
-Sub tasks if needed:
-
-```
-ansible-playbook -i inventory sagenv-stack-cicd.yaml --tags install-abe
-ansible-playbook -i inventory sagenv-stack-cicd.yaml --tags install-deployer
-```
-
-### Gateway stack (gateway)
-
-```
-ansible-playbook -i inventory sagenv-stack-apigateway-standalone.yaml --tags install
-```
-
-or with nohup:
-```
-nohup ansible-playbook -i inventory sagenv-stack-apigateway-standalone.yaml --tags install &> ~/nohup-sagenv-stack-apigateway-standalone.out &
-```
-
-### BPMS stack
-
-```
-ansible-playbook -i inventory sagenv-stack-bpms-standalone.yaml --tags install-um
-```
-
-or with nohup:
-```
-nohup ansible-playbook -i inventory sagenv-stack-bpms-standalone.yaml --tags install-um &> ~/nohup-sagenv-stack-bpms-standalone-um.out &
-```
+etc...

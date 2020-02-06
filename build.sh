@@ -9,7 +9,7 @@ BASEDIR="$THISDIR"
 
 BUILD_DIR="$BASEDIR/build"
 
-COMMON_DIR="./common"
+COMMON_DIR="$BASEDIR/common"
 COMMON_INTERNAL_NODE_SSH_KEY="$COMMON_DIR/cloud-base/helper_scripts/sshkey_id_rsa_internalnode"
 COMMON_ANSIBLE="$COMMON_DIR/webmethods-ansible/"
 COMMON_SAGCCE="$COMMON_DIR/sagcce/"
