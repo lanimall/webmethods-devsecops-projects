@@ -58,6 +58,12 @@ resource "aws_instance" "apiportal" {
     aws_security_group.apiportal.id
   ])
 
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+  
   //  Use our common tags and add a specific name.
   tags = merge(
     local.common_tags,

@@ -58,6 +58,12 @@ resource "aws_instance" "mws" {
     [aws_security_group.mws.id],
   ])
 
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+
   //  Use our common tags and add a specific name.
   tags = merge(
     local.common_tags,
