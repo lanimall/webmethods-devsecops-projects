@@ -13,7 +13,6 @@ variable "solution_enable" {
   default = {
     "apigateway"  = "true"
     "apiportal"   = "true"
-    "integration" = "true"
   }
 }
 

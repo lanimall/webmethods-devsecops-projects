@@ -120,7 +120,7 @@ resource "aws_lb_target_group" "is-runtime" {
 }
 
 resource "aws_alb_listener_rule" "is-runtime" {
-  count = var.solution_enable["integration"] == "true" ? 1 : 0
+  count = var.solution_enable["integration"] == "true" ? var.instancecount_integration : 0
 
   listener_arn = data.aws_lb_listener.main-public-alb-https.arn
 
@@ -131,8 +131,7 @@ resource "aws_alb_listener_rule" "is-runtime" {
 
   condition {
     host_header {
-      values = ["${local.name_prefix_unique_short}-integration1.${local.dns_main_external_apex}"]
+      values = ["${local.name_prefix_unique_short}-integration${count.index + 1}.${local.dns_main_external_apex}"]
     }
   }
 }
-

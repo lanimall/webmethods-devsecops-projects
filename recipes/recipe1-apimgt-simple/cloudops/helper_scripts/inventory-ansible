@@ -1,12 +1,10 @@
 [all_linux:children]
 recipe1_apigateway
 recipe1_apiportal
-recipe1_integration
 
 [all_webmethods:children]
 recipe1_apigateway
 recipe1_apiportal
-recipe1_integration
 
 [apigateway:children]
 recipe1_apigateway
@@ -14,14 +12,8 @@ recipe1_apigateway
 [apiportal:children]
 recipe1_apiportal
 
-[integration:children]
-recipe1_integration
-
 [recipe1_apigateway]
 recipe1_apigateway1 ansible_host=${hostname_apigateway1} dns_internal=${dns_apigateway1}
 
 [recipe1_apiportal]
 recipe1_apiportal1 ansible_host=${hostname_apiportal1} dns_internal=${dns_apiportal1}
-
-[recipe1_integration]
-recipe1_integration1 ansible_host=${hostname_integration1} dns_internal=${dns_integration1}
