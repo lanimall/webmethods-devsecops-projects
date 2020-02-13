@@ -106,29 +106,14 @@ data "template_file" "setenv-base" {
   template = file("${path.cwd}/helper_scripts/setenv-base.sh")
 
   vars = {
-    region                                 = var.region
-    cloud_profile                          = var.cloud_profile
-    main_vpc_id                            = aws_vpc.main.id
-    name_prefix_unique_short               = local.name_prefix_unique_short
-    name_prefix_long                       = local.name_prefix_long
-    main_bastion_private_ip                = aws_instance.bastion-linux[0].private_ip
-    main_security_group_common-internal_id = aws_security_group.common-internal.id
-    internalnode_key_name                  = aws_key_pair.internalnode.id
-    resources_external_dns_zoneid          = aws_route53_zone.main-external.id
-    resources_external_dns_apex            = local.dns_main_external_apex
-    resources_internal_dns_zoneid          = aws_route53_zone.main-internal.id
-    resources_internal_dns_apex            = local.dns_main_internal_apex
-    main_public_alb_dns_name               = aws_lb.main-public-alb.dns_name
-    main_public_alb_id                     = aws_lb.main-public-alb.id
-    main_public_alb_https_id               = aws_lb_listener.main-public-alb-https.id
-    subnet_shortname_dmz                   = var.subnet_shortname_dmz
-    subnet_shortname_web                   = var.subnet_shortname_web
-    subnet_shortname_apps                  = var.subnet_shortname_apps
-    subnet_shortname_data                  = var.subnet_shortname_data
-    subnet_shortname_management            = var.subnet_shortname_management
-    bastion_public_ip                      = aws_eip.bastion.0.public_ip
-    bastion_user                           = local.base_ami_linux_user
-    policy_sagcontent_s3_readwrite_arn     = aws_iam_policy.sagcontent-s3-readwrite.arn
+    bastion_public_ip      = aws_eip.bastion.0.public_ip
+    bastion_user           = local.base_ami_linux_user
+    bastion_ssh_publickey_path   = replace(local.awskeypair_bastion_keypath, "~/", "$HOME/")
+    bastion_ssh_privatekey_path  = replace(local.awskeypair_bastion_privatekeypath, "~/", "$HOME/")
+    internal_ssh_publickey_path  = replace(local.awskeypair_internal_keypath, "~/", "$HOME/")
+    internal_ssh_privatekey_path = replace(local.awskeypair_internal_privatekeypath, "~/", "$HOME/")
+    s3_bucket_name               = length(aws_s3_bucket.main)>0 ? aws_s3_bucket.main[0].id : "null"
+    s3_bucket_prefix             = local.name_prefix_long
   }
 }
 
@@ -137,3 +122,16 @@ resource "local_file" "setenv-base" {
   filename = "${path.cwd}/tfexpanded/setenv-base.sh"
 }
 
+data "template_file" "setenv-s3" {
+  template = file("${path.cwd}/helper_scripts/setenv-s3.sh")
+
+  vars = {
+    s3_bucket_name               = length(aws_s3_bucket.main)>0 ? aws_s3_bucket.main[0].id : "null"
+    s3_bucket_prefix             = local.name_prefix_long
+  }
+}
+
+resource "local_file" "setenv-s3" {
+  content  = data.template_file.setenv-s3.rendered
+  filename = "${path.cwd}/tfexpanded/setenv-s3.sh"
+}

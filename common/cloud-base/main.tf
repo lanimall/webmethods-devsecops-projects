@@ -55,8 +55,11 @@ locals {
 
   awskeypair_bastion_node     = "${local.name_prefix_unique_short}-${var.bastion_key_name}"
   awskeypair_bastion_keypath  = "${var.bastion_publickey_path}"
+  awskeypair_bastion_privatekeypath  = "${var.bastion_privatekey_path}"
+
   awskeypair_internal_node    = "${local.name_prefix_unique_short}-${var.internalnode_key_name}"
   awskeypair_internal_keypath = "${var.internalnode_publickey_path}"
+  awskeypair_internal_privatekeypath = "${var.internalnode_privatekey_path}"
 
   lb_ssl_cert_key = "${var.lb_ssl_cert_key}"
   lb_ssl_cert_pub = "${var.lb_ssl_cert_pub}"

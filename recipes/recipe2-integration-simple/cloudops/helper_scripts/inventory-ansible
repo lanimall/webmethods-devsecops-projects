@@ -2,11 +2,13 @@
 recipe2_terracotta
 recipe2_universalmessaging
 recipe2_integration
+recipe2_apigateway
 
 [all_webmethods:children]
 recipe2_terracotta
 recipe2_universalmessaging
 recipe2_integration
+recipe2_apigateway
 
 [terracotta:children]
 recipe2_terracotta

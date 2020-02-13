@@ -1,5 +1,9 @@
 ############# S3 ############
 
+output "main_s3_bucket" {
+  value = aws_s3_bucket.main.*.id
+}
+
 resource "aws_s3_bucket_public_access_block" "main" {
   bucket = aws_s3_bucket.main[0].id
 

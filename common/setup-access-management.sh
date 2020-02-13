@@ -8,7 +8,7 @@ if [ -f $HOME/setenv-mgt.sh ]; then
 fi
 
 if [ "x$INTERNAL_SSH_KEY" = "x" ]; then
-    echo "error: variable BASTION_SSH_KEY is required...exiting!"
+    echo "error: variable INTERNAL_SSH_KEY is required...exiting!"
     exit 2;
 fi
 

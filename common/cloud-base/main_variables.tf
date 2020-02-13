@@ -185,6 +185,10 @@ variable "bastion_key_name" {
   default     = "bastion"
 }
 
+variable "bastion_privatekey_path" {
+  description = "My secure bastion ssh private key"
+}
+
 variable "bastion_publickey_path" {
   description = "My secure bastion ssh public key"
 }
@@ -192,6 +196,10 @@ variable "bastion_publickey_path" {
 variable "internalnode_key_name" {
   description = "secure bastion ssh key name"
   default     = "internalnode"
+}
+
+variable "internalnode_privatekey_path" {
+  description = "My secure internal ssh private key"
 }
 
 variable "internalnode_publickey_path" {
