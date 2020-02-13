@@ -14,7 +14,7 @@ resource "aws_s3_bucket_public_access_block" "main" {
 resource "aws_s3_bucket" "main" {
   count = var.solution_enable["storagefile"] == "true" ? 1 : 0
 
-  bucket        = "${local.name_prefix_unique_short}-main"
+  bucket        = "${local.name_prefix_long}-main"
   force_destroy = true
   versioning {
     enabled = true
