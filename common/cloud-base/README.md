@@ -55,13 +55,13 @@ openssl req -text -noout -verify -in $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddem
 
 ```bash
 openssl genrsa -out $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.key 2048
-openssl req -new -x509 -key $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.key -out $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.crt -subj "/emailAddress=$SSL_CERT_EMAIL/C=$SSL_CERT_COUNTRYCODE/ST=$SSL_CERT_STATE/L=$SSL_CERT_CITY/O=$SSL_CERT_ORG/OU=$SSL_CERT_ORGUNIT/CN=$SSL_CERT_CN"
+openssl req -new -x509 -days 365 -key $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.key -out $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.crt -subj "/emailAddress=$SSL_CERT_EMAIL/C=$SSL_CERT_COUNTRYCODE/ST=$SSL_CERT_STATE/L=$SSL_CERT_CITY/O=$SSL_CERT_ORG/OU=$SSL_CERT_ORGUNIT/CN=$SSL_CERT_CN"
 ```
 
 Finally, sign the CSR and create the CRT:
 
 ```bash
-openssl x509 -req -in $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos.csr -CA $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.crt -CAkey $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.key -CAcreateserial -out $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos.crt
+openssl x509 -req -days 365 -CAcreateserial -CAserial $WEBMETHODS_KEY_PATH/ca.srl -in $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos.csr -CA $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.crt -CAkey $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos-ca.key -CAcreateserial -out $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos.crt
 ```
 
 Checking the cert:

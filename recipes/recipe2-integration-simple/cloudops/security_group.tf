@@ -56,7 +56,7 @@ resource "aws_security_group" "integrationserver" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-webMethods Integration Server"
+      "Name" = "${local.name_prefix_long}-webMethods Integration Server"
       "az"   = "all"
     },
   )
@@ -166,55 +166,7 @@ resource "aws_security_group" "terracotta" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-Terracotta"
-      "az"   = "all"
-    },
-  )
-}
-
-###### MY WEBMETHODS SERVER ###### 
-resource "aws_security_group" "mws" {
-  name        = "${local.name_prefix_unique_short}-mws"
-  description = "My webMethods Server"
-  vpc_id      = data.aws_vpc.main.id
-
-  ingress {
-    from_port = 8585
-    to_port   = 8587
-    protocol  = "tcp"
-    cidr_blocks = flatten(
-      [
-        local.common_access_cidrs, 
-        data.aws_vpc.main.cidr_block
-      ]
-    )
-  }
-
-  ##SPM communication
-  ingress {
-    from_port   = 8092
-    to_port     = 8093
-    protocol    = "tcp"
-    cidr_blocks = data.aws_subnet.COMMON_MGT.*.cidr_block
-  }
-
-  ### TODO: Need to figure out what exact port to allow in egress
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [data.aws_vpc.main.cidr_block]
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  //Use our common tags and add a specific name.
-  tags = merge(
-    local.common_tags,
-    {
-      "Name" = "${local.name_prefix}-My webMethods Server"
+      "Name" = "${local.name_prefix_long}-Terracotta"
       "az"   = "all"
     },
   )
@@ -298,9 +250,134 @@ resource "aws_security_group" "universalmessaging" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-webmethods Universal Messaging"
+      "Name" = "${local.name_prefix_long}-webmethods Universal Messaging"
       "az"   = "all"
     },
   )
 }
 
+###### API GATEWAY ###### 
+resource "aws_security_group" "apigateway" {
+  name        = "${local.name_prefix_unique_short}-apigateway"
+  description = "Software AG API Gateway Server"
+  vpc_id      = data.aws_vpc.main.id
+
+  ingress {
+    from_port = 5555
+    to_port   = 5555
+    protocol  = "tcp"
+    cidr_blocks = flatten(
+      [
+        local.common_access_cidrs, 
+        data.aws_vpc.main.cidr_block
+      ]
+    )
+  }
+
+  ingress {
+    from_port = 9999
+    to_port   = 9999
+    protocol  = "tcp"
+    cidr_blocks = flatten(
+      [
+        local.common_access_cidrs, 
+        data.aws_vpc.main.cidr_block
+      ]
+    )
+  }
+
+  ingress {
+    from_port = 9072
+    to_port   = 9073
+    protocol  = "tcp"
+    cidr_blocks = flatten(
+      [
+        local.common_access_cidrs, 
+        data.aws_vpc.main.cidr_block
+      ]
+    )
+  }
+
+  ##SPM communication
+  ingress {
+    from_port   = 8092
+    to_port     = 8093
+    protocol    = "tcp"
+    cidr_blocks = data.aws_subnet.COMMON_MGT.*.cidr_block
+  }
+
+  ### TODO: Need to figure out what exact port to allow in egress
+  ### likely the elastic search node to node communication
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
+  }
+
+  //  Use our common tags and add a specific name.
+  tags = merge(
+    local.common_tags,
+    {
+      "Name" = "${local.name_prefix_long}-apigateway"
+      "az"   = "all"
+    },
+  )
+}
+
+###### API GATEWAY INTERNAL DATASTORE ###### 
+resource "aws_security_group" "apigw-internaldatastore" {
+  name        = "${local.name_prefix_unique_short}-apigw-internaldatastore"
+  description = "Software AG API Gateway Internal Data Store"
+  vpc_id      = data.aws_vpc.main.id
+
+  ingress {
+    from_port = 9240
+    to_port   = 9240
+    protocol  = "tcp"
+    cidr_blocks = flatten(
+      [
+        local.common_access_cidrs, 
+        data.aws_vpc.main.cidr_block
+      ]
+    )
+  }
+
+  ingress {
+    from_port = 9340
+    to_port   = 9340
+    protocol  = "tcp"
+    cidr_blocks = flatten(
+      [
+        local.common_access_cidrs, 
+        data.aws_vpc.main.cidr_block
+      ]
+    )
+  }
+
+  ##SPM communication
+  ingress {
+    from_port   = 8092
+    to_port     = 8093
+    protocol    = "tcp"
+    cidr_blocks = data.aws_subnet.COMMON_MGT.*.cidr_block
+  }
+
+  ### TODO: Need to figure out what exact port to allow in egress
+  ### likely the elastic search node to node communication
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
+  }
+
+  //  Use our common tags and add a specific name.
+  tags = merge(
+    local.common_tags,
+    {
+      "Name" = "${local.name_prefix_long}-apigw-internaldatastore"
+      "az"   = "all"
+    },
+  )
+}

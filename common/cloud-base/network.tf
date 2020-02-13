@@ -7,9 +7,9 @@ resource "aws_vpc" "main" {
 
   //  Use our common tags and add a specific name.
   tags = merge(
-    local.common_tags,
+    local.common_tags_base,
     {
-      "Name" = "${local.name_prefix_long}-main"
+      "Name" = "${local.name_prefix_no_id}-main"
     },
   )
 }

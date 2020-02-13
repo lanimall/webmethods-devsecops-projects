@@ -11,9 +11,7 @@ resource "aws_security_group" "devops-management" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = [
-      "${var.base_main_bastion_private_ip}/32",
-    ]
+    cidr_blocks = formatlist("%s/32", local.base_main_bastion_private_ip)
   }
 
   // Allow all TCP egress because we need to monitor ports from ansible etc...
@@ -32,7 +30,7 @@ resource "aws_security_group" "devops-management" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-devops-management"
+      "Name" = "${local.name_prefix_long}-devops-management"
       "az"   = "all"
     },
   )
@@ -79,7 +77,7 @@ resource "aws_security_group" "webmethods-commandcentral" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-webMethods Command Central"
+      "Name" = "${local.name_prefix_long}-webMethods Command Central"
       "az"   = "all"
     },
   )

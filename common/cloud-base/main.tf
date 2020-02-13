@@ -3,14 +3,6 @@ provider "aws" {
   profile = var.cloud_profile
 }
 
-terraform {
-  backend "s3" {
-    bucket = "saggov-admin-resources"
-    key    = "webmethods-devsecops-recipes/tf_states/common/cloud-base"
-    region = "us-east-1"
-  }
-}
-
 ################################################
 ################ Global configs
 ################################################
@@ -37,22 +29,29 @@ resource "random_id" "main" {
 
 locals {
   vpc_cidr                 = "${var.vpc_cidr_prefix}.${var.vpc_cidr_suffix}"
+
   name_prefix_unique_short = random_id.main.hex
-  name_prefix_long = lower(
+  name_prefix_no_id = lower(
     join(
       "-",
       [
-        replace(var.resources_name_prefix, "_", "-"),
+        lower(replace(var.resources_name_prefix, "_", "-")),
         replace(
-          terraform.workspace != "default" ? terraform.workspace : "master",
-          "_",
-          "-",
+          terraform.workspace != "default" ? terraform.workspace : "master","_","-"
         ),
       ],
     ),
   )
-
-  name_prefix_short = lower(replace(var.resources_name_prefix, "_", "-"))
+  
+  name_prefix_long = lower(
+    join(
+      "-",
+      [
+        local.name_prefix_unique_short,
+        local.name_prefix_no_id,
+      ],
+    ),
+  )
 
   awskeypair_bastion_node     = "${local.name_prefix_unique_short}-${var.bastion_key_name}"
   awskeypair_bastion_keypath  = "${var.bastion_publickey_path}"
@@ -73,7 +72,7 @@ locals {
 }
 
 locals {
-  common_tags = {
+  common_tags_base = {
     "Project"              = var.project_name
     "Project_Prefix"       = var.resources_name_prefix
     "Project_Workspace"    = terraform.workspace
@@ -82,6 +81,12 @@ locals {
     "Project_Owners"       = var.project_owners
     "Project_Organization" = var.project_organization
   }
+  common_tags = merge(
+    local.common_tags_base,
+    {
+      "Project_ID"         = local.name_prefix_unique_short
+    },
+  )
   common_instance_tags = {
     "Scheduler_Stop"      = "DAILY"
     "Scheduler_Stop_Time" = "0100"

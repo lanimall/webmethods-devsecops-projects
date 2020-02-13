@@ -1,9 +1,11 @@
 variable "project_name" {
   description = "Project Name"
+  default = "Software AG Government Solutions DevSecOps Cloud Demo"
 }
 
 variable "resources_name_prefix" {
   description = "Prefix for all resource names"
+  default = "sagdemo"
 }
 
 variable "project_owners" {
@@ -48,7 +50,6 @@ variable "cloud_profile" {
 ### Region to use
 variable "region" {
   description = "region to launch servers."
-  default     = "us-east-2"
 }
 
 ### Availability zones to use per region
@@ -157,15 +158,15 @@ variable "linux_os_description" {
   default = "CentOS Linux 7 x86_64 HVM EBS"
 }
 
-## Windows_Server-2016-English-Full-Base-2019.10.09 -- owner: amazon (801119661308)
+## Windows_Server-2016-English-Full-Base-2020.01.15 -- owner: amazon (801119661308)
 variable "windows_region_ami" {
   type = map(string)
   default = {
-    us-east-1    = "ami-027a14492d667b8f5"
-    us-east-2    = "ami-0b8b049f0ac9d6ded"
-    us-west-1    = "ami-00cb62f0977a10d07"
-    us-west-2    = "ami-0df99cdd65bce4245"
-    ca-central-1 = "ami-0c7609710809ad56e"
+    us-east-1    = "ami-02daaf23b3890d162"
+    us-east-2    = "ami-0833104f83deab338"
+    us-west-1    = "ami-08dc1ca51e27079b0"
+    us-west-2    = "ami-09e71fb1baf16d0cd"
+    ca-central-1 = "ami-0fcebaeb4fd311763"
   }
 }
 

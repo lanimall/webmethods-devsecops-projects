@@ -14,10 +14,6 @@ output "devops-management-private_ip" {
   value = aws_instance.devops-management.*.private_ip
 }
 
-variable "policy_sagcontent_s3_readwrite_arn" {
-  description = "the s3 policy arn"
-}
-
 variable "instancesize_devops-management" {
   description = "instance type for api gateway"
   default     = "t3.small"
@@ -52,7 +48,7 @@ resource "aws_iam_instance_profile" "devops-management" {
 
 resource "aws_iam_role_policy_attachment" "devops-management-s3policy" {
   role       = aws_iam_role.devops-management.name
-  policy_arn = var.policy_sagcontent_s3_readwrite_arn
+  policy_arn = local.base_policy_sagcontent_s3_readwrite_arn
 }
 
 //Create the private node general userdata script.
@@ -83,19 +79,13 @@ resource "aws_instance" "devops-management" {
       aws_security_group.devops-management.id
     ]
   ])
-
-  lifecycle {
-    ignore_changes = [
-      tags
-    ]
-  }
   
   //  Use our common tags and add a specific name.
   tags = merge(
     local.common_tags,
     local.common_instance_tags,
     {
-      "Name" = "${local.name_prefix}-devops-management-${data.aws_subnet.COMMON_MGT[count.index].availability_zone}"
+      "Name" = "${local.name_prefix_long}-devops-management${count.index + 1}-${data.aws_subnet.COMMON_MGT[count.index].availability_zone}"
       "az"   = data.aws_subnet.COMMON_MGT[count.index].availability_zone
     },
   )

@@ -7,13 +7,13 @@ output "main-vpc" {
 }
 
 data "aws_vpc" "main" {
-  id = var.base_main_vpc_id
+  id = local.base_vpc_id
 }
 
 ###################### Security group which allows SSH/RDP access to a host from specific internal servers
 
 data "aws_security_group" "common-internal" {
-  id = var.base_main_security_group_common_internal_id
+  id = local.base_main_security_group_common_internal_id
 }
 
 ###################### Reference to the internal DNS.
@@ -27,11 +27,11 @@ output "dns-main-internal-apex" {
 }
 
 data "aws_route53_zone" "main-external" {
-  zone_id = var.base_resources_external_dns_zoneid
+  zone_id = local.base_resources_external_dns_zoneid
 }
 
 data "aws_route53_zone" "main-internal" {
-  zone_id = var.base_resources_internal_dns_zoneid
+  zone_id = local.base_resources_internal_dns_zoneid
 }
 
 locals {
@@ -50,11 +50,11 @@ locals {
 ###################### Reference to the public load balancer listener.
 
 data "aws_lb" "main-public-alb" {
-  arn = var.base_main_public_alb_id
+  arn = local.base_main_public_alb_id
 }
 
 data "aws_lb_listener" "main-public-alb-https" {
-  arn = var.base_main_public_alb_https_id
+  arn = local.base_main_public_alb_https_id
 }
 
 ###################### Reference to the various networks
@@ -85,7 +85,7 @@ data "aws_subnet_ids" "COMMON_DMZ" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    ShortName = var.base_subnet_shortname_dmz
+    ShortName = local.base_subnet_shortname_dmz
   }
 }
 
@@ -100,7 +100,7 @@ data "aws_subnet_ids" "COMMON_WEB" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    ShortName = var.base_subnet_shortname_web
+    ShortName = local.base_subnet_shortname_web
   }
 }
 
@@ -115,7 +115,7 @@ data "aws_subnet_ids" "COMMON_APPS" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    ShortName = var.base_subnet_shortname_apps
+    ShortName = local.base_subnet_shortname_apps
   }
 }
 
@@ -130,7 +130,7 @@ data "aws_subnet_ids" "COMMON_MGT" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    ShortName = var.base_subnet_shortname_management
+    ShortName = local.base_subnet_shortname_management
   }
 }
 
@@ -145,7 +145,7 @@ data "aws_subnet_ids" "COMMON_DATA" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    ShortName = var.base_subnet_shortname_data
+    ShortName = local.base_subnet_shortname_data
   }
 }
 

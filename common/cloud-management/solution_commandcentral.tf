@@ -45,12 +45,6 @@ resource "aws_instance" "commandcentral" {
       aws_security_group.webmethods-commandcentral.id 
     ]
   ])
-
-  lifecycle {
-    ignore_changes = [
-      tags
-    ]
-  }
   
   //  Use our common tags and add a specific name.
   tags = merge(
@@ -58,7 +52,7 @@ resource "aws_instance" "commandcentral" {
     local.common_instance_tags,
     local.linux_tags,
     {
-      "Name" = "${local.name_prefix}-commandcentral-${data.aws_subnet.COMMON_MGT[count.index].availability_zone}"
+      "Name" = "${local.name_prefix_long}-commandcentral${count.index + 1}-${data.aws_subnet.COMMON_MGT[count.index].availability_zone}"
       "az"   = data.aws_subnet.COMMON_MGT[count.index].availability_zone
     },
   )
@@ -72,7 +66,7 @@ resource "aws_route53_record" "webmethods_commandcentral-a-record" {
   count = var.solution_enable["commandcentral"] == "true" ? var.instancecount_commandcentral : 0
 
   zone_id = data.aws_route53_zone.main-internal.zone_id
-  name    = "commandcentral.${data.aws_route53_zone.main-internal.name}"
+  name    = "commandcentral.${local.name_prefix_unique_short}.${data.aws_route53_zone.main-internal.name}"
   type    = "A"
   ttl     = 300
   records = aws_instance.commandcentral.*.private_ip
@@ -94,7 +88,7 @@ resource "aws_lb_target_group_attachment" "commandcentral" {
 resource "aws_lb_target_group" "commandcentral" {
   count = var.solution_enable["commandcentral"] == "true" ? var.instancecount_commandcentral : 0
 
-  name                 = "commandcentral-tg"
+  name                 = "${local.name_prefix_unique_short}-commandcentral"
   port                 = 8091
   protocol             = "HTTPS"
   vpc_id               = data.aws_vpc.main.id
@@ -122,7 +116,7 @@ resource "aws_lb_target_group" "commandcentral" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-commandcentral-tg"
+      "Name" = "${local.name_prefix_long}-commandcentral"
     },
   )
 }
@@ -139,7 +133,7 @@ resource "aws_alb_listener_rule" "commandcentral" {
 
   condition {
     host_header {
-      values = ["commandcentral.${local.dns_main_external_apex}"]
+      values = ["commandcentral-${local.name_prefix_unique_short}.${local.dns_main_external_apex}"]
     }
   }
 }

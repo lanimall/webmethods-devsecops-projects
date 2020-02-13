@@ -59,18 +59,12 @@ resource "aws_instance" "integration" {
     [aws_security_group.integrationserver.id],
   ])
 
-  lifecycle {
-    ignore_changes = [
-      tags
-    ]
-  }
-
   //  Use our common tags and add a specific name.
   tags = merge(
     local.common_tags,
     local.common_instance_tags,
     {
-      "Name" = "${local.name_prefix}-integrationserver-${data.aws_subnet.COMMON_APPS[count.index].availability_zone}"
+      "Name" = "${local.name_prefix_long}-integrationserver${count.index + 1}-${data.aws_subnet.COMMON_APPS[count.index].availability_zone}"
       "az"   = data.aws_subnet.COMMON_APPS[count.index].availability_zone
     },
   )
@@ -87,7 +81,7 @@ resource "aws_lb_target_group_attachment" "is-runtime" {
 resource "aws_lb_target_group" "is-runtime" {
   count = var.solution_enable["integration"] == "true" ? 1 : 0
 
-  name                 = "${local.name_prefix_unique_short}-is-runtime-tg"
+  name                 = "${local.name_prefix_unique_short}-is-runtime"
   port                 = 5555
   protocol             = "HTTP"
   vpc_id               = data.aws_vpc.main.id
@@ -114,7 +108,7 @@ resource "aws_lb_target_group" "is-runtime" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix}-is-runtime-tg"
+      "Name" = "${local.name_prefix_long}-is-runtime"
     },
   )
 }

@@ -17,6 +17,12 @@ recipe2_universalmessaging
 [integration:children]
 recipe2_integration
 
+[apigateway:children]
+recipe2_apigateway
+
+[recipe2_apigateway]
+recipe2_apigateway1 ansible_host=${hostname_apigateway1} dns_internal=${dns_apigateway1}
+
 [recipe2_terracotta]
 recipe2_terracotta1 ansible_host=${hostname_terracotta1} dns_internal=${dns_terracotta1}
 

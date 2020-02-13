@@ -59,18 +59,12 @@ resource "aws_instance" "terracotta" {
     [aws_security_group.terracotta.id],
   ])
 
-  lifecycle {
-    ignore_changes = [
-      tags
-    ]
-  }
-
   //  Use our common tags and add a specific name.
   tags = merge(
     local.common_tags,
     local.linux_tags,
     {
-      "Name" = "${local.name_prefix}-terracotta-${data.aws_subnet.COMMON_APPS[count.index].availability_zone}"
+      "Name" = "${local.name_prefix_long}-terracotta${count.index + 1}-${data.aws_subnet.COMMON_APPS[count.index].availability_zone}"
       "az"   = data.aws_subnet.COMMON_APPS[count.index].availability_zone
     },
   )
