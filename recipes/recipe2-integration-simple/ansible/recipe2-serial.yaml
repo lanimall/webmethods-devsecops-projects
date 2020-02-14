@@ -17,3 +17,9 @@
 ################################################################
 
 - import_playbook: playbooks/recipe2/integration.yaml
+
+################################################################
+## API Gateway provisioning
+################################################################
+
+- import_playbook: playbooks/recipe2/apigateway.yaml

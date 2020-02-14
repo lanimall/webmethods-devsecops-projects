@@ -7,8 +7,11 @@ cce_provisioning_products_repo_universalmessaging: "{{ cce_provisioning_products
 cce_provisioning_fixes_repo_universalmessaging: "{{ cce_provisioning_fixes_repo_sdc }}"
 cce_provisioning_products_repo_integrationserver: "{{ cce_provisioning_products_repo_sdc }}"
 cce_provisioning_fixes_repo_integrationserver: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_apigateway: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_apigateway: "{{ cce_provisioning_fixes_repo_sdc }}"
 cce_provisioning_products_repo_terracotta: "{{ cce_provisioning_products_repo_sdc }}"
 cce_provisioning_fixes_repo_terracotta: "{{ cce_provisioning_fixes_repo_sdc }}"
 
 ## Provisoning Specifics
 cce_provisioning_is_administrator_password: "SomeStrongPwd123!"
+cce_provisioning_agw_administrator_password: "SomeStrongPwd123!"

@@ -1,25 +1,32 @@
-# owcp-devops-automation
+# recipe2-integration-simple
 
 Project that leverages terraform, ansible, and softwareAG Command Central for creating a complete SoftwareAG infrastructure.
 
 ## Prerequisites
 
 At this point, the management and command central server should be fully functionnal with all the required packages available.
-Refer to [Initial Setup](../../common/README.md)
-
-And the command central URL should be accessible at the following URL:
-
-```bash
-open https://commandcentral.$resources_external_dns_apex/
-```
-
-Where resources_external_dns_apex is the value defined in the base terraform project.
+If not done, refer to [Initial Setup](../../README-Preps.md)
 
 ## Cloud Provisoning steps
 
-Refer to [Terraform Instructions](./cloudops/README.md)
+Go to the "./cloudops" folder and execute:
+
+```bash
+terraform init && terraform apply
+```
+
+## Move all the new code to the management server
+
+```bash
+../sync-to-remote.sh
+```
+
+All code should automatically be copied all the way to the management server (via the bastion)
 
 ## Product Provisioning steps
+
+
+
 
 Refer to [Ansible Instructions](./ansible/README.md)
 

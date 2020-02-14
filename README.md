@@ -17,10 +17,10 @@ open https://$HOSTNAME_EXTERNAL_COMMANDCENTRAL/
 
 ## Provision recipes
 
-Recipe1: 1 Api Gateway, 1 Integration Server
+Recipe1: 1 Api Gateway
 Go to [Setup](./recipes/recipe1-apimgt-simple/README.md)
 
-Recipe2: 1 Integration Server (embedded DB), Universal MEssaging, Terracotta
+Recipe2: 1 Api Gateway, 1 Integration Server (embedded DB), Universal MEssaging, Terracotta
 Go to [Setup](./recipes/recipe2-integration-simple/README.md)
 
 Recipe3: 1 Integration Server (with backend DB), MWS (with backend DB), Universal Messaging, Terracotta

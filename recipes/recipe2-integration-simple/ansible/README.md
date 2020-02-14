@@ -2,42 +2,28 @@
 
 Project that leverages terraform, ansible, and softwareAG Command Central for creating a complete SoftwareAG infrastructure.
 
-## Prerequisites
-
-At this point, the management and command central server should be fully functionnal with all the required packages available.
-Refer to [Initial Setup](../../common/README.md)
-
-And the command central URL should be accessible at the following URL:
-
-```bash
-open https://commandcentral.$resources_external_dns_apex/
-```
-
-Where resources_external_dns_apex is the value defined in the base terraform project.
-
-## Cloud Provisoning steps
-
-Refer to [Terraform Instructions](./cloudops/README.md)
-
 ## Prepping steps
 
-First, make sure you have moved all the new code to the management server.
-
-Then, connect to the management server (through bastion)
+Connect to the management server:
 
 ```bash
-ssh <bastion ip>
-ssh <mgt server ip>
+. ./common/cloud-base/tfexpanded/setenv-base.sh
+ssh -A $BASTION_SSH_USER@$BASTION_SSH_HOST
+. $HOME/setenv-mgt.sh
+ssh -A $MGT_SSH_USER@$MGT_SSH_HOST
 ```
 
-Finally, run the sysprep playbook to initialize the newly-created servers.
+Go into the ansible project directory:
 
 ```bash
-cd ~/webmethods-provisioning/webmethods-devops-ansible
+cd ~/webmethods-provisioning/webmethods-devops-ansible/
+```
+
+Then, let's sysprep everything (preparing the new servers we just created)
+
+```bash
 ansible-playbook -i inventory sagenv-sysprep-all.yaml
 ```
-
-Note: This playbook should be run only when a new server is recreated...or if some settings must be changed.
 
 ## Provisioning the components
 
