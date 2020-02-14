@@ -11,7 +11,8 @@ Check out this [README](./README-Preps.md) for all the one-time setup tasks.
 At the end, you should have a running Command Central that's accessible and configured at URL (where $resources_external_dns_apex is the value you entered during the cloud creation of the environment)
 
 ```bash
-open https://commandcentral.$resources_external_dns_apex/
+. ./common/cloud-management/tfexpanded/setenv-mgt.sh && \
+open https://$HOSTNAME_EXTERNAL_COMMANDCENTRAL/
 ```
 
 ## Provision recipes

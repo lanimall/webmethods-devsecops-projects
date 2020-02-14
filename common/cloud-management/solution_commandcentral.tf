@@ -2,6 +2,10 @@ output "commandcentral-private_dns" {
   value = aws_instance.commandcentral.*.private_dns
 }
 
+output "commandcentral_external_hostname" {
+  value = local.commandcentral_external_hostname
+}
+
 variable "instancesize_commandcentral" {
   description = "instance type for api gateway"
   default     = "m5.large"
@@ -10,6 +14,10 @@ variable "instancesize_commandcentral" {
 variable "instancecount_commandcentral" {
   description = "number of command central nodes"
   default     = "1"
+}
+
+locals {
+  commandcentral_external_hostname = "commandcentral-${local.name_prefix_unique_short}.${local.dns_main_external_apex}"
 }
 
 //Create the private node general userdata script.
@@ -133,7 +141,7 @@ resource "aws_alb_listener_rule" "commandcentral" {
 
   condition {
     host_header {
-      values = ["commandcentral-${local.name_prefix_unique_short}.${local.dns_main_external_apex}"]
+      values = ["${local.commandcentral_external_hostname}"]
     }
   }
 }

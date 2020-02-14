@@ -101,37 +101,3 @@ output "ami_windows" {
 output "amiuser_windows" {
   value = local.base_ami_windows_user
 }
-
-data "template_file" "setenv-base" {
-  template = file("${path.cwd}/helper_scripts/setenv-base.sh")
-
-  vars = {
-    bastion_public_ip      = aws_eip.bastion.0.public_ip
-    bastion_user           = local.base_ami_linux_user
-    bastion_ssh_publickey_path   = replace(local.awskeypair_bastion_keypath, "~/", "$HOME/")
-    bastion_ssh_privatekey_path  = replace(local.awskeypair_bastion_privatekeypath, "~/", "$HOME/")
-    internal_ssh_publickey_path  = replace(local.awskeypair_internal_keypath, "~/", "$HOME/")
-    internal_ssh_privatekey_path = replace(local.awskeypair_internal_privatekeypath, "~/", "$HOME/")
-    s3_bucket_name               = length(aws_s3_bucket.main)>0 ? aws_s3_bucket.main[0].id : "null"
-    s3_bucket_prefix             = local.name_prefix_long
-  }
-}
-
-resource "local_file" "setenv-base" {
-  content  = data.template_file.setenv-base.rendered
-  filename = "${path.cwd}/tfexpanded/setenv-base.sh"
-}
-
-data "template_file" "setenv-s3" {
-  template = file("${path.cwd}/helper_scripts/setenv-s3.sh")
-
-  vars = {
-    s3_bucket_name               = length(aws_s3_bucket.main)>0 ? aws_s3_bucket.main[0].id : "null"
-    s3_bucket_prefix             = local.name_prefix_long
-  }
-}
-
-resource "local_file" "setenv-s3" {
-  content  = data.template_file.setenv-s3.rendered
-  filename = "${path.cwd}/tfexpanded/setenv-s3.sh"
-}

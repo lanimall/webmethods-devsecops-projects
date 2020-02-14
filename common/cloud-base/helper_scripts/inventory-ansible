@@ -1,0 +1,5 @@
+[all_linux:children]
+bastion
+
+[bastion]
+bastion_1 ansible_host=${bastion1_hostname} dns_internal=${bastion1_dns}

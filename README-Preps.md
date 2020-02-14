@@ -150,10 +150,23 @@ Then, install / configure Command Central:
 ansible-playbook -i inventory sagenv-stack-cce.yaml
 ```
 
+## Final validation task 8 - Navigate to command central UI
+
 At this point, command central server should be fully functionnal with all the required artifacts registered (repos, licenses, passwords, etc...)
 
 And the command central URL should be accessible at the following URL:
 
 ```bash
-open https://commandcentral.$resources_external_dns_apex/
+. ./common/cloud-management/tfexpanded/setenv-mgt.sh
+echo https://$HOSTNAME_EXTERNAL_COMMANDCENTRAL/
+```
+
+NOTE: This hostname is NOT in a public DNS by default...so you will need to add this entry to your local HOSTS file with the main load-balancer IP address(es).
+
+```bash
+. ./common/cloud-management/tfexpanded/setenv-mgt.sh && \
+export DNS_APP_LOADBALANCER_IP_ADDRESS=`dig +short $DNS_APP_LOADBALANCER | head -n 1` && \
+echo "" && \
+echo "Content to add to your Host file:" && \
+echo "$DNS_APP_LOADBALANCER_IP_ADDRESS $DNS_EXTERNAL_COMMANDCENTRAL"
 ```
