@@ -1,6 +1,6 @@
-# owcp-devops-automation
+# recipe2-integration-simple -- ansible
 
-Project that leverages terraform, ansible, and softwareAG Command Central for creating a complete SoftwareAG infrastructure.
+Ansible portion of the recipe2 project
 
 ## Prepping steps
 
@@ -32,83 +32,15 @@ Now, we can provision the various products and configs by simply running either 
 ### Concurrent provisioning
 
 ```bash
-ansible-playbook -i inventory recipe1-apimgt-simple-concurrent.yaml
+./recipe2-concurrent.sh
 ```
 
-with nohup (more reliable if you lose your connection etc...)
-
-```bash
-nohup ansible-playbook -i inventory recipe1-apimgt-simple-concurrent.yaml &> ~/nohup-recipe1-apimgt-simple-concurrent.out &
-```
-
-Check progress:
-
-```bash
-tail -f ~/nohup-recipe1-apimgt-simple-concurrent.out
-```
+Check progress as indicated by the script output.
 
 ### Serial provisioning
 
 ```bash
-ansible-playbook -i inventory recipe1-apimgt-simple.yaml --extra-vars "@vars/recipe1-apimgt-simple.yaml"
+./recipe2-serial.sh
 ```
 
-with nohup (more reliable if you lose your connection etc...)
-
-```bash
-nohup ansible-playbook -i inventory recipe1-apimgt-simple.yaml --extra-vars "@vars/recipe1-apimgt-simple.yaml" &> ~/nohup-recipe1-apimgt-simple-serial.out &
-```
-
-Check progress:
-
-```bash
-tail -f ~/nohup-recipe1-apimgt-simple-serial.out
-```
-
-## Some extra helpful commands
-
-### Running only specific tasks in playbook
-
-##### Just api gateway
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apigateway.out &
-```
-
-##### Just api portal
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apiportal &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-apiportal.out &
-```
-
-##### Just integration server
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver
-```
-
-With nohup:
-
-```bash
-nohup ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-integrationserver &> ~/nohup-sagenv-stack-recipe1-apimgt-simple-integrationserver.out &
-```
-
-#### Skipping specific tasks
-
-For example, running the playbook but only for the pre and post install tasks (ie. server settings and service installs etc...)
-
-```bash
-ansible-playbook -i inventory sagenv-stack-recipe1-apimgt-simple.yaml --extra-vars "@vars/sagenv-stack-recipe1-apimgt-simple.yaml" --tags install-apigateway --skip-tags cce_provisioning.install
-```
+Check progress as indicated by the script output.

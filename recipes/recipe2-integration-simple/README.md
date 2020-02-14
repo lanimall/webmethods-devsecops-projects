@@ -25,9 +25,6 @@ All code should automatically be copied all the way to the management server (vi
 
 ## Product Provisioning steps
 
-
-
-
 Refer to [Ansible Instructions](./ansible/README.md)
 
 ## Accessing the UIs
