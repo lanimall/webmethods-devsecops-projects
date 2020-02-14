@@ -24,6 +24,19 @@
     - install
     - install-universalmessaging
 
+- import_playbook: ../../sagenv-common-inventory.yaml
+  vars:
+    cce_provisioning_inventory_pattern: recipe2_universalmessaging
+    cce_provisioning_inventory_hosts_lookup_property: ansible_host
+    cce_provisioning_inventory_hosts_add_prefix: "nsp://"
+    cce_provisioning_inventory_hosts_add_suffix: ":9000"
+    cce_provisioning_inventory_hosts_join_string: ","
+    cce_provisioning_inventory_hosts_var: "external_target_um_url"
+  tags:
+    - install
+    - get-universalmessaging-external_url
+    - install-universalmessaging-content
+
 - import_playbook: ../../sagenv-common-webmethods.yaml
   vars:
     cce_provisioning_target_hostgroups: recipe2_universalmessaging

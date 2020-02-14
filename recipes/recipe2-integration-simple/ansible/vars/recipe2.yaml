@@ -15,3 +15,5 @@ cce_provisioning_fixes_repo_terracotta: "{{ cce_provisioning_fixes_repo_sdc }}"
 ## Provisoning Specifics
 cce_provisioning_is_administrator_password: "SomeStrongPwd123!"
 cce_provisioning_agw_administrator_password: "SomeStrongPwd123!"
+
+cce_provisioning_um_jndi_cf_name: "remote_um"
