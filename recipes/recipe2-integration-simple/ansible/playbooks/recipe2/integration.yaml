@@ -10,6 +10,7 @@
     cce_provisioning_template: recipe2/integrationserver/template-runtime.yaml
     cce_provisioning_properties: recipe2-integration
     cce_provisioning_installed_product_names: integrationserver
+    cce_provisioning_installed_product_instance_names: default
     cce_provisioning_validation_ports:
       - 5555
       - 9999

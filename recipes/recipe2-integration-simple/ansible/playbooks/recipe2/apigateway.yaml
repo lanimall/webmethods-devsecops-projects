@@ -10,6 +10,7 @@
     cce_provisioning_template: recipe2/apigateway/template.yaml
     cce_provisioning_properties: recipe2-apigateway
     cce_provisioning_installed_product_names: apigateway
+    cce_provisioning_installed_product_instance_names: apigateway
     cce_provisioning_validation_ports:
       - 5555
       - 9072
@@ -18,8 +19,6 @@
         value: "{{ cce_provisioning_products_repo_apigateway }}"
       - name: "repo.fix"
         value: "{{ cce_provisioning_fixes_repo_apigateway }}"
-      - name: "fixes.apply"
-        value: "ALL"
       - name: "agw.key.license.alias"
         value: "*_YAIAA_10.*_*_*"
     cce_provisioning_template_params_secure:
