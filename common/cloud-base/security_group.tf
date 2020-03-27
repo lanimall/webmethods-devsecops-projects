@@ -88,3 +88,40 @@ resource "aws_security_group" "main-public-alb" {
   )
 }
 
+###### Management Server ###### 
+### Security group for the management server: allow any egress within the VPC
+######
+resource "aws_security_group" "devops-management" {
+  name        = "${local.name_prefix_unique_short}-devops-management"
+  description = "Management server"
+  vpc_id      = data.aws_vpc.main.id
+
+  //  SSH
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = formatlist("%s/32", aws_instance.bastion-linux.private_ip)
+  }
+
+  // Allow all TCP egress because we need to monitor ports from ansible etc...
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  //  Use our common tags and add a specific name.
+  tags = merge(
+    local.common_tags,
+    {
+      "Name" = "${local.name_prefix_long}-devops-management"
+      "az"   = "all"
+    },
+  )
+}
