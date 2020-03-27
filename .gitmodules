@@ -7,3 +7,6 @@
 [submodule "common/webmethods-ansible"]
 	path = common/webmethods-ansible
 	url = https://github.com/lanimall/webmethods-devops-ansible.git
+[submodule "common/webmethods-cce"]
+	path = common/webmethods-cce
+	url = https://github.com/lanimall/webmethods-devops-cce.git
