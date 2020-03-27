@@ -4,7 +4,7 @@ output "aws_security_group_common-internal" {
 
 //  Security group which allows SSH/RDP access to a host from specific internal servers
 resource "aws_security_group" "common-internal" {
-  name        = "${local.name_prefix_unique_short}-common-internal"
+  name        = "${local.name_prefix_short}-common-internal"
   description = "Security group for common internal rules (ssh, rdp)"
   vpc_id      = aws_vpc.main.id
 
@@ -53,7 +53,7 @@ resource "aws_security_group" "common-internal" {
 }
 
 resource "aws_security_group" "main-public-alb" {
-  name        = "${local.name_prefix_unique_short}-main-public-alb"
+  name        = "${local.name_prefix_short}-main-public-alb"
   description = "Incoming public web traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -92,7 +92,7 @@ resource "aws_security_group" "main-public-alb" {
 ### Security group for the management server: allow any egress within the VPC
 ######
 resource "aws_security_group" "devops-management" {
-  name        = "${local.name_prefix_unique_short}-devops-management"
+  name        = "${local.name_prefix_short}-devops-management"
   description = "Management server"
   vpc_id      = data.aws_vpc.main.id
 

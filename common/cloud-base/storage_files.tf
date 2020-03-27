@@ -4,6 +4,10 @@ output "main_s3_bucket" {
   value = aws_s3_bucket.main.*.id
 }
 
+output "policy_sagcontent_s3_readwrite_arn" {
+  value = aws_iam_policy.sagcontent-s3-readwrite.arn
+}
+
 resource "aws_s3_bucket_public_access_block" "main" {
   bucket = aws_s3_bucket.main[0].id
 
@@ -34,7 +38,7 @@ resource "aws_s3_bucket" "main" {
 }
 
 resource "aws_iam_policy" "sagcontent-s3-readwrite" {
-  name        = "${local.name_prefix_unique_short}-sagcontent-s3-readwrite"
+  name        = "${local.name_prefix_short}-sagcontent-s3-readwrite"
   path        = "/"
   description = "s3 read write policy"
 
@@ -108,4 +112,3 @@ resource "aws_s3_bucket_object" "devops-content" {
   key    = "${local.name_prefix_long}/devops_content/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")
 }
-

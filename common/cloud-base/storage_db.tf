@@ -18,7 +18,7 @@ locals {
   db-engine-major-version   = "13.00"
   db-engine-full-version    = "13.00.5366.0.v1"
   db-engine-family          = "sqlserver-se-13.0"
-  db-identifier-prefix      = "${local.name_prefix_unique_short}-${local.db-name}"
+  db-identifier-prefix      = "${local.name_prefix_short}-${local.db-name}"
   db-identifier-prefix-long = "${local.name_prefix_long}-${local.db-name}"
 }
 
@@ -66,7 +66,7 @@ resource "aws_db_option_group" "maindb" {
   count = var.solution_enable["storagedb"] == "true" ? 1 : 0
 
   name                     = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
-  option_group_description = "Option group for ${local.name_prefix_unique_short}-${local.db-name}"
+  option_group_description = "Option group for ${local.name_prefix_short}-${local.db-name}"
 
   engine_name          = local.db-engine-name
   major_engine_version = local.db-engine-major-version
@@ -97,7 +97,7 @@ resource "aws_db_subnet_group" "maindb" {
   count = var.solution_enable["storagedb"] == "true" ? 1 : 0
 
   name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
-  description = "Database subnet group for ${local.name_prefix_unique_short}-${local.db-name}"
+  description = "Database subnet group for ${local.name_prefix_short}-${local.db-name}"
   subnet_ids = [
     aws_subnet.COMMON_DATA.*.id,
     aws_subnet.COMMON_APPS[0].id,
@@ -120,7 +120,7 @@ resource "aws_db_parameter_group" "maindb" {
   count = var.solution_enable["storagedb"] == "true" ? 1 : 0
 
   name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
-  description = "Database param group for ${local.name_prefix_unique_short}-${local.db-name}"
+  description = "Database param group for ${local.name_prefix_short}-${local.db-name}"
   family      = local.db-engine-family
 
   tags = merge(
@@ -170,7 +170,7 @@ resource "aws_db_instance" "maindb" {
   iam_database_authentication_enabled = false
 
   #### only needed if creating from a snapshot
-  ##snapshot_identifier = "${local.name_prefix_unique_short}-maindb"
+  ##snapshot_identifier = "${local.name_prefix_short}-maindb"
 
   vpc_security_group_ids = [
     aws_security_group.maindb[0].id,
@@ -193,7 +193,7 @@ resource "aws_db_instance" "maindb" {
   maintenance_window          = "Sat:03:00-Sat:06:00"
   skip_final_snapshot         = false
   copy_tags_to_snapshot       = true
-  final_snapshot_identifier   = "${local.name_prefix_unique_short}-${local.db-name}-predestroy-final-snapshot"
+  final_snapshot_identifier   = "${local.name_prefix_short}-${local.db-name}-predestroy-final-snapshot"
 
   performance_insights_enabled = false
 

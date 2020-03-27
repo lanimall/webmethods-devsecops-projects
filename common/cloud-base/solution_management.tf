@@ -20,7 +20,7 @@ variable "instancesize_devops-management" {
 }
 
 resource "aws_iam_role" "devops-management" {
-  name = "${local.name_prefix_unique_short}-devops-management-role"
+  name = "${local.name_prefix_short}-devops-management-role"
 
   assume_role_policy = <<EOF
 {
@@ -42,7 +42,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "devops-management" {
-  name = "${local.name_prefix_unique_short}-devops-management-profile"
+  name = "${local.name_prefix_short}-devops-management-profile"
   role = aws_iam_role.devops-management.name
 }
 
@@ -55,19 +55,19 @@ resource "aws_iam_role_policy_attachment" "devops-management-s3policy" {
 data "template_file" "setup-devops-management" {
   template = file("./helper_scripts/setup-private-node.sh")
   vars = {
-    availability_zone = data.aws_subnet.COMMON_MGT[0].availability_zone
+    availability_zone = aws_subnet.COMMON_MGT[0].availability_zone
   }
 }
 
 //  Launch configuration for the bastion
 resource "aws_instance" "devops-management" {
   ## only create in primary
-  #count         = "${length(data.aws_subnet.COMMON_MGT.*.ids)}"
+  #count         = "${length(aws_subnet.COMMON_MGT.*.ids)}"
   count = 1
 
   ami                         = local.base_ami_linux
   instance_type               = var.instancesize_devops-management
-  subnet_id                   = data.aws_subnet.COMMON_MGT[count.index].id
+  subnet_id                   = aws_subnet.COMMON_MGT[count.index].id
   user_data                   = data.template_file.setup-devops-management.*.rendered[count.index]
   key_name                    = local.awskeypair_internal_node
   iam_instance_profile        = aws_iam_instance_profile.devops-management.name
@@ -85,8 +85,8 @@ resource "aws_instance" "devops-management" {
     local.common_tags,
     local.common_instance_tags,
     {
-      "Name" = "${local.name_prefix_long}-devops-management${count.index + 1}-${data.aws_subnet.COMMON_MGT[count.index].availability_zone}"
-      "az"   = data.aws_subnet.COMMON_MGT[count.index].availability_zone
+      "Name" = "${local.name_prefix_long}-devops-management${count.index + 1}-${aws_subnet.COMMON_MGT[count.index].availability_zone}"
+      "az"   = aws_subnet.COMMON_MGT[count.index].availability_zone
     },
   )
 }

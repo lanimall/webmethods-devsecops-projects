@@ -6,6 +6,18 @@ output "main-public-alb" {
   value = aws_lb.main-public-alb.dns_name
 }
 
+output "main_public_alb_dns_name" {
+  value = aws_lb.main-public-alb.dns_name
+}
+
+output "main_public_alb_id" {
+  value = aws_lb.main-public-alb.id
+}
+
+output "main_public_alb_https_id" {
+  value = aws_lb_listener.main-public-alb-https.id
+}
+
 resource "aws_acm_certificate" "cert" {
   private_key       = file(local.lb_ssl_cert_key)
   certificate_body  = file(local.lb_ssl_cert_pub)
@@ -29,7 +41,7 @@ resource "aws_route53_record" "main-alb-wildcard" {
 }
 
 resource "aws_lb" "main-public-alb" {
-  name               = "${local.name_prefix_unique_short}-main-public-alb"
+  name               = "${local.name_prefix_short}-main-public-alb"
   load_balancer_type = "application"
   internal           = false
   subnets            = aws_subnet.COMMON_DMZ.*.id

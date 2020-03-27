@@ -1,128 +1,48 @@
 provider "aws" {
-  region  = var.region
-  profile = var.cloud_profile
+  region  = var.cloud_region
+  profile = var.tfconnect_cloud_profile
 }
 
-################################################
-################ Global configs
-################################################
-
-## key creation for internal nodes
-resource "aws_key_pair" "internalnode" {
-  key_name   = local.awskeypair_internal_node
-  public_key = file(local.awskeypair_internal_keypath)
+output "cloud_region" {
+  value = var.cloud_region
 }
 
-## key creation for bastion nodes
-resource "aws_key_pair" "bastion" {
-  key_name   = local.awskeypair_bastion_node
-  public_key = file(local.awskeypair_bastion_keypath)
+output "name_prefix_long" {
+  value = local.name_prefix_long
 }
 
+output "name_prefix_short" {
+  value = local.name_prefix_short
+}
+
+//  Define a random seed based on identifying vars
 resource "random_id" "main" {
   keepers = {
-    vpc_id   = aws_vpc.main.id
+    application_code = var.application_code
+    environment_code = var.environment_code
     tf_state = terraform.workspace
   }
-  byte_length = 4
+  byte_length = 3
 }
 
 locals {
-  vpc_cidr                 = "${var.vpc_cidr_prefix}.${var.vpc_cidr_suffix}"
-
-  name_prefix_unique_short = random_id.main.hex
-  name_prefix_no_id = lower(
-    join(
-      "-",
-      [
-        lower(replace(var.resources_name_prefix, "_", "-")),
-        replace(
-          terraform.workspace != "default" ? terraform.workspace : "master","_","-"
-        ),
-      ],
-    ),
-  )
-  
   name_prefix_long = lower(
-    join(
-      "-",
-      [
-        local.name_prefix_unique_short,
-        local.name_prefix_no_id,
-      ],
-    ),
+    replace(
+      trimsuffix(
+        join(
+          "-",
+          [
+            var.application_code,
+            var.environment_code,
+            terraform.workspace != "default" ? terraform.workspace: "",
+          ]
+        ),
+        "-"
+      ),
+      "_", "-"
+    )
   )
 
-  awskeypair_bastion_node     = "${local.name_prefix_unique_short}-${var.bastion_key_name}"
-  awskeypair_bastion_keypath  = "${var.bastion_publickey_path}"
-  awskeypair_bastion_privatekeypath  = "${var.bastion_privatekey_path}"
-
-  awskeypair_internal_node    = "${local.name_prefix_unique_short}-${var.internalnode_key_name}"
-  awskeypair_internal_keypath = "${var.internalnode_publickey_path}"
-  awskeypair_internal_privatekeypath = "${var.internalnode_privatekey_path}"
-
-  lb_ssl_cert_key = "${var.lb_ssl_cert_key}"
-  lb_ssl_cert_pub = "${var.lb_ssl_cert_pub}"
-  lb_ssl_cert_ca  = "${var.lb_ssl_cert_ca}"
-
-  ## if we want to stick to the same AMI for sure
-  base_ami_linux      = var.linux_region_ami[var.region]
-  base_ami_linux_user = var.linux_ami_user
-
-  ## if we want to stick to the same AMI for sure
-  base_ami_windows      = var.windows_region_ami[var.region]
-  base_ami_windows_user = var.windows_ami_user
+  ##some names cannot exceed some char length...we can use that random ID instead when needed
+  name_prefix_short = length(local.name_prefix_long) < 16 ? local.name_prefix_long : join("-",substr(local.name_prefix_long, 0, 16 - 4),random_id.main.hex)
 }
-
-locals {
-  common_tags_base = {
-    "Project"              = var.project_name
-    "Project_Prefix"       = var.resources_name_prefix
-    "Project_Workspace"    = terraform.workspace
-    "Provisioning_Type"    = var.project_provisioning_type
-    "Provisioning_Project" = var.project_provisioning_git
-    "Project_Owners"       = var.project_owners
-    "Project_Organization" = var.project_organization
-  }
-  common_tags = merge(
-    local.common_tags_base,
-    {
-      "Project_ID"         = local.name_prefix_unique_short
-    },
-  )
-  common_instance_tags = {
-    "Scheduler_Stop"      = "DAILY"
-    "Scheduler_Stop_Time" = "0100"
-  }
-  common_rds_tags = {
-    "Scheduler_Stop"      = "DAILY"
-    "Scheduler_Stop_Time" = "0130"
-  }
-  instance_tags_schedule_stop = {
-    "Scheduler_Stop"      = "DAILY"
-    "Scheduler_Stop_Time" = "0100"
-  }
-  instance_tags_schedule_start = {
-    "Scheduler_Start"      = "DAILY_NO_WEEKEND"
-    "Scheduler_Start_Time" = "1100"
-  }
-  instance_tags_retention = {
-    "Retention"           = "notset"
-    "Retention_Reason"    = "notset"
-    "Retention_Requestor" = "notset"
-    "Retention_EndDate"   = "notset"
-  }
-  common_secgroups = [
-    aws_security_group.common-internal.id,
-  ]
-  common_access_cidrs = []
-  windows_tags = {
-    "OSFamily" = "Windows"
-    "OS"       = var.windows_os_description
-  }
-  linux_tags = {
-    "OSFamily" = "Linux"
-    "OS"       = var.linux_os_description
-  }
-}
-

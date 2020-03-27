@@ -73,5 +73,9 @@ openssl x509 -in $WEBMETHODS_KEY_PATH/ssl-devsecops-clouddemos.crt -noout -text
 ## Create base environment
 
 ```bash
-terraform init && terraform apply
+env=demo
+terraform get -update=true
+terraform init -backend-config=configs/${env}-backend.conf
+terraform plan -var-file=configs/${env}-env.tfvars
+terraform apply -var-file=configs/${env}-env.tfvars
 ```

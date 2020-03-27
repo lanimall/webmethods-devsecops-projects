@@ -20,13 +20,12 @@ variable "instancesize_bastion-linux" {
 }
 
 variable "instancecount_bastion" {
-  description = "number of cbastion nodes"
+  description = "number of bastion nodes"
   default     = "1"
 }
 
 // create eip for bastion
 resource "aws_eip" "bastion" {
-  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
   count = var.instancecount_bastion
 
   vpc = true
@@ -94,21 +93,19 @@ resource "aws_security_group" "bastion" {
 
 //Create the bastion userdata script.
 data "template_file" "setup-bastion" {
-  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
   count    = var.instancecount_bastion
   template = file("./helper_scripts/setup-bastion.sh")
   vars = {
-    availability_zone = element(split(",", var.azs[var.region]), count.index)
+    availability_zone = element(split(",", var.availability_zones_mapping[local.region]), count.index)
   }
 }
 
 //  Launch configuration for the bastion
 resource "aws_instance" "bastion-linux" {
-  #count         = "${length(split(",", lookup(var.azs, var.region)))}"
   count = var.instancecount_bastion
 
   subnet_id                   = aws_subnet.COMMON_DMZ[count.index].id
-  ami                         = local.base_ami_linux
+  ami                         = var.linux_region_ami
   instance_type               = var.instancesize_bastion-linux
   user_data                   = data.template_file.setup-bastion[count.index].rendered
   key_name                    = aws_key_pair.bastion.id
