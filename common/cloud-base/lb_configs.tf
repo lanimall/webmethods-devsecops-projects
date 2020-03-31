@@ -41,7 +41,7 @@ resource "aws_route53_record" "main-alb-wildcard" {
 }
 
 resource "aws_lb" "main-public-alb" {
-  name               = "${local.name_prefix_short}-main-public-alb"
+  name               = "${local.name_prefix_short}-main"
   load_balancer_type = "application"
   internal           = false
   subnets            = aws_subnet.COMMON_DMZ.*.id

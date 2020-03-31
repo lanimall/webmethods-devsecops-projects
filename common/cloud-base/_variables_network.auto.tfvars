@@ -15,6 +15,7 @@ subnet_shortname_data_size="medium"
 subnet_shortname_data_index="0"
 
 # mapping between the region and the availability zones we want to use
+# using 2 availability zones per region
 availability_zones_mapping = {
     "us-east-1" = "us-east-1a,us-east-1b"
     "us-east-2" = "us-east-2a,us-east-2b"

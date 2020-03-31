@@ -23,8 +23,6 @@ locals {
 }
 
 resource "random_id" "maindb-optiongroup" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   keepers = {
     engine-name          = local.db-engine-name
     engine-major-version = local.db-engine-major-version
@@ -36,8 +34,6 @@ resource "random_id" "maindb-optiongroup" {
 
 //  Security group which allows SSH/RDP access to a host, strictly from the bastion
 resource "aws_security_group" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
   description = "Security group that allows access to db from specific subnets"
   vpc_id      = aws_vpc.main.id
@@ -63,8 +59,6 @@ resource "aws_security_group" "maindb" {
 }
 
 resource "aws_db_option_group" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   name                     = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
   option_group_description = "Option group for ${local.name_prefix_short}-${local.db-name}"
 
@@ -94,8 +88,6 @@ resource "aws_db_option_group" "maindb" {
 }
 
 resource "aws_db_subnet_group" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
   description = "Database subnet group for ${local.name_prefix_short}-${local.db-name}"
   subnet_ids = [
@@ -117,8 +109,6 @@ resource "aws_db_subnet_group" "maindb" {
 }
 
 resource "aws_db_parameter_group" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   name        = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
   description = "Database param group for ${local.name_prefix_short}-${local.db-name}"
   family      = local.db-engine-family
@@ -136,8 +126,6 @@ resource "aws_db_parameter_group" "maindb" {
 }
 
 resource "aws_kms_key" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   description             = "KMS key for RDS encryption of instance ${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
   deletion_window_in_days = 10
 
@@ -145,8 +133,6 @@ resource "aws_kms_key" "maindb" {
 }
 
 resource "aws_db_instance" "maindb" {
-  count = var.solution_enable["storagedb"] == "true" ? 1 : 0
-
   identifier = "${local.db-identifier-prefix}-${random_id.maindb-optiongroup[0].hex}"
 
   ## sql server 2016

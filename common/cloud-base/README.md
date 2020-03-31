@@ -25,8 +25,9 @@ chmod -R 600 $SAGDEVOPSDEMO_CONFIGS_PATH/certs/ssh/*
 
 ```bash
 env=demoenv
+configs=$HOME/.mydevsecrets/webmethods-devsecops-recipes/configs/${env}
 terraform get -update=true
-terraform init -backend-config=configs/${env}-backend.conf
-terraform plan -var-file=configs/${env}.tfvars
-terraform apply -var-file=configs/${env}.tfvars
+terraform init -backend-config=$configs/${env}-backend.conf
+terraform plan -var-file=$configs/${env}.tfvars
+terraform apply -var-file=$configs/${env}.tfvars
 ```
