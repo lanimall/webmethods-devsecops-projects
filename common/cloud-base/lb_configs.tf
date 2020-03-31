@@ -14,6 +14,10 @@ output "main_public_alb_id" {
   value = aws_lb.main-public-alb.id
 }
 
+output "main_public_alb_http_id" {
+  value = aws_lb_listener.main-public-alb-http.id
+}
+
 output "main_public_alb_https_id" {
   value = aws_lb_listener.main-public-alb-https.id
 }

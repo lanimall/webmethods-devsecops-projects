@@ -1,12 +1,8 @@
 [all_linux:children]
-management
-commandcentral
+stack0_commandcentral
 
 [all_webmethods:children]
-commandcentral
+stack0_commandcentral
 
-[management]
-management_1 ansible_host=${management1_hostname} dns_internal=${management1_dns} extra_packages='["telnet","wget","git","bind-utils"]'
-
-[commandcentral]
-commandcentral_1 ansible_host=${commandcentral1_hostname} dns_internal=${commandcentral1_dns} extra_packages='["ant","telnet","wget","bind-utils"]'
+[stack0_commandcentral]
+stack0_commandcentral_1 ansible_host=${commandcentral1_private_ip} dns_internal=${commandcentral1_dns_internal} dns_custom=${commandcentral1_dns_custom}

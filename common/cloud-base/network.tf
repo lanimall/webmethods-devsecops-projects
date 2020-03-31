@@ -2,22 +2,6 @@ output "vpc_id" {
   value = aws_vpc.main.id
 }
 
-output "dns_main_internal_apex" {
-  value = local.dns_main_internal_apex
-}
-
-output "dns_main_internal_zoneid" {
-  value = aws_route53_zone.main-internal.id
-}
-
-output "dns_main_external_apex" {
-  value = local.dns_main_external_apex
-}
-
-output "dns_main_external_zoneid" {
-  value = aws_route53_zone.main-external.id
-}
-
 output "availability_zones_mapping" {
   value = var.availability_zones_mapping
 }

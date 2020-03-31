@@ -49,9 +49,8 @@ data "template_file" "setenv-mgt" {
   template = file("${path.cwd}/helper_scripts/setenv-mgt.sh")
   vars = {
     management1_ip   = length(aws_instance.devops-management)>0 ? aws_instance.devops-management[0].private_ip : "null"
-    management1_user = local.base_ami_linux_user
-    main_public_alb_dns_name = local.base_main_public_alb_dns_name
-    commandcentral_external_dns_name   = local.commandcentral_external_hostname
+    management1_user = var.linux_ami_user
+    main_public_alb_dns_name = aws_lb.main-public-alb.dns_name
   }
 }
 

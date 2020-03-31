@@ -45,6 +45,8 @@ You should have at a minimum:
 Run the following to save your certs in S3 for further reference:
 
 ```bash
+env=demoenv
+export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/${env}
 export SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME="<your admin s3 bucket>"
 aws s3 sync $SAGDEVOPSDEMO_CONFIGS_PATH s3://$SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME/webmethods-devsecops-recipes/configs/${env}
 ```
