@@ -9,7 +9,7 @@ output "policy_sagcontent_s3_readwrite_arn" {
 }
 
 resource "aws_s3_bucket_public_access_block" "main" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -18,10 +18,8 @@ resource "aws_s3_bucket_public_access_block" "main" {
 }
 
 //create an S3 bucket for the External Load Balancer to stash logs
-//remember, the bucket name must be unique across all users of AWS!
+//remember, the bucket name must be unique across all users of AWS, which should be achieved with the name_prefix_long
 resource "aws_s3_bucket" "main" {
-  count = var.solution_enable["storagefile"] == "true" ? 1 : 0
-
   bucket        = "${local.name_prefix_long}-main"
   force_destroy = true
   versioning {
@@ -58,7 +56,7 @@ resource "aws_iam_policy" "sagcontent-s3-readwrite" {
                 "s3:ListBucket",
                 "s3:GetBucketLocation"
             ],
-        "Resource": "${aws_s3_bucket.main[0].arn}"
+        "Resource": "${aws_s3_bucket.main.arn}"
         },
         {
         "Effect": "Allow",
@@ -69,7 +67,7 @@ resource "aws_iam_policy" "sagcontent-s3-readwrite" {
                 "s3:ListMultipartUploadParts",
                 "s3:AbortMultipartUpload"
             ],
-        "Resource": "${aws_s3_bucket.main[0].arn}/*"
+        "Resource": "${aws_s3_bucket.main.arn}/*"
         }
     ]
 }
@@ -79,35 +77,35 @@ EOF
 }
 
 resource "aws_s3_bucket_object" "sag-content-images-fixes" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
   acl    = "private"
   key    = "${local.name_prefix_long}/sag_content/images/fixes/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")
 }
 
 resource "aws_s3_bucket_object" "sag-content-images-products" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
   acl    = "private"
   key    = "${local.name_prefix_long}/sag_content/images/products/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")
 }
 
 resource "aws_s3_bucket_object" "sag-content-installers" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
   acl    = "private"
   key    = "${local.name_prefix_long}/sag_content/installers/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")
 }
 
 resource "aws_s3_bucket_object" "sag-content-licenses" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
   acl    = "private"
   key    = "${local.name_prefix_long}/sag_content/licenses/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")
 }
 
 resource "aws_s3_bucket_object" "devops-content" {
-  bucket = aws_s3_bucket.main[0].id
+  bucket = aws_s3_bucket.main.id
   acl    = "private"
   key    = "${local.name_prefix_long}/devops_content/.ignore"
   source = file("${path.cwd}/helper_scripts/empty")

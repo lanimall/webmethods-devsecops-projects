@@ -1,5 +1,5 @@
 # connection vars: used to define and access the right cloud region
-tfconnect_cloud_profile="<YOUR_LOCAL_AWS_PROFILE>"
+tfconnect_cloud_profile="<YOUR_AWS_PROFILE_FOR_AWS_CLI_CONNECTIVITY>"
 cloud_region = "<AWS REGION TO USE>"
 
 # common vars used ot create unique prefixes for the resources

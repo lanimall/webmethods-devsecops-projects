@@ -34,6 +34,7 @@ locals {
           [
             var.application_code,
             var.environment_code,
+            random_id.main.hex,
             terraform.workspace != "default" ? terraform.workspace: "",
           ]
         ),

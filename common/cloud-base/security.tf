@@ -13,11 +13,9 @@ output "internalnode_key_name" {
 locals {
   awskeypair_bastion_node     = "${local.name_prefix_short}-${var.bastion_key_name}"
   awskeypair_bastion_keypath  = var.bastion_publickey_path
-  awskeypair_bastion_privatekeypath  = var.bastion_privatekey_path
 
   awskeypair_internal_node    = "${local.name_prefix_short}-${var.internalnode_key_name}"
   awskeypair_internal_keypath = var.internalnode_publickey_path
-  awskeypair_internal_privatekeypath = var.internalnode_privatekey_path
 
   lb_ssl_cert_key = var.ssl_cert_mainlb_key_path
   lb_ssl_cert_pub = var.ssl_cert_mainlb_pub_path
@@ -34,4 +32,34 @@ resource "aws_key_pair" "internalnode" {
 resource "aws_key_pair" "bastion" {
   key_name   = local.awskeypair_bastion_node
   public_key = file(local.awskeypair_bastion_keypath)
+}
+
+resource "aws_iam_role" "devops-management" {
+  name = "${local.name_prefix_short}-devops-management-role"
+
+  assume_role_policy = <<EOF
+{
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Effect": "Allow",
+          "Sid": ""
+        }
+      ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "devops-management" {
+  name = "${local.name_prefix_short}-devops-management-profile"
+  role = aws_iam_role.devops-management.name
+}
+
+resource "aws_iam_role_policy_attachment" "devops-management-s3policy" {
+  role       = aws_iam_role.devops-management.name
+  policy_arn = aws_iam_policy.sagcontent-s3-readwrite.arn
 }

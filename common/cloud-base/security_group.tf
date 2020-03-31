@@ -83,7 +83,7 @@ resource "aws_security_group" "main-public-alb" {
     local.common_tags,
     {
       "Name" = "${local.name_prefix_long}-main-public-alb"
-      "az"   = var.azs[var.region]
+      "az"   = "all"
     },
   )
 }
@@ -94,14 +94,14 @@ resource "aws_security_group" "main-public-alb" {
 resource "aws_security_group" "devops-management" {
   name        = "${local.name_prefix_short}-devops-management"
   description = "Management server"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
 
   //  SSH
   ingress {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = formatlist("%s/32", aws_instance.bastion-linux.private_ip)
+    cidr_blocks = formatlist("%s/32", aws_instance.bastion-linux.*.private_ip)
   }
 
   // Allow all TCP egress because we need to monitor ports from ansible etc...
@@ -109,7 +109,7 @@ resource "aws_security_group" "devops-management" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [data.aws_vpc.main.cidr_block]
+    cidr_blocks = [aws_vpc.main.cidr_block]
   }
 
   lifecycle {

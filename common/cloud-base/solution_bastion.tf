@@ -94,7 +94,7 @@ resource "aws_security_group" "bastion" {
 //Create the bastion userdata script.
 data "template_file" "setup-bastion" {
   count    = var.instancecount_bastion
-  template = file("./helper_scripts/setup-bastion.sh")
+  template = file("./helper_scripts/setup-node.sh")
   vars = {
     availability_zone = element(split(",", var.availability_zones_mapping[local.region]), count.index)
   }
@@ -105,7 +105,7 @@ resource "aws_instance" "bastion-linux" {
   count = var.instancecount_bastion
 
   subnet_id                   = aws_subnet.COMMON_DMZ[count.index].id
-  ami                         = var.linux_region_ami
+  ami                         = var.linux_region_ami[local.region]
   instance_type               = var.instancesize_bastion-linux
   user_data                   = data.template_file.setup-bastion[count.index].rendered
   key_name                    = aws_key_pair.bastion.id
@@ -117,12 +117,10 @@ resource "aws_instance" "bastion-linux" {
 
   //  Use our common tags and add a specific name.
   tags = merge(
-    local.common_tags,
-    local.common_instance_tags,
+    local.common_instance_linux_tags,
     {
       "Name" = "${local.name_prefix_long}-bastion-${aws_subnet.COMMON_DMZ[count.index].availability_zone}"
       "az"   = aws_subnet.COMMON_DMZ[count.index].availability_zone
     },
   )
 }
-
