@@ -9,6 +9,11 @@ BASEDIR="$THISDIR/.."
 SSH_OPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 SETENV_CLOUDBASE_PATH=$BASEDIR/common/cloud-base/tfexpanded/setenv-base.sh
+if [ ! -f $SETENV_CLOUDBASE_PATH ]; then
+    echo "error: file $SETENV_CLOUDBASE_PATH does not exist...Please make sure you applied (or please re-apply) the cloud-base terraform project...exiting!"
+    exit 2;
+fi
+
 if [ -f $SETENV_CLOUDBASE_PATH ]; then
     . $SETENV_CLOUDBASE_PATH
 fi
@@ -23,7 +28,7 @@ if [ ! -f $INTERNAL_SSH_PRIV_KEY_PATH ]; then
     exit 2;
 fi
 
-SETENV_MANAGEMENT_PATH=$BASEDIR/common/cloud-management/tfexpanded/setenv-mgt.sh
+SETENV_MANAGEMENT_PATH=$BASEDIR/common/cloud-base/tfexpanded/setenv-mgt.sh
 if [ ! -f $SETENV_MANAGEMENT_PATH ]; then
     echo "error: file $SETENV_MANAGEMENT_PATH does not exist...Please make sure you ran the cloud-management terraform project...exiting!"
     exit 2;

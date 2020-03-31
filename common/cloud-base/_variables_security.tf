@@ -2,16 +2,24 @@ variable "bastion_key_name" {
   description = "secure bastion ssh key name"
 }
 
+variable "bastion_privatekey_path" {
+  description = "My secure bastion ssh private key path"
+}
+
 variable "bastion_publickey_path" {
-  description = "My secure bastion ssh public key"
+  description = "My secure bastion ssh public key path"
 }
 
 variable "internalnode_key_name" {
   description = "secure bastion ssh key name"
 }
 
+variable "internalnode_privatekey_path" {
+  description = "My secure internal ssh private key path"
+}
+
 variable "internalnode_publickey_path" {
-  description = "My secure internal ssh public key"
+  description = "My secure internal ssh public key path"
 }
 
 variable "ssl_cert_mainlb_key_path" {

@@ -12,10 +12,7 @@ output "internalnode_key_name" {
 
 locals {
   awskeypair_bastion_node     = "${local.name_prefix_short}-${var.bastion_key_name}"
-  awskeypair_bastion_keypath  = var.bastion_publickey_path
-
   awskeypair_internal_node    = "${local.name_prefix_short}-${var.internalnode_key_name}"
-  awskeypair_internal_keypath = var.internalnode_publickey_path
 
   lb_ssl_cert_key = var.ssl_cert_mainlb_key_path
   lb_ssl_cert_pub = var.ssl_cert_mainlb_pub_path
@@ -25,13 +22,13 @@ locals {
 ## key creation for internal nodes
 resource "aws_key_pair" "internalnode" {
   key_name   = local.awskeypair_internal_node
-  public_key = file(local.awskeypair_internal_keypath)
+  public_key = file(var.internalnode_publickey_path)
 }
 
 ## key creation for bastion nodes
 resource "aws_key_pair" "bastion" {
   key_name   = local.awskeypair_bastion_node
-  public_key = file(local.awskeypair_bastion_keypath)
+  public_key = file(var.bastion_publickey_path)
 }
 
 resource "aws_iam_role" "devops-management" {

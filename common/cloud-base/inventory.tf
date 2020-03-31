@@ -20,8 +20,10 @@ data "template_file" "setenv-base" {
   vars = {
     bastion_public_ip      = aws_eip.bastion.0.public_ip
     bastion_user           = var.linux_ami_user
-    bastion_ssh_publickey_path   = replace(local.awskeypair_bastion_keypath, "~/", "$HOME/")
-    internal_ssh_publickey_path  = replace(local.awskeypair_internal_keypath, "~/", "$HOME/")
+    bastion_ssh_privatekey_path   = replace(var.bastion_privatekey_path, "~/", "$HOME/")
+    bastion_ssh_publickey_path   = replace(var.bastion_publickey_path, "~/", "$HOME/")
+    internal_ssh_privatekey_path  = replace(var.internalnode_privatekey_path, "~/", "$HOME/")
+    internal_ssh_publickey_path  = replace(var.internalnode_publickey_path, "~/", "$HOME/")
     dns_main_external_apex       = local.dns_main_external_apex
   }
 }
