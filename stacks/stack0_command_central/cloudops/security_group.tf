@@ -1,7 +1,7 @@
 
 ###### COMMAND CENTRAL ###### 
 resource "aws_security_group" "webmethods-commandcentral" {
-  name        = "${local.name_prefix_unique_short}-wm-commandcentral"
+  name        = "${local.name_prefix_short}-commandcentral"
   description = "Command Central"
   vpc_id      = data.aws_vpc.main.id
 
@@ -40,9 +40,8 @@ resource "aws_security_group" "webmethods-commandcentral" {
   tags = merge(
     local.common_tags,
     {
-      "Name" = "${local.name_prefix_long}-webMethods Command Central"
+      "Name" = "${local.name_prefix_long}-commandcentral"
       "az"   = "all"
     },
   )
 }
-

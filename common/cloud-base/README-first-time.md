@@ -5,7 +5,7 @@ Feel free to change the path if required.
 
 ```bash
 env=demoenv
-export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/.mydevsecrets/webmethods-devsecops-recipes/configs/${env}
+export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/${env}
 export SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME="<your admin s3 bucket>"
 ```
 

@@ -1,37 +1,62 @@
-###################### Get references to the various data source created by base
+###################### access to base state
+
+variable "tfremotestate_s3_bucket_name" {
+  description = "The bucket name where the base Terraform state was saved"
+}
+
+variable "tfremotestate_s3_bucket_region" {
+  description = "The bucket region where the base Terraform state was saved"
+}
+
+variable "tfremotestate_s3_path" {
+  description = "The bucket path where the base Terraform state was saved"
+}
+
+data "terraform_remote_state" "cloudbase_state" {
+    backend = "s3"
+    config = {
+      bucket = "${var.tfremotestate_s3_bucket_name}"
+      region = "${var.tfremotestate_s3_bucket_region}"
+      key    = "${var.tfremotestate_s3_path}"
+    }
+}
+
+###################### variables from base network
+
+locals {
+  base_vpc_id = data.terraform_remote_state.cloudbase_state.outputs.vpc_id
+  base_availability_zones_mapping = data.terraform_remote_state.cloudbase_state.outputs.availability_zones_mapping
+  base_aws_security_group_commoninternal = data.terraform_remote_state.cloudbase_state.outputs.aws_security_group_commoninternal
+  base_dns_main_internal_zoneid=data.terraform_remote_state.cloudbase_state.outputs.dns_main_internal_zoneid
+  base_dns_main_internal_apex=data.terraform_remote_state.cloudbase_state.outputs.dns_main_internal_apex
+  base_dns_main_external_zoneid=data.terraform_remote_state.cloudbase_state.outputs.dns_main_external_zoneid
+  base_dns_main_external_apex=data.terraform_remote_state.cloudbase_state.outputs.dns_main_external_apex
+  base_main_public_alb_dns_name=data.terraform_remote_state.cloudbase_state.outputs.main_public_alb_dns_name
+  base_main_public_alb_id=data.terraform_remote_state.cloudbase_state.outputs.main_public_alb_id
+  base_main_public_alb_http_id=data.terraform_remote_state.cloudbase_state.outputs.main_public_alb_http_id
+  base_main_public_alb_https_id=data.terraform_remote_state.cloudbase_state.outputs.main_public_alb_https_id
+  base_subnet_shortname_dmz=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_dmz
+  base_subnet_shortname_web=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_web
+  base_subnet_shortname_apps=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_apps
+  base_subnet_shortname_data=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_data
+  base_subnet_shortname_management=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_management
+  base_internalnode_key_name=data.terraform_remote_state.cloudbase_state.outputs.internalnode_key_name
+}
 
 ###################### get the VPC from ID
-
-output "main-vpc" {
-  value = data.aws_vpc.main.id
-}
 
 data "aws_vpc" "main" {
   id = local.base_vpc_id
 }
 
-###################### Security group which allows SSH/RDP access to a host from specific internal servers
-
-data "aws_security_group" "common-internal" {
-  id = local.base_main_security_group_common_internal_id
-}
-
 ###################### Reference to the internal DNS.
 
-output "dns-main-external-apex" {
-  value = local.dns_main_external_apex
-}
-
-output "dns-main-internal-apex" {
-  value = local.dns_main_internal_apex
-}
-
 data "aws_route53_zone" "main-external" {
-  zone_id = local.base_resources_external_dns_zoneid
+  zone_id = local.base_dns_main_external_zoneid
 }
 
 data "aws_route53_zone" "main-internal" {
-  zone_id = local.base_resources_internal_dns_zoneid
+  zone_id = local.base_dns_main_internal_zoneid
 }
 
 locals {
@@ -53,31 +78,15 @@ data "aws_lb" "main-public-alb" {
   arn = local.base_main_public_alb_id
 }
 
+data "aws_lb_listener" "main-public-alb-http" {
+  arn = local.base_main_public_alb_http_id
+}
+
 data "aws_lb_listener" "main-public-alb-https" {
   arn = local.base_main_public_alb_https_id
 }
 
 ###################### Reference to the various networks
-
-output "subnets-COMMON_DMZ" {
-  value = data.aws_subnet.COMMON_DMZ.*.id
-}
-
-output "subnets-COMMON_WEB" {
-  value = data.aws_subnet.COMMON_WEB.*.id
-}
-
-output "subnets-COMMON_APPS" {
-  value = data.aws_subnet.COMMON_APPS.*.id
-}
-
-output "subnets-COMMON_MGT" {
-  value = data.aws_subnet.COMMON_MGT.*.id
-}
-
-output "subnets-COMMON_DATA" {
-  value = data.aws_subnet.COMMON_DATA.*.id
-}
 
 ##### DMZ subnets ######
 
@@ -213,4 +222,3 @@ data "aws_subnet" "COMMON_DATA" {
   count = length(local.subnet_data_ids_sorted_by_az)
   id    = element(local.subnet_data_ids_sorted_by_az, count.index)
 }
-

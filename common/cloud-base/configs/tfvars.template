@@ -1,0 +1,41 @@
+
+########################################### connections vars
+
+# CLI profile to connect to AWS
+tfconnect_cloud_profile="demogithub"
+
+# AWS region to use for connecting
+cloud_region = "us-east-2"
+
+########################################### common project vars
+
+application_name="SoftwareAG Devops Stacks Demo"
+application_code="swagdevops"
+environment_code = "demoenv"
+
+########################################### common project tagging vars
+
+provisioning_type="terraform"
+provisioning_git="https://git.softwareaggov.com:Fabien.Sanglier/saggov_cloud_env.git"
+owners="some_owner"
+organization="some_organization"
+team="some_team"
+
+########################################### current stack variables
+
+provisioning_stack = "cloud-base"
+
+# DNS vars
+resources_external_dns_apex="devops.softwareagdemos.com"
+resources_internal_dns_apex="devops.softwareagdemos.local"
+
+#security SSL
+ssl_cert_mainlb_key_path=""
+ssl_cert_mainlb_pub_path=""
+ssl_cert_mainlb_ca_path=""
+
+#security SSH
+bastion_key_name="bastion"
+internalnode_key_name="internalnode"
+bastion_publickey_path=""
+internalnode_publickey_path=""

@@ -1,5 +1,0 @@
-bucket  = "NAME_OF_BUCKET_FOR_TERRAFORM_STATE"
-region  = "AWS REGION WHERE BUCKET WILL BE USED FOR_TERRAFORM_STATE"
-key     = "PATH IN THE BUCKET TO STORE THE TF STATE FILE (eg. webmethods-devsecops-recipes/tf_states/cloud-base.tfstate)"
-encrypt = true / false
-kms_key_id = "KMS KEY TO USE IF encrypt = true"

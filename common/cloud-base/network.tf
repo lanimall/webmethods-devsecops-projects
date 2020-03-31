@@ -2,20 +2,20 @@ output "vpc_id" {
   value = aws_vpc.main.id
 }
 
-output "resources_internal_dns_zoneid" {
-  value = aws_route53_zone.main-internal.id
-}
-
-output "resources_internal_dns_apex" {
+output "dns_main_internal_apex" {
   value = local.dns_main_internal_apex
 }
 
-output "resources_external_dns_zoneid" {
-  value = aws_route53_zone.main-external.id
+output "dns_main_internal_zoneid" {
+  value = aws_route53_zone.main-internal.id
 }
 
-output "resources_external_dns_apex" {
+output "dns_main_external_apex" {
   value = local.dns_main_external_apex
+}
+
+output "dns_main_external_zoneid" {
+  value = aws_route53_zone.main-external.id
 }
 
 output "availability_zones_mapping" {

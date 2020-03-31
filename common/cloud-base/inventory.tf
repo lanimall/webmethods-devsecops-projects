@@ -4,6 +4,8 @@ data "template_file" "inventory-ansible" {
   vars = {
     bastion1_dns          = length(aws_instance.bastion-linux)>0 ? aws_instance.bastion-linux[0].private_dns : "null"
     bastion1_hostname     = length(aws_instance.bastion-linux)>0 ? aws_instance.bastion-linux[0].private_ip : "null"
+    management1_dns          = length(aws_instance.devops-management)>0 ? aws_instance.devops-management[0].private_dns : "null"
+    management1_hostname     = length(aws_instance.devops-management)>0 ? aws_instance.devops-management[0].private_ip : "null"
   }
 }
 
@@ -41,4 +43,19 @@ data "template_file" "setenv-s3" {
 resource "local_file" "setenv-s3" {
   content  = data.template_file.setenv-s3.rendered
   filename = "${path.cwd}/tfexpanded/setenv-s3.sh"
+}
+
+data "template_file" "setenv-mgt" {
+  template = file("${path.cwd}/helper_scripts/setenv-mgt.sh")
+  vars = {
+    management1_ip   = length(aws_instance.devops-management)>0 ? aws_instance.devops-management[0].private_ip : "null"
+    management1_user = local.base_ami_linux_user
+    main_public_alb_dns_name = local.base_main_public_alb_dns_name
+    commandcentral_external_dns_name   = local.commandcentral_external_hostname
+  }
+}
+
+resource "local_file" "setenv-mgt" {
+  content  = data.template_file.setenv-mgt.rendered
+  filename = "${path.cwd}/tfexpanded/setenv-mgt.sh"
 }

@@ -10,24 +10,27 @@ Feel free to change the path if required.
 
 ```bash
 env=demoenv
-export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/.mydevsecrets/webmethods-devsecops-recipes/configs/${env}
+export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env
 export SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME="<your admin s3 bucket>"
 ```
 
 Run the following commands to get the configs from s3
 
 ```bash
-aws s3 sync s3://$SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME/webmethods-devsecops-recipes/configs/${env} $SAGDEVOPSDEMO_CONFIGS_PATH
+aws s3 sync s3://$SAGDEVOPSDEMO_ADMIN_S3BUCKETNAME/webmethods-devsecops-recipes/configs/$env $SAGDEVOPSDEMO_CONFIGS_PATH
 chmod -R 600 $SAGDEVOPSDEMO_CONFIGS_PATH/certs/ssh/*
 ```
 
 ## Create base environment
 
+configs/demoenv/cloud-base/backend.conf
+
+
 ```bash
 env=demoenv
-configs=$HOME/.mydevsecrets/webmethods-devsecops-recipes/configs/${env}
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs
 terraform get -update=true
-terraform init -backend-config=$configs/${env}-backend.conf
-terraform plan -var-file=$configs/${env}.tfvars
-terraform apply -var-file=$configs/${env}.tfvars
+terraform init -backend-config=$configs/$env/cloud-base/backend.conf
+terraform plan -var-file=$configs/$env/cloud-base/stack.tfvars
+terraform apply -var-file=$configs/$env/cloud-base/stack.tfvars
 ```

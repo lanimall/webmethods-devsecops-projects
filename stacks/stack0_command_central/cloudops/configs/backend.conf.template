@@ -1,0 +1,14 @@
+## NAME_OF_BUCKET_FOR_TERRAFORM_STATE
+bucket  = "some_admin_bucket"
+
+## AWS REGION WHERE BUCKET WILL BE USED FOR_TERRAFORM_STATE
+region  = "us-east-1"
+
+##PATH IN THE BUCKET TO STORE THE TF STATE FILE (Careful with copy-paste: notice the file name is stack0.tfstate!!)
+key     = "webmethods-devsecops-recipes/tf_states/demoenv/stack0.tfstate"
+
+## Encrypt the terraform state file
+encrypt = true
+
+## if encrypt = true, what KMS key to use
+kms_key_id = "alias/sagdevopsdemo/terraform"

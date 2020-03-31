@@ -4,7 +4,7 @@ If you chose to generate the SSL certs for this demo, here are the general steps
 
 ```bash
 env=demoenv
-export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/.mydevsecrets/webmethods-devsecops-recipes/configs/${env}
+export SAGDEVOPSDEMO_CONFIGS_PATH=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/${env}
 export SAGDEVOPSDEMO_CONFIGS_SSL_PATH=$SAGDEVOPSDEMO_CONFIGS_PATH/certs/ssl
 export SAGDEVOPSDEMO_SSL_CERT_CN=*.${env}.devsecops.softwareagdemos.com
 ```
