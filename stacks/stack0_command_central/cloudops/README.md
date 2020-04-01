@@ -1,4 +1,4 @@
-# webmethods-devsecops-recipes - stack0 command central
+# webmethods-devsecops-recipes - stack0 - command central
 
 This creates the management-related cloud artifacts
 
@@ -12,10 +12,18 @@ Now, you can create the environment:
 
 ```bash
 env=demoenv
-stack=stack0
-configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks/$stack
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks
 terraform get -update=true
-terraform init -backend-config=$configs/backend.conf
-terraform plan -var-file=$configs/stack.tfvars
-terraform apply -var-file=$configs/stack.tfvars
+terraform init -backend-config=$configs/stack0/backend.conf
+terraform plan -var-file=$configs/stack0/stack.tfvars
+terraform apply -var-file=$configs/stack0/stack.tfvars
+```
+
+## Destroy stack
+
+```bash
+env=demoenv
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks
+terraform init -backend-config=$configs/stack0/backend.conf
+terraform destroy -var-file=$configs/stack0/stack.tfvars
 ```

@@ -1,4 +1,4 @@
-# webmethods-devsecops-recipes - common-cloud
+# webmethods-devsecops-recipes - cloud-base - cloud skeleton
 
 This creates the base environment into which we'll create all our sample projects
 If this is the first time you setup, follow [README-first-time-steps](./README-first-time-steps.md) for a few intiial setup tasks.
@@ -23,12 +23,22 @@ chmod -R 600 $SAGDEVOPSDEMO_CONFIGS_PATH/certs/ssh/*
 
 ## Create base environment
 
+Now, you can create the environment:
+
 ```bash
 env=demoenv
-stack=cloud-base
-configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks/$stack
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks
 terraform get -update=true
-terraform init -backend-config=$configs/backend.conf
-terraform plan -var-file=$configs/stack.tfvars
-terraform apply -var-file=$configs/stack.tfvars
+terraform init -backend-config=$configs/cloud-base/backend.conf
+terraform plan -var-file=$configs/cloud-base/stack.tfvars
+terraform apply -var-file=$configs/cloud-base/stack.tfvars
+```
+
+## Destroy stack
+
+```bash
+env=demoenv
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks
+terraform init -backend-config=$configs/cloud-base/backend.conf
+terraform destroy -var-file=$configs/cloud-base/stack.tfvars
 ```
