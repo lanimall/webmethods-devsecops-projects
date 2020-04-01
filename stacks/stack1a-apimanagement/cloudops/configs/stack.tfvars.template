@@ -1,0 +1,43 @@
+
+########################################### connections vars
+
+# CLI profile to connect to AWS
+tfconnect_cloud_profile="demogithub"
+
+# AWS region to use for connecting
+cloud_region = "us-east-2"
+
+########################################### base remote state vars
+
+# AWS S3 remote state info to get a handle on on the cloud-base artifacts
+
+# NAME_OF_BUCKET_FOR_TERRAFORM_STATE
+tfremotestate_s3_bucket_name = "some_admin_bucket"
+
+# AWS REGION WHERE BUCKET WILL BE USED FOR_TERRAFORM_STATE
+tfremotestate_s3_bucket_region = "us-east-1"
+
+# PATH IN THE BUCKET TO STORE THE TF STATE FILE
+tfremotestate_s3_path = "webmethods-devsecops-recipes/tf_states/demoenv/cloud-base.tfstate"
+
+########################################### common project vars
+
+application_name="SoftwareAG Devops Stacks Demo"
+application_code="swagdevops"
+environment_code = "demoenv"
+
+########################################### common project tagging vars
+
+provisioning_type="terraform"
+provisioning_git="https://git.softwareaggov.com:Fabien.Sanglier/saggov_cloud_env.git"
+owners="some_owner"
+organization="some_organization"
+team="some_team"
+
+########################################### current stack variables
+
+provisioning_stack = "stack1"
+
+apigateway_runtime_external_host_name = "apigateway105-stack1"
+apigateway_ui_external_host_name = "apigateway105-ui-stack1"
+apiportal_external_host_name = "apiportal105-stack1"

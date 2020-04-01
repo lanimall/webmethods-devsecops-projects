@@ -64,7 +64,7 @@ resource "aws_instance" "commandcentral" {
   instance_type               = var.instancesize_commandcentral
   subnet_id                   = data.aws_subnet.COMMON_MGT[count.index].id
   user_data                   = data.template_file.setup-commandcentral[count.index].rendered
-  key_name                    = local.base_internalnode_key_name
+  key_name                    = local.aws_key_pair_internalnode
   associate_public_ip_address = "false"
   disable_api_termination     = "true"
 

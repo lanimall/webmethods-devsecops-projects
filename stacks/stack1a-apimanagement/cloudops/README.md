@@ -1,4 +1,4 @@
-# webmethods-devsecops-recipes - stack0 command central
+# webmethods-devsecops-recipes - stack1 webMethods api-management simple
 
 This creates the management-related cloud artifacts
 
@@ -12,7 +12,7 @@ Now, you can create the environment:
 
 ```bash
 env=demoenv
-stack=stack0
+stack=stack1
 configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks/$stack
 terraform get -update=true
 terraform init -backend-config=$configs/backend.conf
