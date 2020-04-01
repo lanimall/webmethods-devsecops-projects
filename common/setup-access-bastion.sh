@@ -28,12 +28,6 @@ if [ ! -f $INTERNAL_SSH_PRIV_KEY_PATH ]; then
     exit 2;
 fi
 
-SETENV_MANAGEMENT_PATH=$BASEDIR/common/cloud-base/tfexpanded/setenv-mgt.sh
-if [ ! -f $SETENV_MANAGEMENT_PATH ]; then
-    echo "error: file $SETENV_MANAGEMENT_PATH does not exist...Please make sure you ran the cloud-management terraform project...exiting!"
-    exit 2;
-fi
-
 if [ "x$BASTION_SSH_HOST" = "x" ]; then
     echo "error: variable BASTION_SSH_HOST does not exist and is required...exiting!"
     exit 2;
@@ -50,6 +44,12 @@ ssh $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH -A $BASTION_SSH_USER@$BASTION_SSH_HO
 ssh $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH -A $BASTION_SSH_USER@$BASTION_SSH_HOST "ls -al ~/.ssh/"
 
 ##copying the setup management server script to the bastion
+SETENV_MANAGEMENT_PATH=$BASEDIR/common/cloud-base/tfexpanded/setenv-mgt.sh
+if [ ! -f $SETENV_MANAGEMENT_PATH ]; then
+    echo "error: file $SETENV_MANAGEMENT_PATH does not exist...Please make sure you ran the cloud-management terraform project...exiting!"
+    exit 2;
+fi
+
 if [ -f $SETENV_MANAGEMENT_PATH ]; then
     scp $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH $SETENV_MANAGEMENT_PATH $BASTION_SSH_USER@$BASTION_SSH_HOST:~/
 fi
