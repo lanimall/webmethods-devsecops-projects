@@ -1,0 +1,123 @@
+alias: recipe2-apigateway-cluster2
+description: API Gateway provisioning in 2-node cluster configuration
+
+environments:
+  default:
+    release.major:                     10                                                   
+    os.platform:                       lnxamd64   
+    repo.product:                      ${}
+    repo.fix:                          ${}
+    nodes:                             ${}
+  
+    agw.fixes:                         ${}
+    agw.key.license.alias:             ${}
+    agw.instance.type:              ${}
+    agw.instance.name:              ${}                             
+    agw.primary.port:                  5555                             
+    agw.diagnostic.port:               9999                             
+    agw.jmx.port:                      5559                             
+    agw.memory.init:                   2048                             
+    agw.memory.max:                    4096                             
+    agw.install.service:               true
+    agw.administrator.password:        ${}
+
+    ##clustering
+    agw.terracotta.url:                    ${}
+    agw.terracotta.key.license.alias:      ${}
+    agw.elasticsearch.url:                 ${}
+    
+layers:
+  runtime:
+    productRepo: ${repo.product}
+    fixRepo:     ${repo.fix}
+    templates:   
+      - agw-cluster
+
+templates:
+  agw-cluster:
+    licenses:
+      "IntegrationServer/config/APIGatewayLicenseKey.xml": "${agw.key.license.alias}"
+      "common/conf/terracotta-license.key": "${agw.terracotta.key.license.alias}"
+    fixes: ${agw.fixes}
+    products:
+      YAI:
+      ${agw.instance.type}:
+        ${agw.instance.name}: 
+          primary.port:    ${agw.primary.port}
+          diagnostic.port: ${agw.diagnostic.port}
+          jmx.port:        ${agw.jmx.port}
+          license.file:    IntegrationServer/config/APIGatewayLicenseKey.xml
+          install.service: ${agw.install.service}
+          package.list:    WmAPIGateway
+          configuration:
+            OSGI-IS_${agw.instance.name}:
+              COMMON-MEMORY:
+                COMMON-MEMORY:
+                  InitSize: ${agw.memory.init}
+                  MaxSize:  ${agw.memory.max}
+              COMMON-JVM-OPTIONS:                             
+                COMMON-JVM-OPTIONS:                          
+                    option: 
+                      - "-Xbootclasspath/a:\"%JAVA_BOOT_CLASSPATH%\""
+                      - "-server"
+                      - "-verbose:gc"
+                      - "-XX:+PrintGC"
+                      - "-XX:+PrintGCDetails"
+                      - "-XX:+PrintGCTimeStamps"
+                      - "-XX:+PrintTenuringDistribution"
+                      - "-XX:+PrintGCCause"
+                      - "-XX:+PrintAdaptiveSizePolicy"
+                      - "-XX:+UseGCLogFileRotation"
+                      - "-XX:NumberOfGCLogFiles=5"
+                      - "-XX:GCLogFileSize=10M"
+                      - "-Xloggc:%OSGI_INSTALL_AREA%/logs/gc_agw.log"
+              COMMON-JAVASYSPROPS:
+                COMMON-JAVASYSPROPS: |
+                  test.cluster.withDerby=true
+                  com.tc.l1.max.connect.retries=100
+                  com.tc.l1.socket.reconnect.waitInterval=10000
+            integrationServer-${agw.instance.name}:              
+              COMMON-CLUSTER:
+                COMMON-CLUSTER:
+                  Name: APIGatewayTSAcluster
+                  Enabled: true
+                  Servers:
+                    Server: 
+                      - 
+                       URL: ${agw.terracotta.url}
+                  ExtendedProperties:
+                    Property:
+                      - "@name": SessionTimeout
+                        $: "60"
+                      - "@name": PendingRestart
+                        $: "false"
+                      - "@name": ActionOnStartupError
+                        $: shutdown
+              COMMON-LOCAL-USERS:
+                COMMON-LOCAL-USERS-Administrator:
+                  '@id': Administrator
+                  Password: ${agw.administrator.password}
+                  Enabled: 'true'
+                  ExtendedProperties:
+                    Property:
+                    - '@name': AllowDigestAuthentication
+                      $: 'false'
+              COMMON-SYSPROPS:
+                COMMON-SYSPROPS:
+                  watt.server.cachemanager.connectTimeout: "600000"
+
+provision:
+  default:
+    runtime: ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

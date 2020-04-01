@@ -23,14 +23,12 @@ chmod -R 600 $SAGDEVOPSDEMO_CONFIGS_PATH/certs/ssh/*
 
 ## Create base environment
 
-configs/demoenv/cloud-base/backend.conf
-
-
 ```bash
 env=demoenv
-configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs
+stack=cloud-base
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks/$stack
 terraform get -update=true
-terraform init -backend-config=$configs/$env/cloud-base/backend.conf
-terraform plan -var-file=$configs/$env/cloud-base/stack.tfvars
-terraform apply -var-file=$configs/$env/cloud-base/stack.tfvars
+terraform init -backend-config=$configs/backend.conf
+terraform plan -var-file=$configs/stack.tfvars
+terraform apply -var-file=$configs/stack.tfvars
 ```

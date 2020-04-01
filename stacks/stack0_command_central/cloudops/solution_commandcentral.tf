@@ -66,7 +66,7 @@ resource "aws_instance" "commandcentral" {
   user_data                   = data.template_file.setup-commandcentral[count.index].rendered
   key_name                    = local.aws_key_pair_internalnode
   associate_public_ip_address = "false"
-  disable_api_termination     = "true"
+  disable_api_termination     = "false"
 
   # Storage for webmethods command central repository
   ebs_block_device {

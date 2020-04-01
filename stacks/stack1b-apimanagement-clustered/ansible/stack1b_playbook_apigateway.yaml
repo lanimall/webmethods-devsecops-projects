@@ -1,0 +1,113 @@
+---
+
+################################################################
+## API Gateway provisioning
+################################################################
+
+##construct the terracotta url
+- import_playbook: sagenv-common-inventory.yaml
+  vars:
+    set_fact_inventory_groupnames: commandcentral
+    cce_provisioning_inventory_pattern: project2_apigateway
+    cce_provisioning_inventory_hosts_lookup_property: ansible_host
+    cce_provisioning_inventory_hosts_add_prefix: ""
+    cce_provisioning_inventory_hosts_add_suffix: ":9510"
+    cce_provisioning_inventory_hosts_join_string: ","
+    cce_provisioning_inventory_hosts_var: "external_target_terracotta_url"
+  tags:
+    - install
+    - install-apigateway
+    - get_external_target_urls
+    - get_external_target_terracotta_url
+
+##construct the elastic search url
+- import_playbook: sagenv-common-inventory.yaml
+  vars:
+    set_fact_inventory_groupnames: commandcentral:project2_apigateway
+    cce_provisioning_inventory_pattern: project2_apigwinternaldatastore
+    cce_provisioning_inventory_hosts_lookup_property: ansible_host
+    cce_provisioning_inventory_hosts_add_prefix: ""
+    cce_provisioning_inventory_hosts_add_suffix: ":9240"
+    cce_provisioning_inventory_hosts_join_string: ","
+    cce_provisioning_inventory_hosts_var: "external_target_elasticsearch_url"
+  tags:
+    - install
+    - install-apigateway
+    - get_external_target_urls
+    - get_external_target_elasticsearch_url
+
+##provision
+- import_playbook: sagenv-common-webmethods.yaml
+  vars:
+    cce_provisioning_target_hostgroups: project2_apigateway
+    cce_provisioning_template: project2/apigateway/template_cluster.yaml
+    cce_provisioning_properties: project2-apigateway
+    cce_provisioning_installed_product_names: apigateway
+    cce_provisioning_installed_product_instance_names: apigateway
+    cce_provisioning_validation_ports:
+      - 5555
+      - 9072
+    cce_provisioning_template_params:
+      - name: "repo.product"
+        value: "{{ cce_provisioning_products_repo_apigateway }}"
+      - name: "repo.fix"
+        value: "{{ cce_provisioning_fixes_repo_apigateway }}"
+      - name: "fixes.apply"
+        value: "[]"
+      - name: "agw.instance.type"
+        value: "integrationServer"
+      - name: "agw.instance.name"
+        value: "apigateway"        
+      - name: "agw.key.license.alias"
+        value: "*_YAIAA_10.*_*_*"
+      - name: "agw.terracotta.key.license.alias"
+        value: "*TerraCotta_v4_Clustering_IS_terracotta-license.key"
+      - name: "agw.terracotta.url"
+        value: "{{ external_target_terracotta_url }}"
+      - name: "agw.elasticsearch.url"
+        value: "{{ external_target_elasticsearch_url }}"
+    cce_provisioning_template_params_secure:
+      - name: "agw.administrator.password"
+        value: "{{ cce_provisioning_agw_administrator_password }}"
+  tags:
+    - install
+    - install-apigateway
+
+##some post install items for gateway  (stop local internal data store, update configs, restart gateway)
+- hosts: project2_apigateway
+  become: true
+  tasks:
+    ## stopping the local elastic search that was installed by the template...it's useless
+    - import_role: 
+        name: command-webmethods
+      vars:
+        product_command: "stop"
+        product_name: "apigwinternaldatastore"
+      become: true
+      become_user: "{{ webmethods_user }}"
+    - import_role: 
+        name: apigateway-update-configs
+      vars:
+        apigateway_elasticsearch_configs_toupdate:
+          "pg.gateway.elasticsearch.autostart": "false"
+          "pg.gateway.elasticsearch.hosts": "{{ external_target_elasticsearch_url }}"
+      become: true
+      become_user: "{{ webmethods_user }}"
+    - import_role: 
+        name: service-webmethods
+      vars:
+        product_command: "restart"
+        product_name: "apigateway"
+        product_instance_name: "apigateway"
+    - name: Wait for validation ports to become open on the host, don't start checking for 10 seconds
+      wait_for:
+        port: "{{ item }}"
+        delay: 10
+        timeout: 300
+      with_items:
+        - 9072
+        - 5555
+  tags:
+    - install
+    - install-apigateway
+    - postinstall-apigateway

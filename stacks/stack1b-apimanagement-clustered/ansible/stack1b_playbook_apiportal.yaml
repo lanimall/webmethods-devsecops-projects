@@ -1,0 +1,18 @@
+---
+
+################################################################
+## API Portal provisioning
+################################################################
+
+- import_playbook: sagenv-common-webmethods.yaml
+  vars:
+    cce_provisioning_target_hostgroups: project2_apiportal
+    cce_provisioning_template: project2/apiportal/template.yaml
+    cce_provisioning_properties: project2-apiportal
+    cce_provisioning_installed_product_names: spm
+    cce_provisioning_validation_ports:
+      - 8092
+      - 8093
+  tags:
+    - install
+    - install-apiportal

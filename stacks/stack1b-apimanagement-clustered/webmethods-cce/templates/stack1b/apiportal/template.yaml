@@ -1,0 +1,32 @@
+alias: recipe2-apiportal
+description: API Portal provisioning
+
+environments:
+  default:
+    nodes: ${}
+
+layers:
+  runtime:
+    templates:             
+      - spm-runtime
+
+templates:
+  spm-runtime:
+    products:
+      SPM:
+
+provision:
+  default:
+    runtime: ${nodes}
+
+nodes:
+  default:
+    default:
+      port:   ${spm.port}
+      secure: ${spm.secure}
+      credentials: ${spm.credentials.alias}
+      bootstrapInfo:
+        installDir:   ${bootstrap.install.dir}
+        installer:    ${bootstrap.install.installer}
+        port:         ${bootstrap.ssh.port}
+        credentials:  ${bootstrap.credentials.alias}

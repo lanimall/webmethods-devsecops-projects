@@ -10,6 +10,22 @@ output "internalnode_key_name" {
   value = aws_key_pair.internalnode.id
 }
 
+output "aws_iam_role_app_node_role_id" {
+  value = aws_iam_role.app_node_role.id
+}
+
+output "aws_iam_role_app_node_role_arn" {
+  value = aws_iam_role.app_node_role.arn
+}
+
+output "aws_iam_instance_profile_app_node_role_id" {
+  value = aws_iam_instance_profile.app_node_role.id
+}
+
+output "aws_iam_instance_profile_app_node_role_arn" {
+  value = aws_iam_instance_profile.app_node_role.arn
+}
+
 locals {
   awskeypair_bastion_node     = "${local.name_prefix_short}-${var.bastion_key_name}"
   awskeypair_internal_node    = "${local.name_prefix_short}-${var.internalnode_key_name}"
@@ -59,4 +75,29 @@ resource "aws_iam_instance_profile" "devops-management" {
 resource "aws_iam_role_policy_attachment" "devops-management-s3policy" {
   role       = aws_iam_role.devops-management.name
   policy_arn = aws_iam_policy.sagcontent-s3-readwrite.arn
+}
+
+resource "aws_iam_instance_profile" "app_node_role" {
+  name_prefix = "${local.name_prefix_short}-app-ec2node"
+  role = aws_iam_role.app_node_role.name
+}
+
+resource "aws_iam_role" "app_node_role" {
+  name_prefix = "${local.name_prefix_short}-app-ec2node"
+
+  assume_role_policy = <<POLICY
+{
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Effect": "Allow",
+          "Sid": ""
+        }
+      ]
+}
+POLICY
 }

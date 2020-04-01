@@ -10,5 +10,5 @@ data "template_file" "inventory-ansible" {
 
 resource "local_file" "inventory-ansible" {
   content  = data.template_file.inventory-ansible.rendered
-  filename = "${path.cwd}/tfexpanded/ansible-inventory"
+  filename = "${path.cwd}/outputs/${local.name_prefix_long}/ansible-inventory"
 }

@@ -1,0 +1,26 @@
+---
+
+
+################################################################
+## Terracotta provisioning
+################################################################
+
+- import_playbook: project2_playbooks_terracotta.yaml
+
+################################################################
+## Elastic search provisioning
+################################################################
+
+- import_playbook: project2_playbooks_apigwinternaldatastore.yaml
+
+################################################################
+## API Gateway provisioning
+################################################################
+
+- import_playbook: project2_playbooks_apigateway.yaml
+
+################################################################
+## API Portal provisioning
+################################################################
+
+- import_playbook: project2_playbooks_apiportal.yaml

@@ -36,8 +36,9 @@ team="some_team"
 
 ########################################### current stack variables
 
-provisioning_stack = "stack1a"
+provisioning_stack = "stack1b"
+provisioning_stack_description = "Full API gateway stack clustered with Terracotta + external elastic search"
 
-apigateway_runtime_external_host_name = "apigateway105-stack1a"
-apigateway_ui_external_host_name = "apigateway105-ui-stack1a"
-apiportal_external_host_name = "apiportal105-stack1a"
+apigateway_runtime_external_host_name = "apigateway105-stack1b"
+apigateway_ui_external_host_name = "apigateway105-ui-stack1b"
+apiportal_external_host_name = "apiportal105-stack1b"

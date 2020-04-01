@@ -62,6 +62,7 @@ resource "aws_instance" "apiportal" {
   subnet_id                   = data.aws_subnet.COMMON_APPS[count.index%length(data.aws_subnet.COMMON_APPS)].id
   user_data                   = data.template_file.setup-apiportal[count.index].rendered
   key_name                    = local.aws_key_pair_internalnode
+  iam_instance_profile        = data.aws_iam_instance_profile.app_node_role.name
   associate_public_ip_address = "false"
   disable_api_termination     = "false"
 

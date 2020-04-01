@@ -1,0 +1,9 @@
+[all_linux:children]
+cloudbase_bastion
+cloudbase_management
+
+[cloudbase_bastion]
+cloudbase_bastion_1 ansible_host=10.0.0.23 dns_internal=ip-10-0-0-23.us-east-2.compute.internal
+
+[cloudbase_management]
+cloudbase_management_1 ansible_host=10.0.64.15 dns_internal=ip-10-0-64-15.us-east-2.compute.internal

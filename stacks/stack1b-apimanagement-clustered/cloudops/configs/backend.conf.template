@@ -5,7 +5,7 @@ bucket  = "some_admin_bucket"
 region  = "us-east-1"
 
 ##PATH IN THE BUCKET TO STORE THE TF STATE FILE (Careful with copy-paste: notice the file name is stack0.tfstate!!)
-key     = "webmethods-devsecops-recipes/tf_states/demoenv/stack1a.tfstate"
+key     = "webmethods-devsecops-recipes/tf_states/demoenv/stack1b.tfstate"
 
 ## Encrypt the terraform state file
 encrypt = true

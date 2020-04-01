@@ -1,11 +1,11 @@
 variable "instancecount_apigateway" {
   description = "number of api gateway nodes"
-  default     = "1"
+  default     = "2"
 }
 
 variable "instancesize_apigateway" {
   description = "instance type for api gateway"
-  default     = "m5.large"
+  default     = "m5.xlarge"
 }
 
 ################################################
@@ -66,6 +66,7 @@ resource "aws_instance" "apigateway" {
   subnet_id                   = data.aws_subnet.COMMON_WEB[count.index%length(data.aws_subnet.COMMON_WEB)].id
   user_data                   = data.template_file.setup_apigateway[count.index].rendered
   key_name                    = local.aws_key_pair_internalnode
+  iam_instance_profile        = data.aws_iam_instance_profile.app_node_role.name
   associate_public_ip_address = "false"
   disable_api_termination     = "false"
 
@@ -88,6 +89,7 @@ resource "aws_instance" "apigateway" {
     local.base_aws_security_group_commoninternal,
     [ 
       aws_security_group.apigateway.id,
+      aws_security_group.apigateway_terracotta.id
     ]
   ])
 

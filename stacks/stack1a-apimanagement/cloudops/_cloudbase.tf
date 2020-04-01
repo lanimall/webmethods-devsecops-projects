@@ -40,7 +40,19 @@ locals {
   base_subnet_shortname_apps=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_apps
   base_subnet_shortname_data=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_data
   base_subnet_shortname_management=data.terraform_remote_state.cloudbase_state.outputs.subnet_shortname_management
-  aws_key_pair_internalnode=data.terraform_remote_state.cloudbase_state.outputs.internalnode_key_name
+  base_aws_key_pair_internalnode=data.terraform_remote_state.cloudbase_state.outputs.internalnode_key_name
+  base_aws_iam_role_app_node_role_id=data.terraform_remote_state.cloudbase_state.outputs.aws_iam_role_app_node_role_id
+  base_aws_iam_role_app_node_role_arn=data.terraform_remote_state.cloudbase_state.outputs.aws_iam_role_app_node_role_arn
+  base_aws_iam_instance_profile_app_node_role_id=data.terraform_remote_state.cloudbase_state.outputs.aws_iam_instance_profile_app_node_role_id
+  base_aws_iam_instance_profile_app_node_role_arn=data.terraform_remote_state.cloudbase_state.outputs.aws_iam_instance_profile_app_node_role_arn
+}
+
+data "aws_iam_instance_profile" "app_node_role" {
+  name = local.base_aws_iam_instance_profile_app_node_role_id
+}
+
+locals {
+  aws_key_pair_internalnode = local.base_aws_key_pair_internalnode
 }
 
 ###################### get the VPC from ID

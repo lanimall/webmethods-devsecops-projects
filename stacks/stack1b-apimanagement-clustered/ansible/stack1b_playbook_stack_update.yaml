@@ -1,0 +1,25 @@
+---
+
+################################################################
+## load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: "*"
+  tasks:
+    - name: Include vars
+      include_vars:
+        file: "./vars/project2.yaml"
+  tags:
+    - updates
+
+- import_playbook: sagenv-common-updates.yaml
+  vars:
+    cce_provisioning_target_hostgroups: project2_all
+    cce_provisioning_template_params:
+      - name: "repo.fix"
+        value: "{{ cce_provisioning_fixes_repo_sdc }}"
+      - name: "fixes.apply"
+        value: "ALL"
+  tags:
+    - updates

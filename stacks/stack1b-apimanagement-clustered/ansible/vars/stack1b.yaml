@@ -1,0 +1,24 @@
+
+## cce_provisioning LOCAL paths on management server
+cce_provisioning_code_localpath: ~/webmethods-provisioning/webmethods-cce/
+cce_provisioning_content_localpath: /opt/sag_content/
+
+## needed to use the service role
+product_version_major: 10
+product_version_minor: 5
+
+## Products / Fixes Repository
+cce_provisioning_products_repo_sdc: "webMethods-{{ product_version_major }}.{{ product_version_minor }}"
+cce_provisioning_fixes_repo_sdc: "Empower"
+cce_provisioning_products_repo_apigateway: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_apigateway: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_apigwinternaldatastore: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_apigwinternaldatastore: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_terracotta: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_terracotta: "{{ cce_provisioning_fixes_repo_sdc }}"
+cce_provisioning_products_repo_apiportal: "{{ cce_provisioning_products_repo_sdc }}"
+cce_provisioning_fixes_repo_apiportal: "{{ cce_provisioning_fixes_repo_sdc }}"
+
+## Provisoning Specifics
+cce_provisioning_agw_administrator_password: "SomeStrongPwd123!"
+cce_provisioning_target_hostgroups_host_property: "ansible_host"

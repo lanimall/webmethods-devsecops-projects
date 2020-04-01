@@ -1,0 +1,33 @@
+[all_linux:children]
+stack1b_apigateway
+stack1b_apigwinternaldatastore
+stack1b_apiportal
+
+[all_webmethods:children]
+stack1b_apigateway
+stack1b_apigwinternaldatastore
+stack1b_apiportal
+
+[apigateway:children]
+stack1b_apigateway
+
+[terracotta:children]
+stack1b_apigateway
+
+[apigwinternaldatastore:children]
+stack1b_apigwinternaldatastore
+
+[apiportal:children]
+stack1b_apiportal
+
+[stack1b_apigateway]
+stack1b_apigateway_1 ansible_host=${apigateway1_hostname} dns_internal=${apigateway1_dns}
+stack1b_apigateway_2 ansible_host=${apigateway2_hostname} dns_internal=${apigateway2_dns}
+
+[stack1b_apigwinternaldatastore]
+stack1b_apigwinternaldatastore_1 ansible_host=${apigateway-internaldatastore1_hostname} dns_internal=${apigateway-internaldatastore1_dns}
+stack1b_apigwinternaldatastore_2 ansible_host=${apigateway-internaldatastore2_hostname} dns_internal=${apigateway-internaldatastore2_dns}
+stack1b_apigwinternaldatastore_3 ansible_host=${apigateway-internaldatastore3_hostname} dns_internal=${apigateway-internaldatastore3_dns}
+
+[stack1b_apiportal]
+stack1b_apiportal_1 ansible_host=${apiportal1_hostname} dns_internal=${apiportal1_dns}
