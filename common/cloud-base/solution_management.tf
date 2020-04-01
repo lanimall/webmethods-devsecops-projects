@@ -40,7 +40,8 @@ resource "aws_instance" "devops-management" {
   key_name                    = local.awskeypair_internal_node
   iam_instance_profile        = aws_iam_instance_profile.devops-management.name
   associate_public_ip_address = "false"
-
+  disable_api_termination     = "false"
+  
   vpc_security_group_ids = flatten([
     aws_security_group.common-internal.id,
     [

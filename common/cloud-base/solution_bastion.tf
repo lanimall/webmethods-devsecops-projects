@@ -110,6 +110,7 @@ resource "aws_instance" "bastion-linux" {
   user_data                   = data.template_file.setup-bastion[count.index].rendered
   key_name                    = aws_key_pair.bastion.id
   associate_public_ip_address = "true"
+  disable_api_termination     = "false"
 
   vpc_security_group_ids = [
     aws_security_group.bastion.id,
