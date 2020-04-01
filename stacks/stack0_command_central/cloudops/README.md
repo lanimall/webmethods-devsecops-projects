@@ -12,9 +12,10 @@ Now, you can create the environment:
 
 ```bash
 env=demoenv
-configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs
+stack=stack0
+configs=$HOME/mydevsecrets/webmethods-devsecops-recipes/configs/$env/stacks/$stack
 terraform get -update=true
-terraform init -backend-config=$configs/$env/stack0/backend.conf
-terraform plan -var-file=$configs/$env/stack0/stack.tfvars
-terraform apply -var-file=$configs/$env/stack0/stack.tfvars
+terraform init -backend-config=$configs/backend.conf
+terraform plan -var-file=$configs/stack.tfvars
+terraform apply -var-file=$configs/stack.tfvars
 ```
