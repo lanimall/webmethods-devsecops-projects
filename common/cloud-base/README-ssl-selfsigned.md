@@ -1,4 +1,4 @@
-# webmethods-devsecops-recipes - generate self signed ssl certs
+# webmethods-devsecops-recipes - SSL certs - generate self signed certs
 
 If you chose to generate the SSL certs for this demo, here are the general steps:
 

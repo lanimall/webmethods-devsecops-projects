@@ -1,7 +1,3 @@
-output "commandcentral-private_dns" {
-  value = aws_instance.commandcentral.*.private_dns
-}
-
 variable "instancesize_commandcentral" {
   description = "instance type for api gateway"
   default     = "m5.large"
@@ -12,6 +8,22 @@ variable "instancecount_commandcentral" {
   ## only create in primary
   #count         = "${length(data.aws_subnet.COMMON_MGT.*.ids)}"
   default     = "1"
+}
+
+################################################
+################ outputs
+################################################
+
+output "webmethods_commandcentral_dns" {
+  value = aws_instance.commandcentral.*.private_dns
+}
+
+output "webmethods_commandcentral_dns_custom" {
+  value = aws_route53_record.webmethods_commandcentral-a-record.*.name
+}
+
+output "webmethods_commandcentral_external_hostname" {
+  value = "${var.commandcentral_external_host_name}.${local.dns_main_external_apex}"
 }
 
 ################################################

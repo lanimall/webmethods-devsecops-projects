@@ -61,7 +61,6 @@ if [ -f $BASEDIR/common/setup-access-management.sh ]; then
     ssh $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH -A $BASTION_SSH_USER@$BASTION_SSH_HOST "/bin/bash ./setup-access-management.sh"
 fi
 
-
 if [ -f $BASEDIR/common/ssh-to-management.sh ]; then
     scp $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH $BASEDIR/common/ssh-to-management.sh $BASTION_SSH_USER@$BASTION_SSH_HOST:~/ssh-to-management.sh
     ssh $SSH_OPTS -i $BASTION_SSH_PRIV_KEY_PATH -A $BASTION_SSH_USER@$BASTION_SSH_HOST "chmod 700 ~/ssh-to-management.sh"
