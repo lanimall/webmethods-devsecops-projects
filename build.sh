@@ -32,9 +32,10 @@ rsync -arvz --exclude static_* --delete $COMMON_ANSIBLE $BUILD_COMMON_ANSIBLE
 rsync -arvz --exclude static_* --delete $COMMON_SAGCCE $BUILD_COMMON_CCE
 
 ## + copy the expanded inventory files
-if [ -f $COMMON_CLOUD_BASE_INVENTORY ]; then
-    cp $COMMON_CLOUD_BASE_INVENTORY $BUILD_COMMON_ANSIBLE/inventory/ansible-inventory-cloud-base
-fi
+## actually, let's not to avoid having to maintain these in this demo
+##if [ -f $COMMON_CLOUD_BASE_INVENTORY ]; then
+##    cp $COMMON_CLOUD_BASE_INVENTORY $BUILD_COMMON_ANSIBLE/inventory/ansible-inventory-cloud-base
+##fi
 
 ### copy various helper scripts
 if [ ! -d $BUILD_DIR/scripts ]; then

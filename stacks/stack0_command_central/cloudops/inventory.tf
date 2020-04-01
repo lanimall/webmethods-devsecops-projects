@@ -1,5 +1,5 @@
 data "template_file" "inventory-ansible" {
-  template = file("${path.cwd}/helper_scripts/inventory-ansible")
+  template = file("${path.cwd}/helper_scripts/ansible-inventory.template")
 
   vars = {
     commandcentral1_dns_internal = length(aws_instance.commandcentral)>0 ? aws_instance.commandcentral[0].private_dns : "null"
@@ -10,5 +10,5 @@ data "template_file" "inventory-ansible" {
 
 resource "local_file" "inventory-ansible" {
   content  = data.template_file.inventory-ansible.rendered
-  filename = "${path.cwd}/tfexpanded/inventory-ansible"
+  filename = "${path.cwd}/tfexpanded/ansible-inventory"
 }

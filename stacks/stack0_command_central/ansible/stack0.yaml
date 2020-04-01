@@ -1,3 +1,14 @@
 ---
 
+################################################################
+## load the needed vars
+################################################################
+ 
+- name: Load vars
+  hosts: "*"
+  tasks:
+    - name: Include vars
+      include_vars:
+        file: "./vars/stack0.yaml"
+
 - import_playbook: sagenv-stack-cce.yaml
